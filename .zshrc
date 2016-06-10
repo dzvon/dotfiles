@@ -55,6 +55,7 @@ plugins=(git, zsh-autosuggestions)
 # User configuration
 
 export PATH="/Library/Frameworks/Python.framework/Versions/3.5/bin:/Users/persevere/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:~/.composer/vendor/bin/"
+export PATH="${DOTFILES}/bin:$PATH"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
@@ -86,4 +87,3 @@ fi
 
 # Source all .zsh files inside the zsh/ directory
 for config ($DOTFILES/zsh/*.zsh) source $config
-
