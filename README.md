@@ -12,9 +12,5 @@ xcode-select --install
 Then, clone the dotfiles repository to your computer. This can be placed anywhere, and symbolic links will be created to reference it from your home directory.
 
 ```bash
-git clone https://github.com/WDZThorn/dotfiles.git ~/.dotfiles
-cd ~/.dotfiles
-./install.sh
+git clone https://github.com/WDZThorn/dotfiles.git ~/.dotfiles && cd ~/.dotfiles && ./install.sh
 ```
-
-
