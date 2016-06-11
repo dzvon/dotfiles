@@ -19,4 +19,9 @@ alias rmf="rm -rf"
 alias grep="grep --color=auto"
 alias df="df -h"
 
+# Shortcuts
+alias dl="cd ~/Downloads"
+alias dt="cd ~/Desktop"
 
+# Alias Virtual Box
+alias vm="cd ~/Homestead && vagrant up && vagrant ssh"

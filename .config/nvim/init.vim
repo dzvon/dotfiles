@@ -125,6 +125,7 @@ Plug 'mileszs/ack.vim'
 Plug 'vim-scripts/Align'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'rking/ag.vim'
+Plug 'joonty/vdebug'
 call plug#end()
 
 " vim-airline config
@@ -233,3 +234,13 @@ if executable('ag')
     " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
     let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 endif
+
+" xdebug configuration
+let g:vdebug_options = {}
+let g:vdebug_options["port"] = 9000
+" let g:vdebug_options['port'] = "9000"
+let g:vdebug_options["path_maps"] = {
+\    "/home/vagrant/Code": "/Users/persevere/Code"
+\}
+let g:vdebug_options['ide_key'] = "vagrant"
+let g:vdebug_options['url'] = "http://laravel.persevere.com"
