@@ -103,6 +103,8 @@ if has("autocmd")
     autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
     " Trim trailing white space on save
     autocmd BufWritePre * :call StripWhitespace()
+    " Enable sparkup in jsx file
+    autocmd FileType javascript.jsx runtime! ftplugin/html/sparkup.vim
 endif
 
 call plug#begin()
@@ -120,6 +122,7 @@ Plug 'mhinz/vim-startify'
 Plug 'valloric/youcompleteme'
 Plug 'SirVer/ultisnips'
 Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
 Plug 'airblade/vim-gitgutter'
 Plug 'mileszs/ack.vim'
 Plug 'vim-scripts/Align'
@@ -128,6 +131,8 @@ Plug 'rking/ag.vim'
 Plug 'joonty/vdebug'
 call plug#end()
 
+" JSX in js file
+let g:jsx_ext_required = 0
 " vim-airline config
 let g:airline#extensions#bufferline#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
@@ -187,7 +192,7 @@ nnoremap <silent> ]b :bnext<CR>
 nnoremap <silent> [B :bfirst<CR>
 nnoremap <silent> ]B :blast<CR>
 " Back to Startify
-noremap <leader>H :Startify<CR>
+nnoremap <leader>H :Startify<CR>
 " brackets input
 inoremap [ []<esc>i
 inoremap { {}<esc>i
