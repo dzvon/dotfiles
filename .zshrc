@@ -64,11 +64,11 @@ source $ZSH/oh-my-zsh.sh
 # export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='nvim'
-else
-  export EDITOR='nvim'
-fi
+# if [[ -n $SSH_CONNECTION ]]; then
+export EDITOR='nvim'
+# else
+  # export EDITOR='nvim'
+# fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -87,3 +87,19 @@ fi
 
 # Source all .zsh files inside the zsh/ directory
 for config ($DOTFILES/zsh/*.zsh) source $config
+
+# Base16 Shell
+BASE16_SHELL="$HOME/.config/base16-shell/base16-solarized.light.sh"
+[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
+
+# [ -z "$TMUX" ] && export TERM=xterm-256color-italic
+
+# install rbenv
+if hash rbenv 2>/dev/null; then
+    eval "$(rbenv init -)"
+fi
+
+if [[ -d ~/.rvm ]]; then
+    PATH=$HOME/.rvm/bin:$PATH # Add RVM to PATH for scripting
+    source ~/.rvm/scripts/rvm
+fi

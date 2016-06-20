@@ -1,3 +1,6 @@
+# reload zsh config
+alias reload!="source ~/.zshrc"
+
 alias vi="nvim"
 alias vim="nvim"
 

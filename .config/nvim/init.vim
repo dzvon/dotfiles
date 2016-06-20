@@ -80,6 +80,8 @@ if exists("&relativenumber")
 endif
 " Start scrolling three lines before the horizontal window border
 set scrolloff=3
+" Highlight ColorColumn ctermbg=magenta
+call matchadd('ColorColumn', '\%81v', 100)
 
 " Strip trailing whitespace (,ss)
 function! StripWhitespace()
@@ -129,6 +131,7 @@ Plug 'vim-scripts/Align'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'rking/ag.vim'
 Plug 'joonty/vdebug'
+Plug 'stephpy/vim-php-cs-fixer'
 call plug#end()
 
 " JSX in js file
@@ -215,6 +218,8 @@ xnoremap #         : <C-u>call <SID>VSetSearch() <CR>?<C-R>=@/<CR><CR>
 nnoremap <leader>a : Ag<space>
 noremap <leader>l  : Align
 " nnoremap <C-Tab>   : <C-6><CR>
+nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gc :Gcommit<CR>
 
 function! s:VSetSearch()
     let temp = @s
