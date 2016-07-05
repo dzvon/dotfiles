@@ -110,6 +110,7 @@ if has("autocmd")
 endif
 
 call plug#begin()
+
 Plug 'kien/ctrlp.vim'
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'tpope/vim-fugitive'
@@ -132,6 +133,8 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'rking/ag.vim'
 Plug 'joonty/vdebug'
 Plug 'stephpy/vim-php-cs-fixer'
+Plug 'sheerun/vim-polyglot'
+
 call plug#end()
 
 " JSX in js file
@@ -220,6 +223,11 @@ noremap <leader>l  : Align
 " nnoremap <C-Tab>   : <C-6><CR>
 nnoremap <leader>gs :Gstatus<CR>
 nnoremap <leader>gc :Gcommit<CR>
+" Switch quickfix
+nnoremap [q :cprevious<CR>
+nnoremap ]q :cnext<CR>
+" Close the current window.
+nnoremap <leader>cw :close<CR>
 
 function! s:VSetSearch()
     let temp = @s

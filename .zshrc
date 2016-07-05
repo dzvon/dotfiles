@@ -89,7 +89,7 @@ export EDITOR='nvim'
 for config ($DOTFILES/zsh/*.zsh) source $config
 
 # Base16 Shell
-BASE16_SHELL="$HOME/.config/base16-shell/base16-solarized.light.sh"
+# BASE16_SHELL="$HOME/.config/base16-shell/base16-solarized.dark.sh"
 [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
 
 # [ -z "$TMUX" ] && export TERM=xterm-256color-italic
