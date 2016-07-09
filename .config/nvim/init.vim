@@ -134,6 +134,7 @@ Plug 'rking/ag.vim'
 Plug 'joonty/vdebug'
 Plug 'stephpy/vim-php-cs-fixer'
 Plug 'sheerun/vim-polyglot'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 
 call plug#end()
 
