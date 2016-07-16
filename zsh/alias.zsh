@@ -28,3 +28,8 @@ alias dt="cd ~/Desktop"
 
 # Alias Virtual Box
 alias vm="cd ~/Homestead && vagrant up && vagrant ssh"
+
+# use ss proxy
+alias sproxy="export ALL_PROXY='socks5://127.0.0.1:1080'"
+# unset proxy
+alias eproxy="unset ALL_PROXY"

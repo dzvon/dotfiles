@@ -107,6 +107,8 @@ if has("autocmd")
     autocmd BufWritePre * :call StripWhitespace()
     " Enable sparkup in jsx file
     autocmd FileType javascript.jsx runtime! ftplugin/html/sparkup.vim
+    " Shortcut to run python file
+    autocmd FileType python nnoremap <buffer> <F9> :exec '!python3' shellescape(@%, 1)<CR>
 endif
 
 call plug#begin()
