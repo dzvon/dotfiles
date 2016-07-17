@@ -231,6 +231,8 @@ nnoremap [q :cprevious<CR>
 nnoremap ]q :cnext<CR>
 " Close the current window.
 nnoremap <leader>cw :close<CR>
+" save file
+nnoremap <leader>s :w<CR>
 
 function! s:VSetSearch()
     let temp = @s
