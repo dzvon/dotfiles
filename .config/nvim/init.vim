@@ -108,7 +108,7 @@ if has("autocmd")
     " Enable sparkup in jsx file
     autocmd FileType javascript.jsx runtime! ftplugin/html/sparkup.vim
     " Shortcut to run python file
-    autocmd FileType python nnoremap <buffer> <F9> :exec '!python3' shellescape(@%, 1)<CR>
+    autocmd FileType python nnoremap <buffer> <F9> :w<CR> :exec '!python' shellescape(@%, 1)<CR>
 endif
 
 call plug#begin()
