@@ -91,7 +91,7 @@ function! StripWhitespace()
     call setpos('.', save_cursor)
     call setreg('/', old_query)
 endfunction
-noremap <leader>ss :call StripWhitespace()<CR>
+" noremap <leader>ss :call StripWhitespace()<CR>
 " Save a file as root (,W)
 noremap <leader>W :w !sudo tee % > /dev/null<CR>
 
@@ -169,7 +169,7 @@ let g:UltiSnipsExpandTrigger = "<C-j>"
 let g:javascript_enable_domhtmlcss = 1
 
 " Youcompleteme config
-" set completeopt = longest,list,full
+set completeopt=longest
 let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_seed_identifiers_with_syntax = 1
 let g:ycm_complete_in_comments = 1
@@ -187,6 +187,7 @@ imap <C-_> <plug>NERDCommenterInsert
 noremap <leader>tg :CtrlPBufTag<CR>
 noremap <leader>T :CtrlPClearCache<CR>:CtrlP
 noremap <leader>b :CtrlPBuffer<CR>
+noremap <leader>m :CtrlPMRUFiles<CR>
 noremap <leader>d :NERDTreeToggle<CR>
 noremap <leader>f :NERDTreeFind<CR>
 noremap <bs> <C-w>h
@@ -233,6 +234,13 @@ nnoremap ]q :cnext<CR>
 nnoremap <leader>cw :close<CR>
 " save file
 nnoremap <leader>s :w<CR>
+" Down is really the next line
+nnoremap j gj
+nnoremap k gk
+"Resize vsplit
+nmap 25 :vertical resize 40<cr>
+nmap 50 <c-w>=
+nmap 75 :vertical resize 120<cr>
 
 function! s:VSetSearch()
     let temp = @s
