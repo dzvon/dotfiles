@@ -169,7 +169,7 @@ let g:UltiSnipsExpandTrigger = "<C-j>"
 let g:javascript_enable_domhtmlcss = 1
 
 " Youcompleteme config
-set completeopt=longest
+" set completeopt=longest
 let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_seed_identifiers_with_syntax = 1
 let g:ycm_complete_in_comments = 1
@@ -201,6 +201,11 @@ nnoremap <silent> [b :bprevious<CR>
 nnoremap <silent> ]b :bnext<CR>
 nnoremap <silent> [B :bfirst<CR>
 nnoremap <silent> ]B :blast<CR>
+" Switch tabs
+nnoremap <silent> [t :tabprevious<CR>
+nnoremap <silent> ]t :tabnext<CR>
+nnoremap <silent> [T :tabfirst<CR>
+nnoremap <silent> ]T :tablast<CR>
 " Back to Startify
 nnoremap <leader>H :Startify<CR>
 " brackets input
@@ -269,9 +274,8 @@ endif
 " xdebug configuration
 let g:vdebug_options = {}
 let g:vdebug_options["port"] = 9000
-" let g:vdebug_options['port'] = "9000"
 let g:vdebug_options["path_maps"] = {
-\    "/home/vagrant/Code": "/Users/persevere/Code"
+\      "/var/www": "/Users/persevere/Code"
 \}
 let g:vdebug_options['ide_key'] = "vagrant"
-let g:vdebug_options['url'] = "http://laravel.persevere.com"
+let g:vdebug_options['url'] = "http://lanqb.dev"
