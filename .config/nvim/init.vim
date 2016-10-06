@@ -238,7 +238,7 @@ nnoremap ]q :cnext<CR>
 " Close the current window.
 nnoremap <leader>cw :close<CR>
 " save file
-nnoremap <leader>s :w<CR>
+nnoremap <leader>sf :w<CR>
 " Down is really the next line
 nnoremap j gj
 nnoremap k gk
