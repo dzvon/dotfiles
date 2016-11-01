@@ -1,3 +1,8 @@
+set termguicolors
+set background=dark
+colorscheme solarized
+" set colorscheme
+
 set hidden
 " Use the OS clipboard by default
 set clipboard=unnamed
@@ -87,7 +92,7 @@ call matchadd('ColorColumn', '\%81v', 100)
 function! StripWhitespace()
     let save_cursor = getpos(".")
     let old_query = getreg('/')
-    :%s/\s\+$//e
+    :%s/\(\s\+\|\)$//e
     call setpos('.', save_cursor)
     call setreg('/', old_query)
 endfunction
@@ -103,6 +108,8 @@ if has("autocmd")
     autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
     " Treat .md files as Markdown
     autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
+    " Treat .html files as php
+    autocmd BufNewFile,BufRead *.html setlocal filetype=php
     " Trim trailing white space on save
     autocmd BufWritePre * :call StripWhitespace()
     " Enable sparkup in jsx file
@@ -137,6 +144,9 @@ Plug 'joonty/vdebug'
 Plug 'stephpy/vim-php-cs-fixer'
 Plug 'sheerun/vim-polyglot'
 Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'posva/vim-vue'
+" Plug 'altercation/vim-colors-solarized'
+Plug 'frankier/neovim-colors-solarized-truecolor-only'
 
 call plug#end()
 
