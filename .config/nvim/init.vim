@@ -191,9 +191,9 @@ let g:ycm_confirm_extra_conf = 0
 " Keyboard shortcuts
 " inoremap <expr> <CR>    pumvisible() ? "\<C-y>" : "\<CR>"
 inoremap <expr> <CR>    pumvisible() ? "\<C-x><C-n>" : "\<CR>"
-vmap <C-_> <plug>NERDCommenterToggle
-nmap <C-_> <plug>NERDCommenterToggle
-imap <C-_> <plug>NERDCommenterInsert
+vmap <C--> <plug>NERDCommenterToggle
+nmap <C--> <plug>NERDCommenterToggle
+imap <C--> <plug>NERDCommenterInsert
 noremap <leader>tg :CtrlPBufTag<CR>
 noremap <leader>T :CtrlPClearCache<CR>:CtrlP
 noremap <leader>b :CtrlPBuffer<CR>
@@ -252,10 +252,12 @@ nnoremap <leader>sf :w<CR>
 " Down is really the next line
 nnoremap j gj
 nnoremap k gk
-"Resize vsplit
+" Resize vsplit
 nmap 25 :vertical resize 40<cr>
 nmap 50 <c-w>=
 nmap 75 :vertical resize 120<cr>
+"
+nnoremap <C-6> <C-^>
 
 function! s:VSetSearch()
     let temp = @s
