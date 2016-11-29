@@ -1,5 +1,5 @@
 set termguicolors
-set background=dark
+set background=light
 colorscheme solarized
 " set colorscheme
 
@@ -242,6 +242,8 @@ noremap <leader>l  : Align
 " nnoremap <C-Tab>   : <C-6><CR>
 nnoremap <leader>gs :Gstatus<CR>
 nnoremap <leader>gc :Gcommit<CR>
+nnoremap <leader>gp :Git push origin HEAD<CR>
+nnoremap <leader>gr :Git pull --rebase<CR>
 " Switch quickfix
 nnoremap [q :cprevious<CR>
 nnoremap ]q :cnext<CR>
