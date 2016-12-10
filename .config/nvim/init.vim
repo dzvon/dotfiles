@@ -1,6 +1,6 @@
-set termguicolors
-set background=light
-colorscheme solarized
+" set termguicolors
+" set background=dark
+" colorscheme solarized
 " set colorscheme
 
 set hidden
@@ -191,9 +191,9 @@ let g:ycm_confirm_extra_conf = 0
 " Keyboard shortcuts
 " inoremap <expr> <CR>    pumvisible() ? "\<C-y>" : "\<CR>"
 inoremap <expr> <CR>    pumvisible() ? "\<C-x><C-n>" : "\<CR>"
-vmap <C--> <plug>NERDCommenterToggle
-nmap <C--> <plug>NERDCommenterToggle
-imap <C--> <plug>NERDCommenterInsert
+vmap <C-_> <plug>NERDCommenterToggle
+nmap <C-_> <plug>NERDCommenterToggle
+imap <C-_> <plug>NERDCommenterInsert
 noremap <leader>tg :CtrlPBufTag<CR>
 noremap <leader>T :CtrlPClearCache<CR>:CtrlP
 noremap <leader>b :CtrlPBuffer<CR>
