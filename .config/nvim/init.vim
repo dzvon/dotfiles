@@ -1,5 +1,5 @@
 " set termguicolors
-" set background=dark
+" set background=light
 " colorscheme solarized
 " set colorscheme
 
@@ -194,6 +194,10 @@ inoremap <expr> <CR>    pumvisible() ? "\<C-x><C-n>" : "\<CR>"
 vmap <C-_> <plug>NERDCommenterToggle
 nmap <C-_> <plug>NERDCommenterToggle
 imap <C-_> <plug>NERDCommenterInsert
+" Vim GUI
+" vmap <C--> <plug>NERDCommenterToggle
+" nmap <C--> <plug>NERDCommenterToggle
+" imap <C--> <plug>NERDCommenterInsert
 noremap <leader>tg :CtrlPBufTag<CR>
 noremap <leader>T :CtrlPClearCache<CR>:CtrlP
 noremap <leader>b :CtrlPBuffer<CR>
