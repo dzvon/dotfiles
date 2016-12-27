@@ -1,8 +1,3 @@
-" set termguicolors
-" set background=light
-" colorscheme solarized
-" set colorscheme
-
 set hidden
 " Use the OS clipboard by default
 set clipboard=unnamed
@@ -114,6 +109,8 @@ if has("autocmd")
     autocmd BufWritePre * :call StripWhitespace()
     " Enable sparkup in jsx file
     autocmd FileType javascript.jsx runtime! ftplugin/html/sparkup.vim
+    " Enable sparkup in vue file
+    autocmd FileType vue runtime! ftplugin/html/sparkup.vim
     " Shortcut to run python file
     autocmd FileType python nnoremap <buffer> <F9> :w<CR> :exec '!python3' shellescape(@%, 1)<CR>
 endif
@@ -191,13 +188,22 @@ let g:ycm_confirm_extra_conf = 0
 " Keyboard shortcuts
 " inoremap <expr> <CR>    pumvisible() ? "\<C-y>" : "\<CR>"
 inoremap <expr> <CR>    pumvisible() ? "\<C-x><C-n>" : "\<CR>"
-vmap <C-_> <plug>NERDCommenterToggle
-nmap <C-_> <plug>NERDCommenterToggle
-imap <C-_> <plug>NERDCommenterInsert
-" Vim GUI
-" vmap <C--> <plug>NERDCommenterToggle
-" nmap <C--> <plug>NERDCommenterToggle
-" imap <C--> <plug>NERDCommenterInsert
+
+" Vim GUI environment.
+if has('gui_running')
+    set termguicolors
+    set background=light
+    colorscheme solarized
+    set colorscheme
+    vmap <C--> <plug>NERDCommenterToggle
+    nmap <C--> <plug>NERDCommenterToggle
+    imap <C--> <plug>NERDCommenterInsert
+else
+    vmap <C-_> <plug>NERDCommenterToggle
+    nmap <C-_> <plug>NERDCommenterToggle
+    imap <C-_> <plug>NERDCommenterInsert
+endif
+
 noremap <leader>tg :CtrlPBufTag<CR>
 noremap <leader>T :CtrlPClearCache<CR>:CtrlP
 noremap <leader>b :CtrlPBuffer<CR>
@@ -259,9 +265,9 @@ nnoremap <leader>sf :w<CR>
 nnoremap j gj
 nnoremap k gk
 " Resize vsplit
-nmap 25 :vertical resize 40<cr>
-nmap 50 <c-w>=
-nmap 75 :vertical resize 120<cr>
+nmap 25s :vertical resize 40<cr>
+nmap 50s <c-w>=
+nmap 75s :vertical resize 120<cr>
 "
 nnoremap <C-6> <C-^>
 
