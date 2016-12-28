@@ -142,8 +142,8 @@ Plug 'stephpy/vim-php-cs-fixer'
 Plug 'sheerun/vim-polyglot'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'posva/vim-vue'
-" Plug 'altercation/vim-colors-solarized'
-Plug 'frankier/neovim-colors-solarized-truecolor-only'
+Plug 'altercation/vim-colors-solarized'
+" Plug 'frankier/neovim-colors-solarized-truecolor-only'
 
 call plug#end()
 
@@ -190,11 +190,9 @@ let g:ycm_confirm_extra_conf = 0
 inoremap <expr> <CR>    pumvisible() ? "\<C-x><C-n>" : "\<CR>"
 
 " Vim GUI environment.
-if has('gui_running')
-    set termguicolors
-    set background=light
+if has('gui_vimr')
     colorscheme solarized
-    set colorscheme
+    set background=light
     vmap <C--> <plug>NERDCommenterToggle
     nmap <C--> <plug>NERDCommenterToggle
     imap <C--> <plug>NERDCommenterInsert
@@ -259,6 +257,8 @@ nnoremap [q :cprevious<CR>
 nnoremap ]q :cnext<CR>
 " Close the current window.
 nnoremap <leader>cw :close<CR>
+" Close current tab
+nnoremap <leader>ct :tabclose<CR>
 " save file
 nnoremap <leader>sf :w<CR>
 " Down is really the next line
