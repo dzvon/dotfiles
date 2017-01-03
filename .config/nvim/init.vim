@@ -148,7 +148,7 @@ Plug 'altercation/vim-colors-solarized'
 call plug#end()
 
 " JSX in js file
-let g:jsx_ext_required = 0
+" let g:jsx_ext_required = 0
 " vim-airline config
 let g:airline#extensions#bufferline#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
