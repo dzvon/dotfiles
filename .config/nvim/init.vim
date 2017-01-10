@@ -174,6 +174,7 @@ let g:UltiSnipsExpandTrigger = "<C-j>"
 
 " Enable HTML/CSS syntax highlighting in js file
 let g:javascript_enable_domhtmlcss = 1
+let g:javascript_plugin_jsdoc = 1
 
 " Youcompleteme config
 set completeopt=longest
@@ -191,8 +192,8 @@ inoremap <expr> <CR>    pumvisible() ? "\<C-x><C-n>" : "\<CR>"
 
 " Vim GUI environment.
 if has('gui_vimr')
-    colorscheme solarized
     set background=light
+    colorscheme solarized
     vmap <C--> <plug>NERDCommenterToggle
     nmap <C--> <plug>NERDCommenterToggle
     imap <C--> <plug>NERDCommenterInsert
