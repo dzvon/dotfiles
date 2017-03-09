@@ -103,3 +103,6 @@ if [[ -d ~/.rvm ]]; then
     PATH=$HOME/.rvm/bin:$PATH # Add RVM to PATH for scripting
     source ~/.rvm/scripts/rvm
 fi
+
+# Add GOPATH
+export GOPATH=$HOME/GoWork
