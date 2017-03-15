@@ -147,6 +147,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'posva/vim-vue'
 Plug 'altercation/vim-colors-solarized'
+Plug 'suan/vim-instant-markdown'
 " Plug 'frankier/neovim-colors-solarized-truecolor-only'
 
 call plug#end()
