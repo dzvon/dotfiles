@@ -148,6 +148,7 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'posva/vim-vue'
 Plug 'altercation/vim-colors-solarized'
 Plug 'suan/vim-instant-markdown'
+Plug 'vim-airline/vim-airline-themes'
 " Plug 'frankier/neovim-colors-solarized-truecolor-only'
 
 call plug#end()
@@ -160,7 +161,7 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#branch#enabled = 1
 let g:airline_powerline_fonts = 1
 " let g:airline#extensions#hunks#hunk_symbols = ['+', '~', '-']
-" let g:airline_theme = 'default'
+let g:airline_theme = 'papercolor'
 
 " Add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
