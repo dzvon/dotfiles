@@ -161,7 +161,7 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#branch#enabled = 1
 let g:airline_powerline_fonts = 1
 " let g:airline#extensions#hunks#hunk_symbols = ['+', '~', '-']
-let g:airline_theme = 'papercolor'
+let g:airline_theme = 'default'
 
 " Add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
@@ -306,7 +306,5 @@ endif
 let g:vdebug_options = {}
 let g:vdebug_options["port"] = 9000
 let g:vdebug_options["path_maps"] = {
-\      "/var/www": "/Users/persevere/Code"
+\      "/var/www": "/Users/persevere/Code/soap"
 \}
-let g:vdebug_options['ide_key'] = "vagrant"
-let g:vdebug_options['url'] = "http://lanqb.dev"
