@@ -81,6 +81,8 @@ set scrolloff=3
 " Highlight ColorColumn ctermbg=magenta
 call matchadd('ColorColumn', '\%81v', 100)
 
+set completeopt=menu
+
 set termguicolors
 " If you use vim inside tmux, see https://github.com/vim/vim/issues/993
 " set Vim-specific sequences for RGB colors
@@ -108,13 +110,11 @@ if has("autocmd")
     " Treat .md files as Markdown
     autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
     " Treat .html files as php
-    autocmd BufNewFile,BufRead *.html setlocal filetype=php
+    " autocmd BufNewFile,BufRead *.html setlocal filetype=php
     " Trim trailing white space on save
     autocmd BufWritePre * :call StripWhitespace()
-    " Enable sparkup in jsx file
-    autocmd FileType javascript.jsx runtime! ftplugin/html/sparkup.vim
-    " Enable sparkup in vue file
-    autocmd FileType vue runtime! ftplugin/html/sparkup.vim
+    " Enable emmet for ...
+    autocmd FileType html,css,vue,php EmmetInstall
     " Shortcut to run python file
     autocmd FileType python nnoremap <buffer> <F9> :w<CR> :exec '!python3' shellescape(@%, 1)<CR>
 endif
@@ -122,17 +122,18 @@ endif
 call plug#begin()
 
 Plug 'kien/ctrlp.vim'
+Plug 'FelikZ/ctrlp-py-matcher'
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'bling/vim-airline'
-Plug 'rstacruz/sparkup'
+Plug 'mattn/emmet-vim'
 Plug 'scrooloose/nerdcommenter'
 " Plug 'tomtom/tcomment_vim'
 Plug 'easymotion/vim-easymotion'
 Plug 'honza/vim-snippets'
 Plug 'mhinz/vim-startify'
-Plug 'valloric/youcompleteme'
+" Plug 'valloric/youcompleteme', {'on': []}
 Plug 'SirVer/ultisnips'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
@@ -149,7 +150,7 @@ Plug 'posva/vim-vue'
 Plug 'altercation/vim-colors-solarized'
 Plug 'suan/vim-instant-markdown'
 Plug 'vim-airline/vim-airline-themes'
-" Plug 'frankier/neovim-colors-solarized-truecolor-only'
+Plug 'frankier/neovim-colors-solarized-truecolor-only'
 
 call plug#end()
 
@@ -161,7 +162,7 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#branch#enabled = 1
 let g:airline_powerline_fonts = 1
 " let g:airline#extensions#hunks#hunk_symbols = ['+', '~', '-']
-let g:airline_theme = 'default'
+" let g:airline_theme = 'default'
 
 " Add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
@@ -183,18 +184,17 @@ let g:javascript_enable_domhtmlcss = 1
 let g:javascript_plugin_jsdoc = 1
 
 " Youcompleteme config
-set completeopt=longest
-let g:ycm_collect_identifiers_from_tags_files = 1
-let g:ycm_seed_identifiers_with_syntax = 1
-let g:ycm_complete_in_comments = 1
-let g:ycm_complete_in_strings = 1
-let g:ycm_collect_identifiers_from_comments_and_strings = 1
-let g:ycm_always_populate_location_list = 1
-let g:ycm_confirm_extra_conf = 0
+" let g:ycm_collect_identifiers_from_tags_files = 1
+" let g:ycm_seed_identifiers_with_syntax = 1
+" let g:ycm_complete_in_comments = 1
+" let g:ycm_complete_in_strings = 1
+" let g:ycm_collect_identifiers_from_comments_and_strings = 1
+" let g:ycm_always_populate_location_list = 1
+" let g:ycm_confirm_extra_conf = 0
 
 " Keyboard shortcuts
 " inoremap <expr> <CR>    pumvisible() ? "\<C-y>" : "\<CR>"
-inoremap <expr> <CR>    pumvisible() ? "\<C-x><C-n>" : "\<CR>"
+" inoremap <expr> <CR>    pumvisible() ? "\<C-x><C-n>" : "\<CR>"
 
 " Vim GUI environment.
 if has('gui_vimr')
@@ -301,6 +301,14 @@ if executable('ag')
     " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
     let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 endif
+
+" Emmet configuration
+" only enable in insert mode.
+let g:user_emmet_mode = 'i'
+" disable global install
+let g:user_emmet_install_global = 0
+" redefine emmet trigger key
+let g:user_emmet_leader_key = '<C-z>'
 
 " xdebug configuration
 let g:vdebug_options = {}
