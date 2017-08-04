@@ -264,6 +264,8 @@ nnoremap [q :cprevious<CR>
 nnoremap ]q :cnext<CR>
 " Close the current window.
 nnoremap <leader>cw :close<CR>
+" Delete current buffer
+nnoremap <leader>q :bdelete<CR>
 " Close current tab
 nnoremap <leader>ct :tabclose<CR>
 " save file
