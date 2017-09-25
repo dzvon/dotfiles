@@ -151,6 +151,7 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'suan/vim-instant-markdown'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'frankier/neovim-colors-solarized-truecolor-only'
+Plug 'scrooloose/syntastic'
 
 call plug#end()
 
@@ -192,6 +193,17 @@ let g:javascript_plugin_jsdoc = 1
 " let g:ycm_always_populate_location_list = 1
 " let g:ycm_confirm_extra_conf = 0
 
+" Syntastic config
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 0
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_php_checkers = ['php', 'phpcs', 'phpmd']
+
 " Keyboard shortcuts
 " inoremap <expr> <CR>    pumvisible() ? "\<C-y>" : "\<CR>"
 " inoremap <expr> <CR>    pumvisible() ? "\<C-x><C-n>" : "\<CR>"
@@ -231,6 +243,9 @@ nnoremap <silent> [t :tabprevious<CR>
 nnoremap <silent> ]t :tabnext<CR>
 nnoremap <silent> [T :tabfirst<CR>
 nnoremap <silent> ]T :tablast<CR>
+" Switch syntastic error
+nnoremap <silent> [l : lprevious<CR>
+nnoremap <silent> ]l : lnext<CR>
 " Back to Startify
 nnoremap <leader>H :Startify<CR>
 " brackets input
@@ -268,6 +283,8 @@ nnoremap <leader>cw :close<CR>
 nnoremap <leader>q :bdelete<CR>
 " Close current tab
 nnoremap <leader>ct :tabclose<CR>
+" Close Location panel
+nnoremap <leader>ce :lclose<CR>
 " save file
 nnoremap <leader>sf :w<CR>
 " Down is really the next line
