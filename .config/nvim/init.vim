@@ -151,7 +151,7 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'suan/vim-instant-markdown'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'frankier/neovim-colors-solarized-truecolor-only'
-Plug 'scrooloose/syntastic'
+Plug 'w0rp/ale'
 
 call plug#end()
 
@@ -193,16 +193,10 @@ let g:javascript_plugin_jsdoc = 1
 " let g:ycm_always_populate_location_list = 1
 " let g:ycm_confirm_extra_conf = 0
 
-" Syntastic config
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+" php-cs-fixer
+let g:php_cs_fixer_fixers_list = "-psr0"
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_php_checkers = ['php', 'phpcs', 'phpmd']
+let g:ale_linter_aliases = {'vue': ['html', 'css']}
 
 " Keyboard shortcuts
 " inoremap <expr> <CR>    pumvisible() ? "\<C-y>" : "\<CR>"
@@ -210,7 +204,7 @@ let g:syntastic_php_checkers = ['php', 'phpcs', 'phpmd']
 
 " Vim GUI environment.
 if has('gui_vimr')
-    set background=light
+    set background=dark
     colorscheme solarized
     vmap <C--> <plug>NERDCommenterToggle
     nmap <C--> <plug>NERDCommenterToggle
@@ -244,8 +238,8 @@ nnoremap <silent> ]t :tabnext<CR>
 nnoremap <silent> [T :tabfirst<CR>
 nnoremap <silent> ]T :tablast<CR>
 " Switch syntastic error
-nnoremap <silent> [l : lprevious<CR>
-nnoremap <silent> ]l : lnext<CR>
+nnoremap <silent> [a <Plug>(ale_previous_wrap)
+nnoremap <silent> ]a <Plug>(ale_next_wrap)
 " Back to Startify
 nnoremap <leader>H :Startify<CR>
 " brackets input
