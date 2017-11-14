@@ -204,7 +204,7 @@ let g:ale_linter_aliases = {'vue': ['html', 'css']}
 
 " Vim GUI environment.
 if has('gui_vimr')
-    set background=dark
+    set background=light
     colorscheme solarized
     vmap <C--> <plug>NERDCommenterToggle
     nmap <C--> <plug>NERDCommenterToggle
@@ -238,8 +238,8 @@ nnoremap <silent> ]t :tabnext<CR>
 nnoremap <silent> [T :tabfirst<CR>
 nnoremap <silent> ]T :tablast<CR>
 " Switch syntastic error
-nnoremap <silent> [a <Plug>(ale_previous_wrap)
-nnoremap <silent> ]a <Plug>(ale_next_wrap)
+nnoremap <silent> [a :ALEPreviousWrap<CR>
+nnoremap <silent> ]a :ALENextWrap<CR>
 " Back to Startify
 nnoremap <leader>H :Startify<CR>
 " brackets input
@@ -306,6 +306,20 @@ function! s:DiffWithSaved()
     exe "setlocal bt=nofile bh=wipe nobl noswf ro ft=" . filetype
 endfunction
 com! DiffSaved call s:DiffWithSaved()
+
+command! -nargs=0 -bar Qargs execute 'args' QuickfixFilenames()
+function! QuickfixFilenames()
+    " Building a hash ensures we get each buffer only once
+    let buffer_numbers = {}
+    for quickfix_item in getqflist()
+        let bufnr = quickfix_item['bufnr']
+        " Lines without files will appear as bufnr=0
+        if bufnr > 0
+            let buffer_numbers[bufnr] = bufname(bufnr)
+        endif
+    endfor
+    return join(map(values(buffer_numbers), 'fnameescape(v:val)'))
+endfunction
 
 " Use the Silver Searcher https://github.com/ggreer/the_silver_searcher
 if executable('ag')
