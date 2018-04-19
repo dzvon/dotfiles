@@ -142,7 +142,7 @@ Plug 'mileszs/ack.vim'
 Plug 'vim-scripts/Align'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'rking/ag.vim'
-Plug 'joonty/vdebug'
+" Plug 'joonty/vdebug'
 Plug 'stephpy/vim-php-cs-fixer'
 Plug 'sheerun/vim-polyglot'
 Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -338,8 +338,8 @@ let g:user_emmet_install_global = 0
 let g:user_emmet_leader_key = '<C-z>'
 
 " xdebug configuration
-let g:vdebug_options = {}
-let g:vdebug_options["port"] = 9000
-let g:vdebug_options["path_maps"] = {
-\      "/var/www": "/Users/persevere/Code/soap"
-\}
+" let g:vdebug_options = {}
+" let g:vdebug_options["port"] = 9000
+" let g:vdebug_options["path_maps"] = {
+" \      "/var/www": "/Users/persevere/Code/soap"
+" \}
