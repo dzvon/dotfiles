@@ -54,7 +54,7 @@ plugins=(git zsh-autosuggestions kubectl docker vi-mode)
 
 # User configuration
 
-export PATH="~/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:~/.composer/vendor/bin/"
+export PATH="${HOME}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${HOME}/.composer/vendor/bin/:${HOME}/go/bin"
 export PATH="${DOTFILES}/bin:$PATH"
 # export MANPATH="/usr/local/man:$MANPATH"
 
