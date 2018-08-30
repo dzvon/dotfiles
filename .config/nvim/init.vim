@@ -129,20 +129,18 @@ Plug 'tpope/vim-surround'
 Plug 'bling/vim-airline'
 Plug 'mattn/emmet-vim'
 Plug 'scrooloose/nerdcommenter'
-" Plug 'tomtom/tcomment_vim'
 Plug 'easymotion/vim-easymotion'
 Plug 'honza/vim-snippets'
 Plug 'mhinz/vim-startify'
-" Plug 'valloric/youcompleteme', {'on': []}
 Plug 'SirVer/ultisnips'
 Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx'
+Plug 'mxw/vim-jsx', {'for': ['javascript.jsx']}
 Plug 'airblade/vim-gitgutter'
 Plug 'mileszs/ack.vim'
 Plug 'vim-scripts/Align'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'rking/ag.vim'
-Plug 'stephpy/vim-php-cs-fixer'
+Plug 'stephpy/vim-php-cs-fixer', { 'for': 'php' }
 Plug 'sheerun/vim-polyglot'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'posva/vim-vue'
@@ -151,6 +149,7 @@ Plug 'suan/vim-instant-markdown'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'frankier/neovim-colors-solarized-truecolor-only'
 Plug 'w0rp/ale'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 call plug#end()
 
@@ -335,3 +334,6 @@ let g:user_emmet_mode = 'i'
 let g:user_emmet_install_global = 0
 " redefine emmet trigger key
 let g:user_emmet_leader_key = '<C-z>'
+
+" Go configuration
+let g:go_fmt_command = "goimports"
