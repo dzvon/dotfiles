@@ -117,6 +117,8 @@ if has("autocmd")
     autocmd FileType html,css,vue,php EmmetInstall
     " Shortcut to run python file
     autocmd FileType python nnoremap <buffer> <F9> :w<CR> :exec '!python3' shellescape(@%, 1)<CR>
+    " Shortcut to run go
+    autocmd FileType go nmap <leader>r <Plug>(go-run)
 endif
 
 call plug#begin()
@@ -141,7 +143,7 @@ Plug 'vim-scripts/Align'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'rking/ag.vim'
 Plug 'stephpy/vim-php-cs-fixer', { 'for': 'php' }
-Plug 'sheerun/vim-polyglot'
+" Plug 'sheerun/vim-polyglot'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'posva/vim-vue'
 Plug 'altercation/vim-colors-solarized'
@@ -176,7 +178,7 @@ let g:UltiSnipsExpandTrigger = "<C-j>"
 " let g:UltiSnipsJumpForwardTrigger = "<c-b>"
 " let g:UltiSnipsJumpBackwardTrigger = "<c-z>"
 " If you want :UltiSnipsEdit to split your window.
-" let g:UltiSnipsEditSplit="vertical"
+let g:UltiSnipsEditSplit="vertical"
 
 " Enable HTML/CSS syntax highlighting in js file
 let g:javascript_enable_domhtmlcss = 1
@@ -337,3 +339,4 @@ let g:user_emmet_leader_key = '<C-z>'
 
 " Go configuration
 let g:go_fmt_command = "goimports"
+let g:go_list_type = "quickfix"
