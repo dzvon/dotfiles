@@ -106,3 +106,4 @@ fi
 
 # Add GOPATH
 export GOPATH=$HOME/GoWork
+export PATH="${GOPATH}/bin:$PATH"
