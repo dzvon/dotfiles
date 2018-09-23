@@ -202,18 +202,23 @@ let g:ale_linter_aliases = {'vue': ['html', 'css']}
 " inoremap <expr> <CR>    pumvisible() ? "\<C-y>" : "\<CR>"
 " inoremap <expr> <CR>    pumvisible() ? "\<C-x><C-n>" : "\<CR>"
 
+set background=dark
+colorscheme solarized
+let g:solarized_termcolors=256
+set t_Co=256
+
 " Vim GUI environment.
-if has('gui_vimr')
-    set background=light
-    colorscheme solarized
-    vmap <C--> <plug>NERDCommenterToggle
-    nmap <C--> <plug>NERDCommenterToggle
-    imap <C--> <plug>NERDCommenterInsert
-else
-    vmap <C-_> <plug>NERDCommenterToggle
-    nmap <C-_> <plug>NERDCommenterToggle
-    imap <C-_> <plug>NERDCommenterInsert
-endif
+" if has('gui_vimr')
+    " set background=light
+    " colorscheme solarized
+    " vmap <C--> <plug>NERDCommenterToggle
+    " nmap <C--> <plug>NERDCommenterToggle
+    " imap <C--> <plug>NERDCommenterInsert
+" else
+    " vmap <C-_> <plug>NERDCommenterToggle
+    " nmap <C-_> <plug>NERDCommenterToggle
+    " imap <C-_> <plug>NERDCommenterInsert
+" endif
 
 noremap <leader>tg :CtrlPBufTag<CR>
 noremap <leader>T :CtrlPClearCache<CR>:CtrlP
