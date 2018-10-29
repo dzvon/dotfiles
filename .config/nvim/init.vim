@@ -119,6 +119,8 @@ if has("autocmd")
     autocmd FileType python nnoremap <buffer> <F9> :w<CR> :exec '!python3' shellescape(@%, 1)<CR>
     " Shortcut to run go
     autocmd FileType go nmap <leader>r <Plug>(go-run)
+    autocmd FileType go noremap <leader>tg :GoDecls<CR>
+    autocmd FileType php noremap <leader>tg :CtrlPBufTag<CR>
 endif
 
 call plug#begin()
@@ -202,8 +204,8 @@ let g:ale_linter_aliases = {'vue': ['html', 'css']}
 " inoremap <expr> <CR>    pumvisible() ? "\<C-y>" : "\<CR>"
 " inoremap <expr> <CR>    pumvisible() ? "\<C-x><C-n>" : "\<CR>"
 
-set background=dark
-colorscheme solarized
+" set background=light
+" colorscheme solarized
 let g:solarized_termcolors=256
 set t_Co=256
 
@@ -220,7 +222,6 @@ set t_Co=256
     " imap <C-_> <plug>NERDCommenterInsert
 " endif
 
-noremap <leader>tg :CtrlPBufTag<CR>
 noremap <leader>T :CtrlPClearCache<CR>:CtrlP
 noremap <leader>b :CtrlPBuffer<CR>
 noremap <leader>m :CtrlPMRUFiles<CR>
@@ -295,6 +296,8 @@ nmap 50s <c-w>=
 nmap 75s :vertical resize 120<cr>
 "
 nnoremap <C-6> <C-^>
+" Select the last changed text(or the text that was just pasted)
+nnoremap gp `[v`]
 
 function! s:VSetSearch()
     let temp = @s
@@ -345,3 +348,4 @@ let g:user_emmet_leader_key = '<C-z>'
 " Go configuration
 let g:go_fmt_command = "goimports"
 let g:go_list_type = "quickfix"
+let g:go_term_mode = "split"
