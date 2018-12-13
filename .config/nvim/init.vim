@@ -114,7 +114,7 @@ if has("autocmd")
     " Trim trailing white space on save
     autocmd BufWritePre * :call StripWhitespace()
     " Enable emmet for ...
-    autocmd FileType html,css,vue,php EmmetInstall
+    autocmd FileType html,css,vue,php,go EmmetInstall
     " Shortcut to run python file
     autocmd FileType python nnoremap <buffer> <F9> :w<CR> :exec '!python3' shellescape(@%, 1)<CR>
     " Shortcut to run go
@@ -143,7 +143,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'mileszs/ack.vim'
 Plug 'vim-scripts/Align'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'rking/ag.vim'
+" Plug 'rking/ag.vim'
 Plug 'stephpy/vim-php-cs-fixer', { 'for': 'php' }
 " Plug 'sheerun/vim-polyglot'
 Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -267,7 +267,7 @@ noremap \ ,
 " Visual star search
 xnoremap *         : <C-u>call <SID>VSetSearch() <CR>/<C-R>=@/<CR><CR>
 xnoremap #         : <C-u>call <SID>VSetSearch() <CR>?<C-R>=@/<CR><CR>
-nnoremap <leader>a : Ag<space>
+nnoremap <leader>a : Ack!<space>
 noremap <leader>l  : Align
 " nnoremap <C-Tab>   : <C-6><CR>
 nnoremap <leader>gs :Gstatus<CR>
@@ -328,14 +328,6 @@ function! QuickfixFilenames()
     endfor
     return join(map(values(buffer_numbers), 'fnameescape(v:val)'))
 endfunction
-
-" Use the Silver Searcher https://github.com/ggreer/the_silver_searcher
-if executable('ag')
-    " Use Ag over Grep
-    set grepprg=ag\ --nogroup\ --nocolor
-    " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-endif
 
 " Emmet configuration
 " only enable in insert mode.
