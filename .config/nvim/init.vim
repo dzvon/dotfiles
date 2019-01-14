@@ -81,7 +81,7 @@ set scrolloff=3
 " Highlight ColorColumn ctermbg=magenta
 call matchadd('ColorColumn', '\%81v', 100)
 
-set completeopt=menu
+set completeopt=longest,menuone
 
 set termguicolors
 " If you use vim inside tmux, see https://github.com/vim/vim/issues/993
@@ -203,6 +203,8 @@ let g:ale_linter_aliases = {'vue': ['html', 'css']}
 " Keyboard shortcuts
 " inoremap <expr> <CR>    pumvisible() ? "\<C-y>" : "\<CR>"
 " inoremap <expr> <CR>    pumvisible() ? "\<C-x><C-n>" : "\<CR>"
+inoremap <expr> <Tab> (pumvisible() ? (col('.') > 1 ? '<Esc>i<Right>' : '<Esc>i') : '') .
+            \ '<C-x><C-o><C-r>=pumvisible() ? "\<lt>C-n>\<lt>C-p>\<lt>Down>" : ""<CR>'
 
 " set background=light
 " colorscheme solarized
