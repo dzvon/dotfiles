@@ -45,7 +45,7 @@ set tabstop=4
 " Make indentation as four space
 set shiftwidth=4
 " Show “invisible” characters
-set lcs=tab:▸\ ,trail:·,eol:¬,nbsp:_
+set lcs=tab:▸\ ,trail:·,nbsp:_
 set list
 " Highlight searches
 set hlsearch
