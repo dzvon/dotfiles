@@ -159,7 +159,7 @@ function proxy_on() {
            rsync_proxy=$http_proxy \
            HTTP_PROXY=$http_proxy \
            HTTPS_PROXY=$http_proxy \
-           FTP_PROXY=$http_proxy \ 
+           FTP_PROXY=$http_proxy \
            RSYNC_PROXY=$http_proxy
 }
 
