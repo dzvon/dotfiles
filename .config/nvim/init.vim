@@ -352,20 +352,6 @@ map <leader>z :e ~/buffer<cr>
 " Quickly open a markdown buffer for scribble
 map <leader>x :e ~/buffer.md<cr>
 
-" Toggle paste mode on and off
-map <leader>pp :setlocal paste!<cr>
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Helper functions
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Returns true if paste mode is enabled
-function! HasPaste()
-    if &paste
-        return 'PASTE MODE  '
-    endif
-    return ''
-endfunction
-
 """"""""""""""""""""""""""""""
 " => Shell section
 """"""""""""""""""""""""""""""
