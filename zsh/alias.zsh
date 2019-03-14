@@ -19,7 +19,7 @@ alias ll="ls -alFh ${colorflag}"
 alias rmf="rm -rf"
 
 # Helpers
-alias grep="grep --color=auto"
+alias grep="grep --color=auto --ignore-case"
 alias df="df -h"
 
 # Shortcuts
@@ -28,9 +28,4 @@ alias dt="cd ~/Desktop"
 alias doc="cd ~/Downloads"
 
 # Alias Virtual Box
-alias vm="cd ~/Homestead && vagrant up && vagrant ssh"
-
-# use ss proxy
-alias sproxy="export ALL_PROXY='socks5://127.0.0.1:1080'"
-# unset proxy
-alias eproxy="unset ALL_PROXY"
+alias v2ray="~/Share/FGFW/v2ray/v2ray-linux-64/v2ray -config ~/Share/FGFW/v2ray/config.json"
