@@ -25,6 +25,7 @@ alias df="df -h"
 # Shortcuts
 alias dl="cd ~/Downloads"
 alias dt="cd ~/Desktop"
+alias doc="cd ~/Downloads"
 
 # Alias Virtual Box
 alias vm="cd ~/Homestead && vagrant up && vagrant ssh"
