@@ -18,6 +18,9 @@ let mapleader = ","
 " save file
 nnoremap <leader>sf :w<CR>
 
+" Save a file as root (,W)
+noremap <leader>W :w !sudo tee % > /dev/null<CR>
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -180,7 +183,29 @@ noremap <silent> <leader>hs :nohlsearch<CR>
 " Close the current window.
 nnoremap <leader>cw :close<CR>
 " Delete current buffer
-nnoremap <leader>q :bdelete<CR>
+nnoremap <leader>q :Bclose<cr>:tabclose<cr>gT
+
+" Don't close window, when deleting a buffer
+command! Bclose call <SID>BufcloseCloseIt()
+function! <SID>BufcloseCloseIt()
+    let l:currentBufNum = bufnr("%")
+    let l:alternateBufNum = bufnr("#")
+
+    if buflisted(l:alternateBufNum)
+        buffer #
+    else
+        bnext
+    endif
+
+    if bufnr("%") == l:currentBufNum
+        new
+    endif
+
+    if buflisted(l:currentBufNum)
+        execute("bdelete! ".l:currentBufNum)
+    endif
+endfunction
+
 " Close current tab
 nnoremap <leader>ct :tabclose<CR>
 " Close Location panel
@@ -265,6 +290,93 @@ function! HasPaste()
     return ''
 endfunction
 
+""""""""""""""""""""""""""""""
+" => Shell section
+""""""""""""""""""""""""""""""
+if exists('$TMUX')
+    if has('nvim')
+        set termguicolors
+    else
+        set term=screen-256color
+    endif
+endif
+
+" If you use vim inside tmux, see https://github.com/vim/vim/issues/993
+" set Vim-specific sequences for RGB colors
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+
+" Automatic commands
+if has("autocmd")
+    " Enable file type detection
+    filetype on
+    " Treat .json files as .js
+    autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
+    " Treat .md files as Markdown
+    autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
+    " Treat .html files as php
+    " autocmd BufNewFile,BufRead *.html setlocal filetype=php
+    " Enable emmet for ...
+    autocmd FileType html,css,vue,php,go EmmetInstall
+    " Shortcut to run python file
+    autocmd FileType python nnoremap <buffer> <F9> :w<CR> :exec '!python3' shellescape(@%, 1)<CR>
+    " Shortcut to run go
+    autocmd FileType go nmap <leader>r <Plug>(go-run)
+    autocmd FileType go noremap <leader>tg :GoDecls<CR>
+    autocmd FileType php noremap <leader>tg :CtrlPBufTag<CR>
+endif
+
+""""""""""""""""""""""""""""""
+" => Plugins
+""""""""""""""""""""""""""""""
+call plug#begin()
+
+Plug 'kien/ctrlp.vim'
+Plug 'FelikZ/ctrlp-py-matcher'
+Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
+Plug 'bling/vim-airline'
+Plug 'mattn/emmet-vim'
+Plug 'scrooloose/nerdcommenter'
+Plug 'easymotion/vim-easymotion'
+Plug 'honza/vim-snippets'
+Plug 'mhinz/vim-startify'
+Plug 'SirVer/ultisnips'
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx', {'for': ['javascript.jsx']}
+Plug 'airblade/vim-gitgutter'
+Plug 'mileszs/ack.vim'
+Plug 'vim-scripts/Align'
+Plug 'christoomey/vim-tmux-navigator'
+" Plug 'rking/ag.vim'
+Plug 'stephpy/vim-php-cs-fixer', { 'for': 'php' }
+" Plug 'sheerun/vim-polyglot'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'posva/vim-vue'
+Plug 'altercation/vim-colors-solarized'
+Plug 'suan/vim-instant-markdown'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'frankier/neovim-colors-solarized-truecolor-only'
+Plug 'w0rp/ale'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+
+Plug 'vim-scripts/peaksea'
+Plug 'wesgibbs/vim-irblack'
+Plug 'yuttie/comfortable-motion.vim'
+Plug 'junegunn/goyo.vim'
+
+call plug#end()
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Vimroom
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:goyo_width=100
+let g:goyo_margin_top = 2
+let g:goyo_margin_bottom = 2
+nnoremap <silent> <leader>yo :Goyo<cr>
+nnoremap <silent> <leader>yq :Goyo!<cr>
+
 
 " Optimize for fast terminal connections
 set ttyfast
@@ -310,69 +422,9 @@ call matchadd('ColorColumn', '\%81v', 100)
 
 set completeopt=longest,menuone
 
-set termguicolors
-" If you use vim inside tmux, see https://github.com/vim/vim/issues/993
-" set Vim-specific sequences for RGB colors
-let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-
 " noremap <leader>ss :call StripWhitespace()<CR>
-" Save a file as root (,W)
-noremap <leader>W :w !sudo tee % > /dev/null<CR>
 
-" Automatic commands
-if has("autocmd")
-    " Enable file type detection
-    filetype on
-    " Treat .json files as .js
-    autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
-    " Treat .md files as Markdown
-    autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
-    " Treat .html files as php
-    " autocmd BufNewFile,BufRead *.html setlocal filetype=php
-    " Enable emmet for ...
-    autocmd FileType html,css,vue,php,go EmmetInstall
-    " Shortcut to run python file
-    autocmd FileType python nnoremap <buffer> <F9> :w<CR> :exec '!python3' shellescape(@%, 1)<CR>
-    " Shortcut to run go
-    autocmd FileType go nmap <leader>r <Plug>(go-run)
-    autocmd FileType go noremap <leader>tg :GoDecls<CR>
-    autocmd FileType php noremap <leader>tg :CtrlPBufTag<CR>
-endif
 
-call plug#begin()
-
-Plug 'kien/ctrlp.vim'
-Plug 'FelikZ/ctrlp-py-matcher'
-Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-surround'
-Plug 'bling/vim-airline'
-Plug 'mattn/emmet-vim'
-Plug 'scrooloose/nerdcommenter'
-Plug 'easymotion/vim-easymotion'
-Plug 'honza/vim-snippets'
-Plug 'mhinz/vim-startify'
-Plug 'SirVer/ultisnips'
-Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx', {'for': ['javascript.jsx']}
-Plug 'airblade/vim-gitgutter'
-Plug 'mileszs/ack.vim'
-Plug 'vim-scripts/Align'
-Plug 'christoomey/vim-tmux-navigator'
-" Plug 'rking/ag.vim'
-Plug 'stephpy/vim-php-cs-fixer', { 'for': 'php' }
-" Plug 'sheerun/vim-polyglot'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'posva/vim-vue'
-Plug 'altercation/vim-colors-solarized'
-Plug 'suan/vim-instant-markdown'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'frankier/neovim-colors-solarized-truecolor-only'
-Plug 'w0rp/ale'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-
-call plug#end()
 
 " JSX in js file
 " let g:jsx_ext_required = 0
