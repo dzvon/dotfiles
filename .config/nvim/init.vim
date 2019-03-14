@@ -24,8 +24,8 @@ noremap <leader>W :w !sudo tee % > /dev/null<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Set 7 lines to the cursor - when moving vertically using j/k
-set so=7
+" Start scrolling three lines before the horizontal window border
+set scrolloff=3
 " Enhance command-line completion
 set wildmenu
 
@@ -112,6 +112,9 @@ if has("gui_running")
     set t_Co=256
     set guitablabel=%M\ %t
 endif
+
+" Highlight ColorColumn ctermbg=magenta
+hi Pmenu guifg=fg guibg=#e0b0e0
 
 " Set utf8 as standard encoding and en_US as the standard language
 set encoding=utf8
@@ -341,13 +344,13 @@ Plug 'mattn/emmet-vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'easymotion/vim-easymotion'
 Plug 'honza/vim-snippets'
-Plug 'mhinz/vim-startify'
+" Plug 'mhinz/vim-startify'
 Plug 'SirVer/ultisnips'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx', {'for': ['javascript.jsx']}
 Plug 'airblade/vim-gitgutter'
 Plug 'mileszs/ack.vim'
-Plug 'vim-scripts/Align'
+Plug 'godlygeek/tabular'
 Plug 'christoomey/vim-tmux-navigator'
 " Plug 'rking/ag.vim'
 Plug 'stephpy/vim-php-cs-fixer', { 'for': 'php' }
@@ -355,16 +358,17 @@ Plug 'stephpy/vim-php-cs-fixer', { 'for': 'php' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'posva/vim-vue'
 Plug 'altercation/vim-colors-solarized'
-Plug 'suan/vim-instant-markdown'
+Plug 'plasticboy/vim-markdown'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'frankier/neovim-colors-solarized-truecolor-only'
 Plug 'w0rp/ale'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 Plug 'vim-scripts/peaksea'
 Plug 'wesgibbs/vim-irblack'
-Plug 'yuttie/comfortable-motion.vim'
 Plug 'junegunn/goyo.vim'
+Plug 'morhetz/gruvbox'
+Plug 'marcweber/vim-addon-mw-utils'
+Plug 'terryma/vim-multiple-cursors'
 
 call plug#end()
 
@@ -377,13 +381,30 @@ let g:goyo_margin_bottom = 2
 nnoremap <silent> <leader>yo :Goyo<cr>
 nnoremap <silent> <leader>yq :Goyo!<cr>
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Tabular
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
+function! s:align()
+  let p = '^\s*|\s.*\s|\s*$'
+  if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
+    let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
+    let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
+    Tabularize/|/l1
+    normal! 0
+    call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
+  endif
+endfunction
 
-" Optimize for fast terminal connections
-set ttyfast
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => CTRL-P
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:ctrlp_max_height = 20
+let g:ctrlp_custom_ignore = 'node_modules\|^\.DS_Store\|^\.git\|^\.coffee'
+
 " Add the g flag to search/replace by default
 set gdefault
 " Don’t add empty newlines at the end of files
-set binary
 set noeol
 " Respect modeline in files
 set modeline
@@ -401,9 +422,9 @@ set list
 " Enable mouse in all modes
 set mouse=a
 " Don’t reset cursor to start of line when moving around.
-set nostartofline
+" set nostartofline
 " Don’t show the intro message when starting Vim
-set shortmess=atI
+" set shortmess=atI
 " Show the current mode
 set showmode
 " Show the filename in the window titlebar
@@ -415,16 +436,10 @@ if exists("&relativenumber")
     set relativenumber
     au BufReadPost * set relativenumber
 endif
-" Start scrolling three lines before the horizontal window border
-set scrolloff=3
-" Highlight ColorColumn ctermbg=magenta
-call matchadd('ColorColumn', '\%81v', 100)
 
 set completeopt=longest,menuone
 
 " noremap <leader>ss :call StripWhitespace()<CR>
-
-
 
 " JSX in js file
 " let g:jsx_ext_required = 0
@@ -463,13 +478,8 @@ let g:ale_linter_aliases = {'vue': ['html', 'css']}
 " Keyboard shortcuts
 " inoremap <expr> <CR>    pumvisible() ? "\<C-y>" : "\<CR>"
 " inoremap <expr> <CR>    pumvisible() ? "\<C-x><C-n>" : "\<CR>"
-inoremap <expr> <Tab> (pumvisible() ? (col('.') > 1 ? '<Esc>i<Right>' : '<Esc>i') : '') .
-            \ '<C-x><C-o><C-r>=pumvisible() ? "\<lt>C-n>\<lt>C-p>\<lt>Down>" : ""<CR>'
-
-" set background=light
-" colorscheme solarized
-let g:solarized_termcolors=256
-set t_Co=256
+" inoremap <expr> <Tab> (pumvisible() ? (col('.') > 1 ? '<Esc>i<Right>' : '<Esc>i') : '') .
+            " \ '<C-x><C-o><C-r>=pumvisible() ? "\<lt>C-n>\<lt>C-p>\<lt>Down>" : ""<CR>'
 
 noremap <leader>T :CtrlPClearCache<CR>:CtrlP
 noremap <leader>b :CtrlPBuffer<CR>
@@ -481,8 +491,6 @@ noremap <leader>f :NERDTreeFind<CR>
 " Switch syntastic error
 nnoremap <silent> [a :ALEPreviousWrap<CR>
 nnoremap <silent> ]a :ALENextWrap<CR>
-" Back to Startify
-nnoremap <leader>H :Startify<CR>
 " brackets input
 inoremap [ []<esc>i
 inoremap { {}<esc>i
@@ -495,8 +503,8 @@ inoremap '' ''<esc>i
 noremap <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
 " set \ to ,
 noremap \ ,
-nnoremap <leader>a : Ack!<space>
-noremap <leader>l  : Align
+nnoremap <leader>a : Ack! --smart-case<space>
+noremap <leader>l  : Tab/
 " nnoremap <C-Tab>   : <C-6><CR>
 nnoremap <leader>gs :Gstatus<CR>
 nnoremap <leader>gc :Gcommit<CR>
