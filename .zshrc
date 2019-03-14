@@ -168,3 +168,5 @@ function proxy_off(){
           HTTP_PROXY HTTPS_PROXY FTP_PROXY RSYNC_PROXY
     echo -e "Proxy environment variable removed."
 }
+
+fpath=($DOTFILES/oh-my-zsh-plugins $fpath)
