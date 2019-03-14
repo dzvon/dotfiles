@@ -1,3 +1,76 @@
+""""""""""""""""""""""""""""""
+" => Plugins
+""""""""""""""""""""""""""""""
+call plug#begin()
+
+Plug 'kien/ctrlp.vim'
+Plug 'FelikZ/ctrlp-py-matcher'
+Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
+Plug 'bling/vim-airline'
+Plug 'mattn/emmet-vim'
+Plug 'scrooloose/nerdcommenter'
+Plug 'easymotion/vim-easymotion'
+Plug 'honza/vim-snippets'
+" Plug 'mhinz/vim-startify'
+Plug 'SirVer/ultisnips'
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx', {'for': ['javascript.jsx']}
+Plug 'airblade/vim-gitgutter'
+Plug 'mileszs/ack.vim'
+Plug 'godlygeek/tabular'
+Plug 'christoomey/vim-tmux-navigator'
+" Plug 'rking/ag.vim'
+Plug 'stephpy/vim-php-cs-fixer', { 'for': 'php' }
+" Plug 'sheerun/vim-polyglot'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'posva/vim-vue'
+Plug 'altercation/vim-colors-solarized'
+Plug 'plasticboy/vim-markdown'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'w0rp/ale'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+
+Plug 'vim-scripts/peaksea'
+Plug 'wesgibbs/vim-irblack'
+Plug 'junegunn/goyo.vim'
+Plug 'morhetz/gruvbox'
+Plug 'marcweber/vim-addon-mw-utils'
+Plug 'terryma/vim-multiple-cursors'
+
+call plug#end()
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Vimroom
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:goyo_width=100
+let g:goyo_margin_top = 2
+let g:goyo_margin_bottom = 2
+nnoremap <silent> <leader>yo :Goyo<cr>
+nnoremap <silent> <leader>yq :Goyo!<cr>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Tabular
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
+function! s:align()
+  let p = '^\s*|\s.*\s|\s*$'
+  if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
+    let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
+    let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
+    Tabularize/|/l1
+    normal! 0
+    call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
+  endif
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => CTRL-P
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:ctrlp_max_height = 20
+let g:ctrlp_custom_ignore = 'node_modules\|^\.DS_Store\|^\.git\|^\.coffee'
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -99,7 +172,7 @@ if $COLORTERM == 'gnome-terminal'
 endif
 
 try
-    colorscheme desert
+    colorscheme gruvbox
 catch
 endtry
 
@@ -114,7 +187,7 @@ if has("gui_running")
 endif
 
 " Highlight ColorColumn ctermbg=magenta
-hi Pmenu guifg=fg guibg=#e0b0e0
+" hi Pmenu guifg=fg guibg=#e0b0e0
 
 " Set utf8 as standard encoding and en_US as the standard language
 set encoding=utf8
@@ -329,78 +402,6 @@ if has("autocmd")
     autocmd FileType php noremap <leader>tg :CtrlPBufTag<CR>
 endif
 
-""""""""""""""""""""""""""""""
-" => Plugins
-""""""""""""""""""""""""""""""
-call plug#begin()
-
-Plug 'kien/ctrlp.vim'
-Plug 'FelikZ/ctrlp-py-matcher'
-Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-surround'
-Plug 'bling/vim-airline'
-Plug 'mattn/emmet-vim'
-Plug 'scrooloose/nerdcommenter'
-Plug 'easymotion/vim-easymotion'
-Plug 'honza/vim-snippets'
-" Plug 'mhinz/vim-startify'
-Plug 'SirVer/ultisnips'
-Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx', {'for': ['javascript.jsx']}
-Plug 'airblade/vim-gitgutter'
-Plug 'mileszs/ack.vim'
-Plug 'godlygeek/tabular'
-Plug 'christoomey/vim-tmux-navigator'
-" Plug 'rking/ag.vim'
-Plug 'stephpy/vim-php-cs-fixer', { 'for': 'php' }
-" Plug 'sheerun/vim-polyglot'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'posva/vim-vue'
-Plug 'altercation/vim-colors-solarized'
-Plug 'plasticboy/vim-markdown'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'w0rp/ale'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-
-Plug 'vim-scripts/peaksea'
-Plug 'wesgibbs/vim-irblack'
-Plug 'junegunn/goyo.vim'
-Plug 'morhetz/gruvbox'
-Plug 'marcweber/vim-addon-mw-utils'
-Plug 'terryma/vim-multiple-cursors'
-
-call plug#end()
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Vimroom
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:goyo_width=100
-let g:goyo_margin_top = 2
-let g:goyo_margin_bottom = 2
-nnoremap <silent> <leader>yo :Goyo<cr>
-nnoremap <silent> <leader>yq :Goyo!<cr>
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Tabular
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
-function! s:align()
-  let p = '^\s*|\s.*\s|\s*$'
-  if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
-    let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
-    let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
-    Tabularize/|/l1
-    normal! 0
-    call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
-  endif
-endfunction
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => CTRL-P
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:ctrlp_max_height = 20
-let g:ctrlp_custom_ignore = 'node_modules\|^\.DS_Store\|^\.git\|^\.coffee'
 
 " Add the g flag to search/replace by default
 set gdefault
