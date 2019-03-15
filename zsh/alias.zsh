@@ -25,7 +25,7 @@ alias df="df -h"
 # Shortcuts
 alias dl="cd ~/Downloads"
 alias dt="cd ~/Desktop"
-alias doc="cd ~/Document"
+alias doc="cd ~/Documents"
 
 # Alias Virtual Box
 alias v2ray="~/Share/FGFW/v2ray/v2ray-linux-64/v2ray -config ~/Share/FGFW/v2ray/config.json"
