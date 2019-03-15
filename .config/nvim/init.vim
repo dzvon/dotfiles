@@ -89,7 +89,7 @@ set autoread
 let mapleader = ","
 
 " save file
-nnoremap <leader>sf :w<CR>
+nnoremap <leader>w :w<CR>
 
 " Save a file as root (,W)
 noremap <leader>W :w !sudo tee % > /dev/null<CR>
@@ -176,7 +176,7 @@ try
 catch
 endtry
 
-set background=dark
+set background=light
 
 " Set extra options when running in GUI mode
 if has("gui_running")
@@ -284,6 +284,8 @@ endfunction
 
 " Close current tab
 nnoremap <leader>ct :tabclose<CR>
+" New tab
+nnoremap <leader>tn :tabnew<CR>
 " Close Location panel
 nnoremap <leader>ce :lclose<CR>
 
