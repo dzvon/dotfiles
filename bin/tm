@@ -16,7 +16,7 @@ do
 	case $opt in
 		"New Session")
 			read -p "Enter new session name: " SESSION_NAME
-			tmux new -s "$SESSION_NAME"
+			tmux -2 new -s "$SESSION_NAME"
 			break
 			;;
 		"zsh")
