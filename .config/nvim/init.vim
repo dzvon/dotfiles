@@ -27,7 +27,7 @@ Plug 'stephpy/vim-php-cs-fixer', { 'for': 'php' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'posva/vim-vue'
 Plug 'altercation/vim-colors-solarized'
-Plug 'plasticboy/vim-markdown'
+Plug 'suan/vim-instant-markdown'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'w0rp/ale'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
@@ -70,6 +70,11 @@ endfunction
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:ctrlp_max_height = 20
 let g:ctrlp_custom_ignore = 'node_modules\|^\.DS_Store\|^\.git\|^\.coffee'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Vim instant markdown
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:instant_markdown_slow = 1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
@@ -176,7 +181,7 @@ try
 catch
 endtry
 
-set background=light
+set background=dark
 
 " Set extra options when running in GUI mode
 if has("gui_running")
