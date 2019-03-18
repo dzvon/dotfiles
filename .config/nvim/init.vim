@@ -3,7 +3,7 @@
 """"""""""""""""""""""""""""""
 call plug#begin()
 
-Plug 'kien/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 Plug 'FelikZ/ctrlp-py-matcher'
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'tpope/vim-fugitive'
@@ -391,8 +391,6 @@ if has("autocmd")
     autocmd FileType python nnoremap <buffer> <F9> :w<CR> :exec '!python3' shellescape(@%, 1)<CR>
     " Shortcut to run go
     autocmd FileType go nmap <leader>r <Plug>(go-run)
-    autocmd FileType go noremap <leader>tg :GoDecls<CR>
-    autocmd FileType php noremap <leader>tg :CtrlPBufTag<CR>
 endif
 
 
@@ -477,6 +475,7 @@ let g:ale_linter_aliases = {'vue': ['html', 'css']}
 
 noremap <leader>T :CtrlPClearCache<CR>:CtrlP
 noremap <leader>b :CtrlPBuffer<CR>
+noremap <leader>tg :CtrlPBufTag<CR>
 noremap <leader>m :CtrlPMRUFiles<CR>
 noremap <leader>d :NERDTreeToggle<CR>
 noremap <leader>f :NERDTreeFind<CR>
