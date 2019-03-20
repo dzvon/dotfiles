@@ -264,7 +264,7 @@ noremap <silent> <leader>hs :nohlsearch<CR>
 " Close the current window.
 nnoremap <leader>cw :close<CR>
 " Delete current buffer
-nnoremap <leader>q :Bclose<cr>:tabclose<cr>gT
+nnoremap <leader>q :Bclose<cr>
 
 " Don't close window, when deleting a buffer
 command! Bclose call <SID>BufcloseCloseIt()
