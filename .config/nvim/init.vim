@@ -306,6 +306,9 @@ nnoremap <silent> ]t :tabnext<CR>
 nnoremap <silent> [T :tabfirst<CR>
 nnoremap <silent> ]T :tablast<CR>
 
+" copen
+nnoremap <leader>co :copen<CR>
+
 " Let 'tl' toggle between this and the last accessed tab
 let g:lasttab = 1
 nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
