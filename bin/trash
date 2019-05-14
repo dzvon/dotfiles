@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# 
+#
 # trash - Move files to the appropriate .Trash file on Mac OS X. (Intended
 #         as an alternative to 'rm' which immediately deletes the file.)
-# 
+#
 # v0.1   2007-05-21 - Morgan Aldridge <morgant@makkintosshu.com>
 #                     Initial version.
 # v0.2   2010-10-26 - Morgan Aldridge
@@ -32,7 +32,7 @@
 #                     Also correctly warns of missing files/directories.
 # v0.5.3 2013-08-23 - huyz
 #                     Fixed determination of Finder's PID when Path Finder is running
-# 
+#
 
 # global variables
 verbose=false
@@ -48,7 +48,6 @@ function usage() {
 	printf "  -h		print these usage instructions\n"
 	printf "  -l            list trash contents\n"
 	printf "  -e            empty trash contents\n"
-	printf "  -s		secure empty trash contents\n"
 }
 
 # determine whether we can script the Finder or not
@@ -61,70 +60,70 @@ function have_scriptable_finder() {
 	fi
 }
 
-## 
+##
 ## Convert a relative path to an absolute path.
-## 
+##
 ## From http://github.com/morgant/realpath
-## 
+##
 ## @param string the string to converted from a relative path to an absolute path
 ## @returns Outputs the absolute path to STDOUT, returns 0 if successful or 1 if an error (esp. path not found).
-## 
+##
 function realpath()
 {
 	local success=true
 	local path="$1"
-	
+
 	# make sure the string isn't empty as that implies something in further logic
 	if [ -z "$path" ]; then
 		success=false
 	else
 		# start with the file name (sans the trailing slash)
 		path="${path%/}"
-		
+
 		# if we stripped off the trailing slash and were left with nothing, that means we're in the root directory
 		if [ -z "$path" ]; then
 			path="/"
 		fi
-		
+
 		# get the basename of the file (ignoring '.' & '..', because they're really part of the path)
 		local file_basename="${path##*/}"
 		if [[ ( "$file_basename" = "." ) || ( "$file_basename" = ".." ) ]]; then
 			file_basename=""
 		fi
-		
+
 		# extracts the directory component of the full path, if it's empty then assume '.' (the current working directory)
 		local directory="${path%$file_basename}"
 		if [ -z "$directory" ]; then
 			directory='.'
 		fi
-		
+
 		# attempt to change to the directory
 		if ! cd "$directory" &>/dev/null ; then
 			success=false
 		fi
-		
+
 		if $success; then
 			# does the filename exist?
 			if [[ ( -n "$file_basename" ) && ( ! -e "$file_basename" ) ]]; then
 				success=false
 			fi
-			
+
 			# get the absolute path of the current directory & change back to previous directory
 			local abs_path="$(pwd -P)"
 			cd "-" &>/dev/null
-			  
+
 			# Append base filename to absolute path
 			if [ "${abs_path}" = "/" ]; then
 				abs_path="${abs_path}${file_basename}"
 			else
 				abs_path="${abs_path}/${file_basename}"
 			fi
-			
+
 			# output the absolute path
 			echo "$abs_path"
 		fi
 	fi
-	
+
 	$success
 }
 
@@ -147,9 +146,9 @@ if [ $# -gt 0 ]; then
 			num_volumes=0
 			total_blocks=0
 			# list file contents & calculate size for user's .Trash folder
-			if find "/Users/${user}/.Trash" -depth 1 ! -depth 0; then
+			if find "${HOME}/.Trash" -mindepth 1; then
 				num_volumes=$(( $num_volumes + 1 ))
-				blocks=$(du -cs "/Users/${user}/.Trash" | tail -n 1 | cut -f 1)
+				blocks=$(du -cs "${HOME}/.Trash" | tail -n 1 | cut -f 1)
 				total_blocks=$(( $total_blocks + $blocks ))
 			fi
 			# list file contents & calculate size for volume-specific .Trashes folders
@@ -201,7 +200,7 @@ if [ $# -gt 0 ]; then
 				if [ "$confirm" = "y" ]; then
 					printf "Emptying trash...\n"
 					# delete the contents of user's .Trash folder
-					find "/Users/${user}/.Trash" -depth 1 ! -depth 0 -print0 | xargs -0 rm $v -r
+					find "${HOME}/.Trash" -mindepth 1 -print0 | xargs -0 rm $v -r
 					# delete the contents of the volume-specific .Trashes folders
 					for file in /Volumes/*; do
 						if [ -d "$file" ]; then
@@ -215,48 +214,12 @@ if [ $# -gt 0 ]; then
 				fi
 				exit
 			fi
-		# see if the user requested to securely empty the trash contents
-		elif [ "$1" = "-s" ]; then
-			shift
-			# determine if we can tell Finder to securely empty trash via AppleScript
-			if have_scriptable_finder; then
-				if $verbose; then printf "Telling Finder to securely empty trash... "; fi
-				if /usr/bin/osascript -e "tell application \"Finder\" to empty trash with security" ; then
-					if $verbose; then printf "Done.\n"; fi
-					exit
-				else
-					if $verbose; then printf "ERROR!\n"; fi
-					exit 1
-				fi
-			# if Finder isn't scriptable, we'll manually empty the trash ourselves
-			else
-				if $verbose; then v="-v"; fi
-				# confirm that the user wants to securely empty the trash
-				printf "Are you sure you want to securely empty the trash (this REALLY cannot be undone)? "
-				read confirm
-				if [ "$confirm" = "y" ]; then
-					printf "Securely emptying trash...\n"
-					# securely delete the contents of user's .Trash folder
-					find "/Users/${user}/.Trash" -depth 1 ! -depth 0 -print0 | xargs -0 srm $v -r
-					# securely delete the contents of the volume-specific .Trashes folders
-					for file in /Volumes/*; do
-						if [ -d "$file" ]; then
-							folder="${file}/.Trashes/${uid}"
-							if [ -d "$folder" ]; then
-								find "$folder" -depth 1 ! -depth 0 -print0 | xargs -0 srm $v -r
-							fi
-						fi
-					done
-					printf "Done.\n"
-				fi
-				exit
-			fi
 		# handle remaining arguments as if they were files
 		else
 			#printf "argument: '%s'\n" $1
 			#printf "destination: '%s'\n" $TRASH
 			if $verbose; then v="-v"; fi
-			
+
 			# does the file we're trashing exist?
 			if [ ! -e "$1" ]; then
 				printf "trash: '%s': No such file or directory\n" "$1"
@@ -290,7 +253,7 @@ if [ $# -gt 0 ]; then
 					if [[ ("${1:0:9}" == "/Volumes/") && (-n "$vol") && ($(readlink "/Volumes/$vol") != "/") ]]; then
 						trash="/Volumes/${vol}/.Trashes/${uid}/"
 					else
-						trash="/Users/${user}/.Trash/"
+						trash="${HOME}/.Trash/"
 					fi
 					# create the trash folder if necessary
 					if [ ! -d "$trash" ]; then
@@ -305,7 +268,7 @@ if [ $# -gt 0 ]; then
 						case "$1" in
 							*.*) ext=true ;;
 						esac
-						
+
 						# keep incrementing a number to append to the filename to mimic Finder
 						i=1
 						if $ext; then
@@ -321,7 +284,7 @@ if [ $# -gt 0 ]; then
 								new="${trash}$1 $i"
 							fi
 						done
-						
+
 						#move the file to the trash with the new name
 						mv $v "$1" "$new"
 					fi
