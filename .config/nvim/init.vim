@@ -497,6 +497,7 @@ nnoremap <leader>gs :Gstatus<CR>
 nnoremap <leader>gc :Gcommit<CR>
 nnoremap <leader>gp :Git push origin HEAD<CR>
 nnoremap <leader>gr :Git pull --rebase<CR>
+nnoremap <leader>gl :Git pull<CR>
 " Switch quickfix
 nnoremap [q :cprevious<CR>
 nnoremap ]q :cnext<CR>
