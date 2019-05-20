@@ -511,6 +511,9 @@ nnoremap <silent> <Leader>> :exe "vertical resize " . (winwidth(0) * 3/2)<CR>
 nnoremap <silent> <Leader>< :exe "vertical resize " . (winwidth(0) * 2/3)<CR>
 nnoremap <silent> <Leader>+ :exe "resize " . (winheight(0) * 3/2)<CR>
 nnoremap <silent> <Leader>- :exe "resize " . (winheight(0) * 2/3)<CR>
+
+com Wdt windo diffthis
+com Wdo windo diffoff
 "
 nnoremap <C-6> <C-^>
 " Select the last changed text(or the text that was just pasted)
