@@ -507,6 +507,10 @@ nnoremap k gk
 nmap 25s :vertical resize 40<cr>
 nmap 50s <c-w>=
 nmap 75s :vertical resize 120<cr>
+nnoremap <silent> <Leader>> :exe "vertical resize " . (winwidth(0) * 3/2)<CR>
+nnoremap <silent> <Leader>< :exe "vertical resize " . (winwidth(0) * 2/3)<CR>
+nnoremap <silent> <Leader>+ :exe "resize " . (winheight(0) * 3/2)<CR>
+nnoremap <silent> <Leader>- :exe "resize " . (winheight(0) * 2/3)<CR>
 "
 nnoremap <C-6> <C-^>
 " Select the last changed text(or the text that was just pasted)
