@@ -520,7 +520,7 @@ nnoremap <silent> <Leader>+ :exe "resize " . (winheight(0) * 3/2)<CR>
 nnoremap <silent> <Leader>- :exe "resize " . (winheight(0) * 2/3)<CR>
 
 com Wdt windo diffthis
-com Wdo windo diffoff
+com Wdo diffoff!
 
 nnoremap <silent> <Leader>scb :windo set scrollbind!<CR>
 
