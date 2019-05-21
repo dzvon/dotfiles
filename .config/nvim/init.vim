@@ -448,7 +448,7 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#branch#enabled = 1
 let g:airline_powerline_fonts = 1
 " let g:airline#extensions#hunks#hunk_symbols = ['+', '~', '-']
-" let g:airline_theme = 'default'
+let g:airline_theme = 'random'
 
 " Add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
