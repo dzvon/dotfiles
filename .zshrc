@@ -64,7 +64,7 @@ HIST_STAMPS="mm/dd/yyyy"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  git zsh-autosuggestions kubectl docker vi-mode httpie
+  git zsh-autosuggestions kubectl docker vi-mode httpie helm
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -78,9 +78,9 @@ export LANG=zh_CN.UTF-8
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='nvim'
+  export EDITOR='vim'
 else
-  export EDITOR='nvim'
+  export EDITOR='vim'
 fi
 
 

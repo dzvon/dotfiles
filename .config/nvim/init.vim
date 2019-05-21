@@ -38,6 +38,7 @@ Plug 'junegunn/goyo.vim'
 Plug 'morhetz/gruvbox'
 Plug 'marcweber/vim-addon-mw-utils'
 Plug 'terryma/vim-multiple-cursors'
+Plug 'ryanoasis/vim-devicons'
 
 call plug#end()
 
