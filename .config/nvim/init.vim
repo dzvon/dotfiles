@@ -43,6 +43,11 @@ Plug 'ryanoasis/vim-devicons'
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => vim-devicons
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:WebDevIconsNerdTreeGitPluginForceVAlign=1
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Vimroom
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:goyo_width=100
@@ -516,7 +521,9 @@ nnoremap <silent> <Leader>- :exe "resize " . (winheight(0) * 2/3)<CR>
 
 com Wdt windo diffthis
 com Wdo windo diffoff
-"
+
+nnoremap <silent> <Leader>scb :windo set scrollbind!<CR>
+
 nnoremap <C-6> <C-^>
 " Select the last changed text(or the text that was just pasted)
 nnoremap gp `[v`]
