@@ -43,6 +43,13 @@ Plug 'ryanoasis/vim-devicons'
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => ack.vim
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => vim-devicons
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:WebDevIconsNerdTreeGitPluginForceVAlign=1
