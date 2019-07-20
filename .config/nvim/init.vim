@@ -39,6 +39,7 @@ Plug 'morhetz/gruvbox'
 Plug 'marcweber/vim-addon-mw-utils'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'ryanoasis/vim-devicons'
+Plug 'mbbill/undotree'
 
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -232,6 +233,7 @@ set backupdir=~/.config/nvim/backups
 set directory=~/.config/nvim/swaps
 if exists("&undodir")
     set undodir=~/.config/nvim/undo
+    set undofile
 endif
 
 " Don’t create backups when editing files in certain directories
@@ -536,6 +538,8 @@ nnoremap <silent> <Leader>> :exe "vertical resize " . (winwidth(0) * 3/2)<CR>
 nnoremap <silent> <Leader>< :exe "vertical resize " . (winwidth(0) * 2/3)<CR>
 nnoremap <silent> <Leader>+ :exe "resize " . (winheight(0) * 3/2)<CR>
 nnoremap <silent> <Leader>- :exe "resize " . (winheight(0) * 2/3)<CR>
+" Undotree
+nnoremap <leader>u :UndotreeToggle<cr>
 
 com Wdt windo diffthis
 com Wdo diffoff!
