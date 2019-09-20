@@ -496,7 +496,14 @@ let g:ale_linter_aliases = {'vue': ['html', 'css']}
 
 noremap <leader>T :CtrlPClearCache<CR>:CtrlP
 noremap <leader>b :CtrlPBuffer<CR>
-noremap <leader>tg :CtrlPBufTag<CR>
+noremap <leader>tg :call <SID>CommonBufTag()<CR>
+function! s:CommonBufTag()
+    if &ft=='go'
+        execute "GoDecls"
+    else
+        execute "CtrlPBufTag"
+    endif
+endfunction
 noremap <leader>m :CtrlPMRUFiles<CR>
 noremap <leader>d :NERDTreeToggle<CR>
 noremap <leader>f :NERDTreeFind<CR>
