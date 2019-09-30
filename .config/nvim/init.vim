@@ -41,6 +41,7 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'ryanoasis/vim-devicons'
 Plug 'mbbill/undotree'
 Plug 'lambdalisue/suda.vim'
+Plug 'tpope/vim-obsession'
 
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -53,6 +54,15 @@ endif
 
 call plug#end()
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => gruvbox
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:gruvbox_contrast_light = 'hard'
+let g:gruvbox_contrast_dark = 'soft'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => deoplete.nvim
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:deoplete#enable_at_startup = 1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
