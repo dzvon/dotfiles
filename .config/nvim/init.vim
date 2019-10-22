@@ -42,6 +42,7 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'mbbill/undotree'
 Plug 'lambdalisue/suda.vim'
 Plug 'tpope/vim-obsession'
+Plug 'edkolev/tmuxline.vim'
 
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
