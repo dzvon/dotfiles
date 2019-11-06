@@ -318,10 +318,6 @@ function! <SID>BufcloseCloseIt()
         bnext
     endif
 
-    if bufnr("%") == l:currentBufNum
-        new
-    endif
-
     if buflisted(l:currentBufNum)
         execute("bdelete! ".l:currentBufNum)
     endif
