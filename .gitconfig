@@ -29,7 +29,7 @@
 	bs = branch -a
     b = branch
     co = checkout
-	remotes = remote -v
+    rs = remote -v
 
 	# Amend the currently staged files to the latest commit
 	amend = commit --amend --reuse-message=HEAD
@@ -149,8 +149,6 @@
 [user]
 	name = Persevere Von
 	email = wu543065657@163.com
-[http]
-[https]
 [http]
 	proxy = socks5://127.0.0.1:1080
 [https]
