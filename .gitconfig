@@ -28,6 +28,7 @@
 	tags = tag -l
 	bs = branch -a
     b = branch
+    co = checkout
 	remotes = remote -v
 
 	# Amend the currently staged files to the latest commit
