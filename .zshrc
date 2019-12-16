@@ -57,7 +57,7 @@ HIST_STAMPS="mm/dd/yyyy"
 
 
 # Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
+ZSH_CUSTOM=$DOTFILES/oh-my-zsh-plugins
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
@@ -171,4 +171,4 @@ function proxy_off(){
     echo -e "Proxy environment variable removed."
 }
 
-fpath=($DOTFILES/oh-my-zsh-plugins $fpath)
+fpath=($DOTFILES/oh-my-zsh-plugins/functions/ $fpath)
