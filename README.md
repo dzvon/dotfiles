@@ -1,8 +1,8 @@
-我的 `zsh`，`.gitconfig`，`tmux`，`nvim` 配置
+我的 zsh，.gitconfig，tmux，nvim 配置
 
 ### 安装
 
-自行安装 `zsh`，`.gitconfig`，`tmux`，`nvim`
+自行安装 zsh，.gitconfig，tmux，nvim
 
 ```bash
 git clone https://github.com/persevereVon/dotfiles.git ~/.dotfiles
