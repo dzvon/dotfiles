@@ -16,7 +16,7 @@ Plug 'honza/vim-snippets'
 " Plug 'mhinz/vim-startify'
 Plug 'SirVer/ultisnips'
 Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx', {'for': ['javascript.jsx']}
+" Plug 'mxw/vim-jsx', {'for': ['javascript.jsx']}
 Plug 'airblade/vim-gitgutter'
 Plug 'mileszs/ack.vim'
 Plug 'godlygeek/tabular'
@@ -29,8 +29,10 @@ Plug 'posva/vim-vue'
 Plug 'altercation/vim-colors-solarized'
 Plug 'suan/vim-instant-markdown'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'w0rp/ale'
+" Plug 'w0rp/ale'
+Plug 'scrooloose/syntastic'
 Plug 'fatih/vim-go'
+Plug 'rust-lang/rust.vim'
 
 Plug 'vim-scripts/peaksea'
 Plug 'wesgibbs/vim-irblack'
@@ -56,6 +58,19 @@ endif
 call plug#end()
 
 let g:airline#extensions#tmuxline#enabled = 0
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => rust.vim
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:rustfmt_autosave = 1
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => syntastic
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => gruvbox
@@ -495,8 +510,6 @@ let g:javascript_plugin_jsdoc = 1
 " php-cs-fixer
 let g:php_cs_fixer_fixers_list = "-psr0"
 
-let g:ale_linter_aliases = {'vue': ['html', 'css']}
-
 " Keyboard shortcuts
 " inoremap <expr> <CR>    pumvisible() ? "\<C-y>" : "\<CR>"
 " inoremap <expr> <CR>    pumvisible() ? "\<C-x><C-n>" : "\<CR>"
@@ -518,9 +531,6 @@ noremap <leader>d :NERDTreeToggle<CR>
 noremap <leader>f :NERDTreeFind<CR>
 " noremap <bs> :tabprevious<CR>
 " noremap <C-l> :tabnext<CR>
-" Switch syntastic error
-nnoremap <silent> [a :ALEPreviousWrap<CR>
-nnoremap <silent> ]a :ALENextWrap<CR>
 " brackets input
 inoremap [ []<esc>i
 inoremap { {}<esc>i
