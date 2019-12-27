@@ -68,7 +68,7 @@ let g:rustfmt_autosave = 1
 " => syntastic
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
+let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
@@ -532,6 +532,8 @@ noremap <leader>f :NERDTreeFind<CR>
 " noremap <bs> :tabprevious<CR>
 " noremap <C-l> :tabnext<CR>
 " brackets input
+nnoremap <silent> [a :lprevious<CR>
+nnoremap <silent> ]a :lnext<CR>
 inoremap [ []<esc>i
 inoremap { {}<esc>i
 inoremap {<CR> {<CR>}<c-o>O
