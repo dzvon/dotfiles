@@ -20,7 +20,7 @@ Plug 'pangloss/vim-javascript'
 Plug 'airblade/vim-gitgutter'
 " Plug 'mileszs/ack.vim'
 Plug 'godlygeek/tabular'
-Plug 'christoomey/vim-tmux-navigator'
+" Plug 'christoomey/vim-tmux-navigator'
 " Plug 'rking/ag.vim'
 Plug 'stephpy/vim-php-cs-fixer', { 'for': 'php' }
 " Plug 'sheerun/vim-polyglot'
