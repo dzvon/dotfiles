@@ -25,7 +25,7 @@ Plug 'godlygeek/tabular'
 Plug 'stephpy/vim-php-cs-fixer', { 'for': 'php' }
 " Plug 'sheerun/vim-polyglot'
 Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'posva/vim-vue'
+" Plug 'posva/vim-vue'
 Plug 'altercation/vim-colors-solarized'
 Plug 'suan/vim-instant-markdown'
 Plug 'vim-airline/vim-airline-themes'
@@ -433,7 +433,7 @@ if has("autocmd")
     " Treat .html files as php
     " autocmd BufNewFile,BufRead *.html setlocal filetype=php
     " Enable emmet for ...
-    autocmd FileType html,css,vue,php,go EmmetInstall
+    autocmd FileType html,css,php,go EmmetInstall
     " Shortcut to run python file
     autocmd FileType python nnoremap <buffer> <F9> :w<CR> :exec '!python3' shellescape(@%, 1)<CR>
     " Shortcut to run go
