@@ -59,6 +59,14 @@ endif
 
 call plug#end()
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => fzf.vim
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+  \   fzf#vim#with_preview(), <bang>0)
+
 let g:airline#extensions#tmuxline#enabled = 0
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -550,7 +558,7 @@ inoremap '' ''<esc>i
 noremap <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
 " set \ to ,
 noremap \ ,
-nnoremap <leader>a :Ag<space>
+nnoremap <leader>a :Rg<space>
 noremap <leader>l  : Tab/
 " nnoremap <C-Tab>   : <C-6><CR>
 nnoremap <leader>gs :Gstatus<CR>
