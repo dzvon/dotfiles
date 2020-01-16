@@ -3,8 +3,8 @@
 """"""""""""""""""""""""""""""
 call plug#begin()
 
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'FelikZ/ctrlp-py-matcher'
+" Plug 'ctrlpvim/ctrlp.vim'
+" Plug 'FelikZ/ctrlp-py-matcher'
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
@@ -18,7 +18,7 @@ Plug 'SirVer/ultisnips'
 Plug 'pangloss/vim-javascript'
 " Plug 'mxw/vim-jsx', {'for': ['javascript.jsx']}
 Plug 'airblade/vim-gitgutter'
-Plug 'mileszs/ack.vim'
+" Plug 'mileszs/ack.vim'
 Plug 'godlygeek/tabular'
 Plug 'christoomey/vim-tmux-navigator'
 " Plug 'rking/ag.vim'
@@ -36,7 +36,7 @@ Plug 'rust-lang/rust.vim'
 
 Plug 'vim-scripts/peaksea'
 Plug 'wesgibbs/vim-irblack'
-Plug 'junegunn/goyo.vim'
+" Plug 'junegunn/goyo.vim'
 Plug 'morhetz/gruvbox'
 Plug 'marcweber/vim-addon-mw-utils'
 Plug 'terryma/vim-multiple-cursors'
@@ -45,6 +45,8 @@ Plug 'mbbill/undotree'
 Plug 'lambdalisue/suda.vim'
 Plug 'tpope/vim-obsession'
 Plug 'edkolev/tmuxline.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -86,9 +88,9 @@ let g:deoplete#enable_at_startup = 1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => ack.vim
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-if executable('ag')
-  let g:ackprg = 'ag --vimgrep'
-endif
+" if executable('ag')
+  " let g:ackprg = 'ag --vimgrep'
+" endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => vim-devicons
@@ -98,11 +100,11 @@ let g:WebDevIconsNerdTreeGitPluginForceVAlign=1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Vimroom
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:goyo_width=100
-let g:goyo_margin_top = 2
-let g:goyo_margin_bottom = 2
-nnoremap <silent> <leader>yo :Goyo<cr>
-nnoremap <silent> <leader>yq :Goyo!<cr>
+" let g:goyo_width=100
+" let g:goyo_margin_top = 2
+" let g:goyo_margin_bottom = 2
+" nnoremap <silent> <leader>yo :Goyo<cr>
+" nnoremap <silent> <leader>yq :Goyo!<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Tabular
@@ -122,8 +124,8 @@ endfunction
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => CTRL-P
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:ctrlp_max_height = 20
-let g:ctrlp_custom_ignore = 'node_modules\|^\.DS_Store\|^\.git\|^\.coffee'
+" let g:ctrlp_max_height = 20
+" let g:ctrlp_custom_ignore = 'node_modules\|^\.DS_Store\|^\.git\|^\.coffee'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Vim instant markdown
@@ -436,6 +438,8 @@ if has("autocmd")
     autocmd FileType python nnoremap <buffer> <F9> :w<CR> :exec '!python3' shellescape(@%, 1)<CR>
     " Shortcut to run go
     autocmd FileType go nmap <leader>r <Plug>(go-run)
+    " Sign updated when save a file
+    autocmd BufWritePost * GitGutter
 endif
 
 
@@ -516,17 +520,17 @@ let g:php_cs_fixer_fixers_list = "-psr0"
 " inoremap <expr> <Tab> (pumvisible() ? (col('.') > 1 ? '<Esc>i<Right>' : '<Esc>i') : '') .
             " \ '<C-x><C-o><C-r>=pumvisible() ? "\<lt>C-n>\<lt>C-p>\<lt>Down>" : ""<CR>'
 
-noremap <leader>T :CtrlPClearCache<CR>:CtrlP
-noremap <leader>b :CtrlPBuffer<CR>
+noremap <C-p> :Files<CR>
+noremap <leader>b :Buffers<CR>
 noremap <leader>tg :call <SID>CommonBufTag()<CR>
 function! s:CommonBufTag()
     if &ft=='go'
         execute "GoDecls"
     else
-        execute "CtrlPBufTag"
+        execute "BTags"
     endif
 endfunction
-noremap <leader>m :CtrlPMRUFiles<CR>
+noremap <leader>m :History<CR>
 noremap <leader>d :NERDTreeToggle<CR>
 noremap <leader>f :NERDTreeFind<CR>
 " noremap <bs> :tabprevious<CR>
@@ -545,7 +549,7 @@ inoremap '' ''<esc>i
 noremap <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
 " set \ to ,
 noremap \ ,
-nnoremap <leader>a : Ack! --smart-case<space>
+nnoremap <leader>a :Ag<space>
 noremap <leader>l  : Tab/
 " nnoremap <C-Tab>   : <C-6><CR>
 nnoremap <leader>gs :Gstatus<CR>
