@@ -449,6 +449,8 @@ if has("autocmd")
     autocmd FileType go nmap <leader>r <Plug>(go-run)
     " Sign updated when save a file
     autocmd BufWritePost * GitGutter
+    " Get the 2-space YAML as the default when hit carriage return after the colon
+    autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 endif
 
 
