@@ -1,6 +1,6 @@
 export DOTFILES=$HOME/.dotfiles
 # If you come from bash you might have to change your $PATH.
-export PATH=$DOTFILES/bin:$HOME/bin:$HOME/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/.composer/vendor/bin/:$HOME/go/bin:$PATH
+export PATH=$HOME/.cargo/bin:$DOTFILES/bin:$HOME/bin:$HOME/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/.composer/vendor/bin/:$HOME/go/bin:$PATH
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
