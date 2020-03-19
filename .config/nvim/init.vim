@@ -9,24 +9,24 @@ Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'bling/vim-airline'
-Plug 'mattn/emmet-vim'
+" Plug 'mattn/emmet-vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'easymotion/vim-easymotion'
 Plug 'honza/vim-snippets'
 " Plug 'mhinz/vim-startify'
 Plug 'SirVer/ultisnips'
-Plug 'pangloss/vim-javascript'
+" Plug 'pangloss/vim-javascript'
 " Plug 'mxw/vim-jsx', {'for': ['javascript.jsx']}
 Plug 'airblade/vim-gitgutter'
 " Plug 'mileszs/ack.vim'
 Plug 'godlygeek/tabular'
 " Plug 'christoomey/vim-tmux-navigator'
 " Plug 'rking/ag.vim'
-Plug 'stephpy/vim-php-cs-fixer', { 'for': 'php' }
+" Plug 'stephpy/vim-php-cs-fixer', { 'for': 'php' }
 " Plug 'sheerun/vim-polyglot'
-Plug 'Xuyuanp/nerdtree-git-plugin'
+" Plug 'Xuyuanp/nerdtree-git-plugin'
 " Plug 'posva/vim-vue'
-Plug 'altercation/vim-colors-solarized'
+" Plug 'altercation/vim-colors-solarized'
 Plug 'suan/vim-instant-markdown'
 Plug 'vim-airline/vim-airline-themes'
 " Plug 'w0rp/ale'
@@ -34,11 +34,11 @@ Plug 'scrooloose/syntastic'
 Plug 'fatih/vim-go'
 Plug 'rust-lang/rust.vim'
 
-Plug 'vim-scripts/peaksea'
-Plug 'wesgibbs/vim-irblack'
+" Plug 'vim-scripts/peaksea'
+" Plug 'wesgibbs/vim-irblack'
 " Plug 'junegunn/goyo.vim'
 Plug 'morhetz/gruvbox'
-Plug 'marcweber/vim-addon-mw-utils'
+" Plug 'marcweber/vim-addon-mw-utils'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'ryanoasis/vim-devicons'
 Plug 'mbbill/undotree'
@@ -49,14 +49,14 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'racer-rust/vim-racer'
 
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-  Plug 'deoplete-plugins/deoplete-go', { 'do': 'make'}
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
+" if has('nvim')
+  " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  " Plug 'deoplete-plugins/deoplete-go', { 'do': 'make'}
+" else
+  " Plug 'Shougo/deoplete.nvim'
+  " Plug 'roxma/nvim-yarp'
+  " Plug 'roxma/vim-hug-neovim-rpc'
+" endif
 
 call plug#end()
 
@@ -112,7 +112,7 @@ let g:gruvbox_contrast_dark = 'soft'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => deoplete.nvim
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:deoplete#enable_at_startup = 1
+" let g:deoplete#enable_at_startup = 1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => ack.vim
@@ -398,7 +398,7 @@ nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
 au TabLeave * let g:lasttab = tabpagenr()
 
 " cd to the directory containing the file in the buffer
-noremap <leader>cd :lcd %:h<CR>:pwd<cr>
+noremap <leader>cd :tcd %:h<CR>:pwd<cr>
 
 " Specify the behavior when switching between buffers
 try
