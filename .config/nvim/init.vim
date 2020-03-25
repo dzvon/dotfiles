@@ -463,7 +463,7 @@ if has("autocmd")
     " Treat .html files as php
     " autocmd BufNewFile,BufRead *.html setlocal filetype=php
     " Enable emmet for ...
-    autocmd FileType html,css,php,go EmmetInstall
+    " autocmd FileType html,css,php,go EmmetInstall
     " Shortcut to run python file
     autocmd FileType python nnoremap <buffer> <F9> :w<CR> :exec '!python3' shellescape(@%, 1)<CR>
     " Shortcut to run go
@@ -592,6 +592,9 @@ nnoremap <leader>gl :Gpull<CR>
 " Switch quickfix
 nnoremap [q :cprevious<CR>
 nnoremap ]q :cnext<CR>
+" Switch location list
+nnoremap [l :lprevious<CR>
+nnoremap ]l :lnext<CR>
 " Down is really the next line
 nnoremap j gj
 nnoremap k gk
