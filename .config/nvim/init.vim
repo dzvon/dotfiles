@@ -33,6 +33,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'scrooloose/syntastic'
 Plug 'fatih/vim-go'
 Plug 'rust-lang/rust.vim'
+Plug 'neovim/nvim-lsp'
 
 " Plug 'vim-scripts/peaksea'
 " Plug 'wesgibbs/vim-irblack'
@@ -47,7 +48,7 @@ Plug 'tpope/vim-obsession'
 Plug 'edkolev/tmuxline.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'racer-rust/vim-racer'
+" Plug 'racer-rust/vim-racer'
 
 " if has('nvim')
   " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -61,14 +62,18 @@ Plug 'racer-rust/vim-racer'
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => racer-rust/vim-racer
+" => nvim-lsp
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:racer_experimental_completer = 1
-au FileType rust nmap gd <Plug>(rust-def)
-au FileType rust nmap gs <Plug>(rust-def-split)
-au FileType rust nmap gx <Plug>(rust-def-vertical)
-au FileType rust nmap gt <Plug>(rust-def-tab)
-au FileType rust nmap <leader>gd <Plug>(rust-doc)
+lua require'nvim_lsp'.rust_analyzer.setup({})
+
+nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
+nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
+nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
+nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
+nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
+nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => fzf.vim
@@ -93,7 +98,7 @@ let g:airline#extensions#tmuxline#enabled = 0
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => rust.vim
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:rustfmt_autosave = 1
+" let g:rustfmt_autosave = 1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => syntastic
@@ -468,6 +473,8 @@ if has("autocmd")
     autocmd FileType python nnoremap <buffer> <F9> :w<CR> :exec '!python3' shellescape(@%, 1)<CR>
     " Shortcut to run go
     autocmd FileType go nmap <leader>r <Plug>(go-run)
+    " Use LSP omni-completion in Rust files
+    autocmd Filetype rust setlocal omnifunc=v:lua.vim.lsp.omnifunc
     " Sign updated when save a file
     autocmd BufWritePost * GitGutter
     " Get the 2-space YAML as the default when hit carriage return after the colon

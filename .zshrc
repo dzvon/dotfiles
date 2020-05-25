@@ -8,7 +8,7 @@ export ZSH=$HOME/.oh-my-zsh
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="avit"
+# ZSH_THEME="avit"
 
 
 # Set list of themes to pick from when loading at random
@@ -72,7 +72,7 @@ ZSH_CUSTOM=$DOTFILES/oh-my-zsh-plugins
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  gitfast zsh-autosuggestions kubectl docker vi-mode httpie helm
+  zsh-autosuggestions kubectl docker vi-mode httpie helm
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -195,3 +195,7 @@ _fzf_compgen_path() {
 _fzf_compgen_dir() {
   fd --type d --hidden --exclude ".git" . "$1"
 }
+
+export FZF_DEFAULT_COMMAND='fd --type f'
+
+eval "$(starship init zsh)"
