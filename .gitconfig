@@ -151,3 +151,5 @@
 	email = wu543065657@163.com
 [credential]
 	helper = cache --timeout=2592000
+[pull]
+	rebase = false

@@ -474,7 +474,7 @@ if has("autocmd")
     " Shortcut to run go
     autocmd FileType go nmap <leader>r <Plug>(go-run)
     " Use LSP omni-completion in Rust files
-    autocmd Filetype rust setlocal omnifunc=v:lua.vim.lsp.omnifunc
+    autocmd BufRead,Filetype rust setlocal omnifunc=v:lua.vim.lsp.omnifunc
     " Sign updated when save a file
     autocmd BufWritePost * GitGutter
     " Get the 2-space YAML as the default when hit carriage return after the colon

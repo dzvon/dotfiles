@@ -198,4 +198,6 @@ _fzf_compgen_dir() {
 
 export FZF_DEFAULT_COMMAND='fd --type f'
 
+export RUSTC_WRAPPER=$(which sccache)
+
 eval "$(starship init zsh)"
