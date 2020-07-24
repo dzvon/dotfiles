@@ -72,7 +72,7 @@ ZSH_CUSTOM=$DOTFILES/oh-my-zsh-plugins
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  zsh-autosuggestions kubectl docker vi-mode httpie helm
+  zsh-autosuggestions kubectl docker vi-mode httpie helm cargo
 )
 
 source $ZSH/oh-my-zsh.sh
