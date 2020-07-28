@@ -179,6 +179,10 @@ function proxy_off(){
     echo -e "Proxy environment variable removed."
 }
 
+function generate_random() {
+    cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w ${1:-32} | head -n 1
+}
+
 fpath=($DOTFILES/oh-my-zsh-plugins/functions/ $fpath)
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
