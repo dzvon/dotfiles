@@ -40,7 +40,7 @@ Plug 'neovim/nvim-lsp'
 " Plug 'junegunn/goyo.vim'
 Plug 'morhetz/gruvbox'
 " Plug 'marcweber/vim-addon-mw-utils'
-Plug 'terryma/vim-multiple-cursors'
+Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'ryanoasis/vim-devicons'
 Plug 'mbbill/undotree'
 Plug 'lambdalisue/suda.vim'
