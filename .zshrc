@@ -204,4 +204,13 @@ export FZF_DEFAULT_COMMAND='fd --type f'
 
 export RUSTC_WRAPPER=$(which sccache)
 
-eval "$(starship init zsh)"
+export DENO_INSTALL="/home/pvon/.deno"
+export PATH="$DENO_INSTALL/bin:$PATH"
+
+if hash starship 2>/dev/null; then
+    eval "$(starship init zsh)"
+fi
+
+if hash navi 2>/dev/null; then
+    source <(echo "$(navi widget zsh)")
+fi

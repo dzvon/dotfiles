@@ -33,7 +33,9 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'scrooloose/syntastic'
 Plug 'fatih/vim-go'
 Plug 'rust-lang/rust.vim'
-Plug 'neovim/nvim-lsp'
+Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-lua/completion-nvim'
+Plug 'nvim-lua/diagnostic-nvim'
 
 " Plug 'vim-scripts/peaksea'
 " Plug 'wesgibbs/vim-irblack'
@@ -48,23 +50,33 @@ Plug 'tpope/vim-obsession'
 Plug 'edkolev/tmuxline.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-" Plug 'racer-rust/vim-racer'
-
-" if has('nvim')
-  " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-  " Plug 'deoplete-plugins/deoplete-go', { 'do': 'make'}
-" else
-  " Plug 'Shougo/deoplete.nvim'
-  " Plug 'roxma/nvim-yarp'
-  " Plug 'roxma/vim-hug-neovim-rpc'
-" endif
 
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => nvim-lsp
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-lua require'nvim_lsp'.rust_analyzer.setup({})
+lua <<EOF
+
+-- nvim_lsp object
+local nvim_lsp = require'nvim_lsp'
+
+-- function to attach completion and diagnostics
+-- when setting up lsp
+local on_attach = function(client)
+    require'completion'.on_attach(client)
+    require'diagnostic'.on_attach(client)
+end
+
+-- Enable rust_analyzer
+nvim_lsp.rust_analyzer.setup({ on_attach=on_attach })
+
+-- Enable intelephense
+require'nvim_lsp'.intelephense.setup{}
+EOF
+
+let g:completion_enable_snippet = 'UltiSnips'
+imap <silent> <c-p> <Plug>(completion_trigger)
 
 nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
 nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
@@ -504,7 +516,7 @@ set mouse=a
 " Don’t reset cursor to start of line when moving around.
 " set nostartofline
 " Don’t show the intro message when starting Vim
-" set shortmess=atI
+set shortmess+=c
 " Show the current mode
 set showmode
 " Show the filename in the window titlebar
@@ -517,7 +529,7 @@ if exists("&relativenumber")
     au BufReadPost * set relativenumber
 endif
 
-set completeopt=longest,menuone
+set completeopt=menuone,noinsert,noselect
 
 " noremap <leader>ss :call StripWhitespace()<CR>
 
@@ -540,7 +552,7 @@ let g:NERDDefaultAlign = 'left'
 
 " ultisnips config
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsExpandTrigger = "<C-j>"
+" let g:UltiSnipsExpandTrigger = "<C-j>"
 " let g:UltiSnipsJumpForwardTrigger = "<c-b>"
 " let g:UltiSnipsJumpBackwardTrigger = "<c-z>"
 " If you want :UltiSnipsEdit to split your window.
