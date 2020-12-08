@@ -3,45 +3,25 @@
 """"""""""""""""""""""""""""""
 call plug#begin()
 
-" Plug 'ctrlpvim/ctrlp.vim'
-" Plug 'FelikZ/ctrlp-py-matcher'
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'bling/vim-airline'
-" Plug 'mattn/emmet-vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'easymotion/vim-easymotion'
 Plug 'honza/vim-snippets'
-" Plug 'mhinz/vim-startify'
 Plug 'SirVer/ultisnips'
-" Plug 'pangloss/vim-javascript'
-" Plug 'mxw/vim-jsx', {'for': ['javascript.jsx']}
 Plug 'airblade/vim-gitgutter'
-" Plug 'mileszs/ack.vim'
 Plug 'godlygeek/tabular'
-" Plug 'christoomey/vim-tmux-navigator'
-" Plug 'rking/ag.vim'
-" Plug 'stephpy/vim-php-cs-fixer', { 'for': 'php' }
-" Plug 'sheerun/vim-polyglot'
-" Plug 'Xuyuanp/nerdtree-git-plugin'
-" Plug 'posva/vim-vue'
-" Plug 'altercation/vim-colors-solarized'
 Plug 'suan/vim-instant-markdown'
 Plug 'vim-airline/vim-airline-themes'
-" Plug 'w0rp/ale'
 Plug 'scrooloose/syntastic'
-Plug 'fatih/vim-go'
+" Plug 'fatih/vim-go'
 Plug 'rust-lang/rust.vim'
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/completion-nvim'
-Plug 'nvim-lua/diagnostic-nvim'
 
-" Plug 'vim-scripts/peaksea'
-" Plug 'wesgibbs/vim-irblack'
-" Plug 'junegunn/goyo.vim'
 Plug 'morhetz/gruvbox'
-" Plug 'marcweber/vim-addon-mw-utils'
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'ryanoasis/vim-devicons'
 Plug 'mbbill/undotree'
@@ -59,26 +39,27 @@ call plug#end()
 lua <<EOF
 
 -- nvim_lsp object
-local nvim_lsp = require'nvim_lsp'
+local nvim_lsp = require'lspconfig'
 
--- function to attach completion and diagnostics
+-- function to attach completion
 -- when setting up lsp
-local on_attach = function(client)
+local on_attach_vim = function(client)
     require'completion'.on_attach(client)
-    require'diagnostic'.on_attach(client)
 end
 
 -- Enable rust_analyzer
-nvim_lsp.rust_analyzer.setup({ on_attach=on_attach })
-
+nvim_lsp.rust_analyzer.setup({ on_attach=on_attach_vim })
 -- Enable intelephense
-require'nvim_lsp'.intelephense.setup{}
+nvim_lsp.intelephense.setup{{ on_attach=on_attach_vim }}
+-- Enable solargraph
+nvim_lsp.solargraph.setup{{ on_attach=on_attach_vim }}
+-- Enable gopls
+nvim_lsp.gopls.setup{{ on_attach=on_attach_vim }}
 EOF
 
 let g:completion_enable_snippet = 'UltiSnips'
-imap <silent> <c-p> <Plug>(completion_trigger)
+let g:completion_matching_smart_case = 1
 
-nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
 nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
 nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
@@ -86,6 +67,8 @@ nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
 nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
 nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
 nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
+nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => fzf.vim
@@ -127,30 +110,9 @@ let g:gruvbox_contrast_light = 'hard'
 let g:gruvbox_contrast_dark = 'soft'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => deoplete.nvim
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" let g:deoplete#enable_at_startup = 1
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => ack.vim
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" if executable('ag')
-  " let g:ackprg = 'ag --vimgrep'
-" endif
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => vim-devicons
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:WebDevIconsNerdTreeGitPluginForceVAlign=1
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Vimroom
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" let g:goyo_width=100
-" let g:goyo_margin_top = 2
-" let g:goyo_margin_bottom = 2
-" nnoremap <silent> <leader>yo :Goyo<cr>
-" nnoremap <silent> <leader>yq :Goyo!<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Tabular
@@ -439,11 +401,6 @@ function! StripWhitespace()
     call setreg('/', old_query)
 endfunction
 
-if has("autocmd")
-    " Trim trailing white space on save
-    autocmd BufWritePre * :call StripWhitespace()
-endif
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Misc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -477,20 +434,16 @@ if has("autocmd")
     autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
     " Treat .md files as Markdown
     autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
-    " Treat .html files as php
-    " autocmd BufNewFile,BufRead *.html setlocal filetype=php
-    " Enable emmet for ...
-    " autocmd FileType html,css,php,go EmmetInstall
-    " Shortcut to run python file
-    autocmd FileType python nnoremap <buffer> <F9> :w<CR> :exec '!python3' shellescape(@%, 1)<CR>
-    " Shortcut to run go
-    autocmd FileType go nmap <leader>r <Plug>(go-run)
     " Use LSP omni-completion in Rust files
-    autocmd BufRead,Filetype rust setlocal omnifunc=v:lua.vim.lsp.omnifunc
+    autocmd Filetype rust,php,go setlocal omnifunc=v:lua.vim.lsp.omnifunc
+    " Auto-format *.rs files prior to saving them
+    autocmd BufWritePre *.rs,*.go :lua vim.lsp.buf.formatting_sync(nil, 1000)
     " Sign updated when save a file
     autocmd BufWritePost * GitGutter
     " Get the 2-space YAML as the default when hit carriage return after the colon
     autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+    " Trim trailing white space on save
+    autocmd BufWritePre * :call StripWhitespace()
 endif
 
 
