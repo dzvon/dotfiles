@@ -578,10 +578,10 @@ nnoremap <leader>a :RG<space>
 noremap <leader>l  : Tab/
 " nnoremap <C-Tab>   : <C-6><CR>
 nnoremap <leader>gs :Gstatus<CR>
-nnoremap <leader>gc :Gcommit<CR>
-nnoremap <leader>gp :Gpush origin HEAD<CR>
-nnoremap <leader>gr :Grebase<CR>
-nnoremap <leader>gl :Gpull<CR>
+nnoremap <leader>gc :Git commit<CR>
+nnoremap <leader>gp :Git push origin HEAD<CR>
+nnoremap <leader>gr :Git rebase<CR>
+nnoremap <leader>gl :Git pull<CR>
 " Switch quickfix
 nnoremap [q :cprevious<CR>
 nnoremap ]q :cnext<CR>
