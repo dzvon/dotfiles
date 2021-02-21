@@ -10,18 +10,14 @@ if hash lsd 2>/dev/null; then
     alias ls='lsd'
 fi
 
-# Detect which `ls` flavor is in use
-if ls --color > /dev/null 2>&1; then # GNU `ls`
-    colorflag="--color"
-else # OS X `ls`
-    colorflag="-G"
+if hash exa 2>/dev/null; then
+    alias ls='exa'
 fi
 
 # Filesystem aliases
 alias ..='cd ..'
 alias ...='cd ../..'
 
-alias ll="ls -alFh ${colorflag}"
 alias rmf="rm -rf"
 
 # Helpers
@@ -32,10 +28,3 @@ alias df="df -h"
 alias dl="cd ~/Downloads"
 alias dt="cd ~/Desktop"
 alias doc="cd ~/Documents"
-
-# Alias Virtual Box
-alias v2ray="~/Share/FGFW/v2ray/v2ray-linux-64/v2ray -config ~/Share/FGFW/v2ray/config.json"
-
-if hash paru 2>/dev/null; then
-    alias yay="paru --bottomup"
-fi

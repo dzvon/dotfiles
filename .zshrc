@@ -205,7 +205,7 @@ export FZF_DEFAULT_COMMAND='fd --type f'
 export RUSTC_WRAPPER=$(which sccache)
 
 export DENO_INSTALL="/home/pvon/.deno"
-export PATH="$DENO_INSTALL/bin:$PATH"
+export PATH="$(yarn global bin):$DENO_INSTALL/bin:$PATH"
 
 if hash starship 2>/dev/null; then
     eval "$(starship init zsh)"
