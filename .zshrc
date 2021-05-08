@@ -214,3 +214,7 @@ fi
 if hash navi 2>/dev/null; then
     source <(echo "$(navi widget zsh)")
 fi
+
+export WASMTIME_HOME="$HOME/.wasmtime"
+
+export PATH="$WASMTIME_HOME/bin:$PATH"

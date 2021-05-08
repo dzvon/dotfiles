@@ -30,8 +30,15 @@ Plug 'tpope/vim-obsession'
 Plug 'edkolev/tmuxline.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'puremourning/vimspector'
+Plug 'szw/vim-maximizer'
 
 call plug#end()
+
+""""""""""""""""
+"  vimspector  "
+""""""""""""""""
+let g:vimspector_enable_mappings = 'HUMAN'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => nvim-lsp
@@ -86,7 +93,8 @@ end
 
 -- Use a loop to conveniently both setup defined servers
 -- and map buffer local keybindings when the language server attaches
-local servers = { "intelephense", "rust_analyzer", "gopls", "tsserver", "clangd" }
+-- local servers = { "intelephense", "rust_analyzer", "gopls", "tsserver", "clangd" }
+local servers = { "intelephense", "rust_analyzer", "gopls", "denols", "clangd" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup { on_attach = on_attach }
 end
