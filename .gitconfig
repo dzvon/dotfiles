@@ -147,9 +147,11 @@
 	followTags = true
 
 [user]
-	name = Persevere Von
+	name = Dezhi Wu
 	email = wu543065657@163.com
 [credential]
 	helper = cache --timeout=2592000
 [pull]
 	rebase = false
+[http]
+	proxy = http://127.0.0.1:8123
