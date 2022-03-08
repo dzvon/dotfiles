@@ -3,35 +3,40 @@
 """"""""""""""""""""""""""""""
 call plug#begin()
 
-Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
+Plug 'nvim-lua/plenary.nvim'
+
+Plug 'kyazdani42/nvim-web-devicons' " for file icons
+Plug 'kyazdani42/nvim-tree.lua'
+
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
+Plug 'lewis6991/gitsigns.nvim'
+Plug 'akinsho/bufferline.nvim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
-Plug 'bling/vim-airline'
+Plug 'feline-nvim/feline.nvim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'easymotion/vim-easymotion'
+
 Plug 'SirVer/ultisnips'
-Plug 'airblade/vim-gitgutter'
 Plug 'godlygeek/tabular'
-" Plug 'suan/vim-instant-markdown'
-Plug 'vim-airline/vim-airline-themes'
-" Plug 'scrooloose/syntastic'
-" Plug 'fatih/vim-go'
-Plug 'rust-lang/rust.vim'
+
+" Plug 'rust-lang/rust.vim'
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp' " LSP source for nvim-cmp
 Plug 'saadparwaiz1/cmp_luasnip' " Snippets source for nvim-cmp
 Plug 'L3MON4D3/LuaSnip' " Snippets plugin
 
-Plug 'morhetz/gruvbox'
+Plug 'nvim-telescope/telescope.nvim'
+
+Plug 'joshdick/onedark.vim'
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
-Plug 'ryanoasis/vim-devicons'
 Plug 'mbbill/undotree'
 Plug 'lambdalisue/suda.vim'
-Plug 'tpope/vim-obsession'
-Plug 'edkolev/tmuxline.vim'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
+
+Plug 'lukas-reineke/indent-blankline.nvim'
+
 Plug 'puremourning/vimspector'
 Plug 'szw/vim-maximizer'
 
@@ -45,156 +50,7 @@ let g:vimspector_enable_mappings = 'HUMAN'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => nvim-lsp
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-lua << EOF
-local nvim_lsp = require('lspconfig')
-
--- Use an on_attach function to only map the following keys
--- after the language server attaches to the current buffer
-local on_attach = function(client, bufnr)
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-
-  --Enable completion triggered by <c-x><c-o>
-  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-  -- Mappings.
-  local opts = { noremap=true, silent=true }
-
-  -- See `:help vim.lsp.*` for documentation on any of the below functions
-  buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  buf_set_keymap('n', '<space>k', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
-  buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-  buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-  buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
-
-end
-
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-
--- Use a loop to conveniently call 'setup' on multiple servers and
--- map buffer local keybindings when the language server attaches
-local servers = { "rust_analyzer", "gopls", "denols", "clangd" }
-for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup {
-    on_attach = on_attach,
-    flags = {
-      debounce_text_changes = 150,
-    },
-    capabilities = capabilities
-  }
-end
-EOF
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"                                  nvim-cmp                                    "
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-lua << EOF
--- luasnip setup
-local luasnip = require 'luasnip'
-
--- nvim-cmp setup
-local cmp = require 'cmp'
-cmp.setup {
-  snippet = {
-    expand = function(args)
-      require('luasnip').lsp_expand(args.body)
-    end,
-  },
-  mapping = {
-    ['<C-p>'] = cmp.mapping.select_prev_item(),
-    ['<C-n>'] = cmp.mapping.select_next_item(),
-    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-e>'] = cmp.mapping.close(),
-    ['<CR>'] = cmp.mapping.confirm {
-      behavior = cmp.ConfirmBehavior.Replace,
-      select = true,
-    },
-    ['<Tab>'] = function(fallback)
-      if vim.fn.pumvisible() == 1 then
-        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<C-n>', true, true, true), 'n')
-      elseif luasnip.expand_or_jumpable() then
-        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-expand-or-jump', true, true, true), '')
-      else
-        fallback()
-      end
-    end,
-    ['<S-Tab>'] = function(fallback)
-      if vim.fn.pumvisible() == 1 then
-        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<C-p>', true, true, true), 'n')
-      elseif luasnip.jumpable(-1) then
-        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-jump-prev', true, true, true), '')
-      else
-        fallback()
-      end
-    end,
-  },
-  sources = {
-    { name = 'nvim_lsp' },
-    { name = 'luasnip' },
-  },
-}
-EOF
-
 highlight link CompeDocumentation NormalFloat
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => fzf.vim
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-command! -bang -nargs=* Rg
-  \ call fzf#vim#grep(
-  \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
-  \   fzf#vim#with_preview(), <bang>0)
-
-function! RipgrepFzf(query, fullscreen)
-  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case %s || true'
-  let initial_command = printf(command_fmt, shellescape(a:query))
-  let reload_command = printf(command_fmt, '{q}')
-  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
-  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
-endfunction
-
-command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
-
-let g:airline#extensions#tmuxline#enabled = 0
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => rust.vim
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" let g:rustfmt_autosave = 1
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => syntastic
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => gruvbox
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:gruvbox_contrast_light = 'hard'
-let g:gruvbox_contrast_dark = 'soft'
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => vim-devicons
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:WebDevIconsNerdTreeGitPluginForceVAlign=1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Tabular
@@ -211,20 +67,6 @@ function! s:align()
   endif
 endfunction
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => CTRL-P
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" let g:ctrlp_max_height = 20
-" let g:ctrlp_custom_ignore = 'node_modules\|^\.DS_Store\|^\.git\|^\.coffee'
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Vim instant markdown
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:instant_markdown_slow = 1
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => General
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Sets how many lines of history VIM has to remember
 set history=500
 
@@ -303,11 +145,6 @@ set novisualbell
 set t_vb=
 set tm=500
 
-" Properly disable sound on errors on MacVim
-if has("gui_macvim")
-    autocmd GUIEnter * set vb t_vb=
-endif
-
 " Add a bit extra margin to the left
 set foldcolumn=1
 
@@ -322,10 +159,7 @@ if $COLORTERM == 'gnome-terminal'
     set t_Co=256
 endif
 
-try
-    colorscheme gruvbox
-catch
-endtry
+colorscheme onedark
 
 " Set extra options when running in GUI mode
 if has("gui_running")
@@ -358,20 +192,11 @@ endif
 " Don’t create backups when editing files in certain directories
 set backupskip=/tmp/*,/private/tmp/*
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Text, tab and indent related
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 " Translate tabs to spaces
 set expandtab
 
 " Be smart when using tabs ;)
 set smarttab
-
-" Make tabs as wide as four spaces
-set tabstop=4
-" Make indentation as four space
-set shiftwidth=4
 
 " Linebreak on 500 characters
 set lbr
@@ -512,16 +337,11 @@ if has("autocmd")
     " autocmd Filetype rust,php,go setlocal omnifunc=v:lua.vim.lsp.omnifunc
     " Auto-format *.rs files prior to saving them
     autocmd BufWritePre *.rs,*.go :lua vim.lsp.buf.formatting_sync(nil, 1000)
-    " Sign updated when save a file
-    autocmd BufWritePost * GitGutter
     " Get the 2-space YAML as the default when hit carriage return after the colon
     autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
     " Trim trailing white space on save
     autocmd BufWritePre * :call StripWhitespace()
-    " Use completion-nvim in every buffer
-    " autocmd BufEnter * lua require'completion'.on_attach()
 endif
-
 
 " Add the g flag to search/replace by default
 set gdefault
@@ -560,18 +380,6 @@ endif
 
 set completeopt=menuone,noinsert,noselect
 
-" noremap <leader>ss :call StripWhitespace()<CR>
-
-" JSX in js file
-" let g:jsx_ext_required = 0
-" vim-airline config
-let g:airline#extensions#bufferline#enabled = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#branch#enabled = 1
-let g:airline_powerline_fonts = 1
-" let g:airline#extensions#hunks#hunk_symbols = ['+', '~', '-']
-let g:airline_theme = 'random'
-
 " Add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
 " Use compact syntax for prettified multi-line comments
@@ -579,45 +387,15 @@ let g:NERDCompactSexyComs = 1
 " Align line-wise comment delimiters flush left instead of following code indentation
 let g:NERDDefaultAlign = 'left'
 
-" ultisnips config
-" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-" let g:UltiSnipsExpandTrigger = "<C-j>"
-" let g:UltiSnipsJumpForwardTrigger = "<c-b>"
-" let g:UltiSnipsJumpBackwardTrigger = "<c-z>"
-" If you want :UltiSnipsEdit to split your window.
-" let g:UltiSnipsEditSplit="vertical"
+noremap <C-p> <cmd>Telescope find_files<CR>
+noremap <leader>b <cmd>Telescope buffers<CR>
+noremap <leader>tg <cmd>Telescope treesitter<CR>
+noremap <leader>m <cmd>Telescope oldfiles<CR>
+nnoremap <leader>a <cmd>Telescope live_grep<CR>
 
-" Enable HTML/CSS syntax highlighting in js file
-let g:javascript_enable_domhtmlcss = 1
-let g:javascript_plugin_jsdoc = 1
+noremap <leader>d :NvimTreeToggle<CR>
+noremap <leader>f :NvimTreeFindFile<CR>
 
-" php-cs-fixer
-" let g:php_cs_fixer_fixers_list = "-psr0"
-
-" Keyboard shortcuts
-" inoremap <expr> <CR>    pumvisible() ? "\<C-y>" : "\<CR>"
-" inoremap <expr> <CR>    pumvisible() ? "\<C-x><C-n>" : "\<CR>"
-" inoremap <expr> <Tab> (pumvisible() ? (col('.') > 1 ? '<Esc>i<Right>' : '<Esc>i') : '') .
-            " \ '<C-x><C-o><C-r>=pumvisible() ? "\<lt>C-n>\<lt>C-p>\<lt>Down>" : ""<CR>'
-
-noremap <C-p> :Files<CR>
-noremap <leader>b :Buffers<CR>
-noremap <leader>tg :call <SID>CommonBufTag()<CR>
-function! s:CommonBufTag()
-    if &ft=='go'
-        execute "GoDecls"
-    else
-        execute "BTags"
-    endif
-endfunction
-noremap <leader>m :History<CR>
-noremap <leader>d :NERDTreeToggle<CR>
-noremap <leader>f :NERDTreeFind<CR>
-" noremap <bs> :tabprevious<CR>
-" noremap <C-l> :tabnext<CR>
-" brackets input
-nnoremap <silent> [a :lprevious<CR>
-nnoremap <silent> ]a :lnext<CR>
 inoremap [ []<esc>i
 inoremap { {}<esc>i
 inoremap {<CR> {<CR>}<c-o>O
@@ -629,7 +407,6 @@ inoremap '' ''<esc>i
 noremap <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
 " set \ to ,
 noremap \ ,
-nnoremap <leader>a :RG<space>
 noremap <leader>l  : Tab/
 " nnoremap <C-Tab>   : <C-6><CR>
 nnoremap <leader>gs :Git<CR>
@@ -689,15 +466,115 @@ function! QuickfixFilenames()
     return join(map(values(buffer_numbers), 'fnameescape(v:val)'))
 endfunction
 
-" Emmet configuration
-" only enable in insert mode.
-" let g:user_emmet_mode = 'i'
-" " disable global install
-" let g:user_emmet_install_global = 0
-" " redefine emmet trigger key
-" let g:user_emmet_leader_key = '<C-z>'
+lua << EOF
+local nvim_lsp = require('lspconfig')
 
-" Go configuration
-" let g:go_fmt_command = "goimports"
-" let g:go_list_type = "quickfix"
-" let g:go_term_mode = "split"
+-- Use an on_attach function to only map the following keys
+-- after the language server attaches to the current buffer
+local on_attach = function(client, bufnr)
+  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
+  --Enable completion triggered by <c-x><c-o>
+  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  local opts = { noremap=true, silent=true }
+
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  buf_set_keymap('n', '<space>k', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  buf_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+  buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+  buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+  buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+
+end
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+
+-- Use a loop to conveniently call 'setup' on multiple servers and
+-- map buffer local keybindings when the language server attaches
+local servers = { "rust_analyzer", "gopls", "denols", "clangd" }
+for _, lsp in ipairs(servers) do
+  nvim_lsp[lsp].setup {
+    on_attach = on_attach,
+    flags = {
+      debounce_text_changes = 150,
+    },
+    capabilities = capabilities
+  }
+end
+
+-- luasnip setup
+local luasnip = require 'luasnip'
+
+-- nvim-cmp setup
+local cmp = require 'cmp'
+cmp.setup {
+  snippet = {
+    expand = function(args)
+      require('luasnip').lsp_expand(args.body)
+    end,
+  },
+  mapping = {
+    ['<C-p>'] = cmp.mapping.select_prev_item(),
+    ['<C-n>'] = cmp.mapping.select_next_item(),
+    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.close(),
+    ['<CR>'] = cmp.mapping.confirm {
+      behavior = cmp.ConfirmBehavior.Replace,
+      select = true,
+    },
+    ['<Tab>'] = function(fallback)
+      if vim.fn.pumvisible() == 1 then
+        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<C-n>', true, true, true), 'n')
+      elseif luasnip.expand_or_jumpable() then
+        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-expand-or-jump', true, true, true), '')
+      else
+        fallback()
+      end
+    end,
+    ['<S-Tab>'] = function(fallback)
+      if vim.fn.pumvisible() == 1 then
+        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<C-p>', true, true, true), 'n')
+      elseif luasnip.jumpable(-1) then
+        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-jump-prev', true, true, true), '')
+      else
+        fallback()
+      end
+    end,
+  },
+  sources = {
+    { name = 'nvim_lsp' },
+    { name = 'luasnip' },
+  },
+}
+
+require 'nvim-tree'.setup {}
+require('gitsigns').setup()
+require('feline').setup()
+require("bufferline").setup{}
+require('telescope').setup{
+  -- ...
+}
+require("indent_blankline").setup {
+    -- for example, context is off by default, use this to turn it on
+    show_current_context = true,
+    show_current_context_start = true,
+}
+EOF
