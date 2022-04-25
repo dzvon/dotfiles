@@ -154,6 +154,6 @@
 [pull]
 	rebase = false
 [http]
-	proxy = socks5://127.0.0.1:8080
+	proxy = http://127.0.0.1:8123
 [https]
-	proxy = socks5://127.0.0.1:8080
+	proxy = http://127.0.0.1:8123

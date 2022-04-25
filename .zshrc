@@ -2,13 +2,13 @@ export DOTFILES=$HOME/.dotfiles
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/.cargo/bin:$DOTFILES/bin:$HOME/bin:$HOME/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/.composer/vendor/bin/:$HOME/go/bin:$PATH
 # Path to your oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
+ZSH=/usr/share/oh-my-zsh/
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-# ZSH_THEME="avit"
+ZSH_THEME="robbyrussell"
 
 
 # Set list of themes to pick from when loading at random
@@ -67,15 +67,22 @@ setopt HIST_REDUCE_BLANKS
 # Would you like to use another custom folder than $ZSH/custom?
 ZSH_CUSTOM=$DOTFILES/oh-my-zsh-plugins
 
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Which plugins would you like to load?
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  zsh-autosuggestions kubectl docker vi-mode httpie helm cargo
+  zsh-autosuggestions vi-mode rust docker git
 )
 
+ZSH_CACHE_DIR=$HOME/.cache/oh-my-zsh
+if [[ ! -d $ZSH_CACHE_DIR ]]; then
+  mkdir $ZSH_CACHE_DIR
+fi
+
 source $ZSH/oh-my-zsh.sh
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # User configuration
 
@@ -106,7 +113,7 @@ export ARCHFLAGS="-arch x86_64"
 #
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+alias docker=podman
 
 # Source all .zsh files inside the zsh/ directory
 for config ($DOTFILES/zsh/*.zsh) source $config

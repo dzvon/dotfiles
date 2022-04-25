@@ -42,7 +42,13 @@ Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'puremourning/vimspector'
 Plug 'szw/vim-maximizer'
 
+Plug 'github/copilot.vim'
+
 call plug#end()
+
+" copilot config
+let g:copilot_no_tab_map = v:true
+imap <expr> <Plug>(vimrc:copilot-dummy-map) copilot#Accept("\<Tab>")
 
 """"""""""""""""
 "  vimspector  "
@@ -561,6 +567,9 @@ cmp.setup {
         fallback()
       end
     end,
+    ['<C-e>'] = cmp.mapping(function(fallback)
+      vim.api.nvim_feedkeys(vim.fn['copilot#Accept'](vim.api.nvim_replace_termcodes('<Tab>', true, true, true)), 'n', true)
+    end)
   },
   sources = {
     { name = 'nvim_lsp' },
