@@ -18,14 +18,16 @@ Plug 'feline-nvim/feline.nvim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'easymotion/vim-easymotion'
 
-Plug 'SirVer/ultisnips'
+" Plug 'SirVer/ultisnips'
 Plug 'godlygeek/tabular'
 
 " Plug 'rust-lang/rust.vim'
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp' " LSP source for nvim-cmp
-Plug 'saadparwaiz1/cmp_luasnip' " Snippets source for nvim-cmp
+Plug 'hrsh7th/cmp-vsnip'
+Plug 'hrsh7th/vim-vsnip'
+" Plug 'saadparwaiz1/cmp_luasnip' " Snippets source for nvim-cmp
 Plug 'L3MON4D3/LuaSnip' " Snippets plugin
 
 Plug 'nvim-telescope/telescope.nvim'
@@ -39,7 +41,6 @@ Plug 'lambdalisue/suda.vim'
 
 Plug 'lukas-reineke/indent-blankline.nvim'
 
-Plug 'puremourning/vimspector'
 Plug 'szw/vim-maximizer'
 
 Plug 'github/copilot.vim'
@@ -49,11 +50,6 @@ call plug#end()
 " copilot config
 let g:copilot_no_tab_map = v:true
 imap <expr> <Plug>(vimrc:copilot-dummy-map) copilot#Accept("\<Tab>")
-
-""""""""""""""""
-"  vimspector  "
-""""""""""""""""
-let g:vimspector_enable_mappings = 'HUMAN'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => nvim-lsp
@@ -516,16 +512,28 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { "rust_analyzer", "gopls", "denols", "clangd" }
+local servers = { "gopls", "denols", "clangd", "pyright" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     on_attach = on_attach,
     flags = {
       debounce_text_changes = 150,
     },
-    capabilities = capabilities
+    capabilities = capabilities,
   }
 end
+
+nvim_lsp["rust_analyzer"].setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  settings = {
+    ["rust-analyzer"] = {
+      cargo = {
+        features = "all"
+      }
+    }
+  }
+}
 
 -- luasnip setup
 local luasnip = require 'luasnip'
@@ -535,7 +543,7 @@ local cmp = require 'cmp'
 cmp.setup {
   snippet = {
     expand = function(args)
-      require('luasnip').lsp_expand(args.body)
+      vim.fn["vsnip#anonymous"](args.body)
     end,
   },
   mapping = {
@@ -549,31 +557,31 @@ cmp.setup {
       behavior = cmp.ConfirmBehavior.Replace,
       select = true,
     },
-    ['<Tab>'] = function(fallback)
-      if vim.fn.pumvisible() == 1 then
-        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<C-n>', true, true, true), 'n')
-      elseif luasnip.expand_or_jumpable() then
-        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-expand-or-jump', true, true, true), '')
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif vim.fn["vsnip#available"](1) == 1 then
+        feedkey("<Plug>(vsnip-expand-or-jump)", "")
+      elseif has_words_before() then
+        cmp.complete()
       else
-        fallback()
+        fallback() -- The fallback function sends a already mapped key. In this case, it's probably `<Tab>`.
       end
-    end,
-    ['<S-Tab>'] = function(fallback)
-      if vim.fn.pumvisible() == 1 then
-        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<C-p>', true, true, true), 'n')
-      elseif luasnip.jumpable(-1) then
-        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-jump-prev', true, true, true), '')
-      else
-        fallback()
+    end, { "i", "s" }),
+    ['<S-Tab>'] = cmp.mapping(function()
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif vim.fn["vsnip#jumpable"](-1) == 1 then
+        feedkey("<Plug>(vsnip-jump-prev)", "")
       end
-    end,
+    end, { "i", "s" }),
     ['<C-e>'] = cmp.mapping(function(fallback)
       vim.api.nvim_feedkeys(vim.fn['copilot#Accept'](vim.api.nvim_replace_termcodes('<Tab>', true, true, true)), 'n', true)
     end)
   },
   sources = {
     { name = 'nvim_lsp' },
-    { name = 'luasnip' },
+    { name = 'vsnip' },
   },
 }
 
