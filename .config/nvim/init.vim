@@ -21,7 +21,12 @@ Plug 'easymotion/vim-easymotion'
 " Plug 'SirVer/ultisnips'
 Plug 'godlygeek/tabular'
 
-" Plug 'rust-lang/rust.vim'
+Plug 'tpope/vim-sleuth'
+
+Plug 'prettier/vim-prettier', { 'do': 'yarn install --frozen-lockfile --production' }
+Plug 'jparise/vim-graphql'
+
+Plug 'rust-lang/rust.vim'
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp' " LSP source for nvim-cmp
@@ -382,6 +387,8 @@ if exists("&relativenumber")
     set relativenumber
     au BufReadPost * set relativenumber
 endif
+
+set spell spelllang=en_us,cjk
 
 set completeopt=menuone,noinsert,noselect
 
