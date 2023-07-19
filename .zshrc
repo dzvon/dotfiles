@@ -73,7 +73,7 @@ ZSH_CUSTOM=$DOTFILES/oh-my-zsh-plugins
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  zsh-autosuggestions vi-mode rust docker git
+  zsh-autosuggestions vi-mode rust docker git kubectl
 )
 
 ZSH_CACHE_DIR=$HOME/.cache/oh-my-zsh
@@ -113,7 +113,7 @@ export ARCHFLAGS="-arch x86_64"
 #
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
-alias docker=podman
+# alias paru="paru --bottomup"
 
 # Source all .zsh files inside the zsh/ directory
 for config ($DOTFILES/zsh/*.zsh) source $config

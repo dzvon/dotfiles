@@ -148,12 +148,8 @@
 
 [user]
 	name = Dezhi Wu
-	email = wu543065657@163.com
+	email = oo0bf659r@mozmail.com
 [credential]
 	helper = cache --timeout=2592000
 [pull]
 	rebase = false
-[http]
-	proxy = http://127.0.0.1:8123
-[https]
-	proxy = http://127.0.0.1:8123

@@ -40,6 +40,7 @@ Plug 'nvim-telescope/telescope.nvim'
 
 Plug 'joshdick/onedark.vim'
 Plug 'morhetz/gruvbox'
+Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
 
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'mbbill/undotree'
@@ -50,6 +51,8 @@ Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'szw/vim-maximizer'
 
 Plug 'github/copilot.vim'
+Plug 'MunifTanjim/nui.nvim'
+Plug 'Bryley/neoai.nvim'
 
 call plug#end()
 
@@ -169,7 +172,7 @@ if $COLORTERM == 'gnome-terminal'
     set t_Co=256
 endif
 
-colorscheme gruvbox
+colorscheme catppuccin-mocha
 
 " Set extra options when running in GUI mode
 if has("gui_running")
@@ -346,7 +349,7 @@ if has("autocmd")
     " Use LSP omni-completion in Rust files
     " autocmd Filetype rust,php,go setlocal omnifunc=v:lua.vim.lsp.omnifunc
     " Auto-format *.rs files prior to saving them
-    autocmd BufWritePre *.rs,*.go :lua vim.lsp.buf.formatting_sync(nil, 1000)
+    autocmd BufWritePre *.rs,*.go :lua vim.lsp.buf.format(nil, 1000)
     " Get the 2-space YAML as the default when hit carriage return after the colon
     autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
     " Trim trailing white space on save
@@ -500,7 +503,7 @@ local on_attach = function(client, bufnr)
 
   -- Mappings.
   -- See `:help vim.lsp.*` for documentation on any of the below functions
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
@@ -512,7 +515,7 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>f', '<cmd>lua vim.lsp.buf.format()<CR>', opts)
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -520,7 +523,7 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { "gopls", "denols", "clangd", "pyright" }
+local servers = { "gopls", "clangd", "pyright", "rome" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     on_attach = on_attach,
@@ -536,11 +539,15 @@ nvim_lsp["rust_analyzer"].setup {
   capabilities = capabilities,
   settings = {
     ["rust-analyzer"] = {
-      cargo = {
-        features = "all"
+      diagnostics = {
+        enable = false,
       }
     }
-  }
+  },
+}
+
+nvim_lsp["rome"].setup {
+  cmd = { "rome", "lsp_proxy" },
 }
 
 -- luasnip setup
@@ -604,5 +611,74 @@ require("indent_blankline").setup {
     -- for example, context is off by default, use this to turn it on
     show_current_context = true,
     show_current_context_start = true,
+}
+require('neoai').setup{
+    -- Below are the default options, feel free to override what you would like changed
+    ui = {
+        output_popup_text = "NeoAI",
+        input_popup_text = "Prompt",
+        width = 30,      -- As percentage eg. 30%
+        output_popup_height = 80, -- As percentage eg. 80%
+        submit = "<Enter>", -- Key binding to submit the prompt
+    },
+    models = {
+        {
+            name = "openai",
+            model = "gpt-3.5-turbo",
+            params = nil,
+        },
+    },
+    register_output = {
+        ["g"] = function(output)
+            return output
+        end,
+        ["c"] = require("neoai.utils").extract_code_snippets,
+    },
+    inject = {
+        cutoff_width = 75,
+    },
+    prompts = {
+        context_prompt = function(context)
+            return "Hey, I'd like to provide some context for future "
+                .. "messages. Here is the code/text that I want to refer "
+                .. "to in our upcoming conversations:\n\n"
+                .. context
+        end,
+    },
+    mappings = {
+        ["select_up"] = "<C-k>",
+        ["select_down"] = "<C-j>",
+    },
+    open_api_key_env = "OPENAI_API_KEY",
+    shortcuts = {
+        {
+            name = "textify",
+            key = "<leader>as",
+            desc = "fix text with AI",
+            use_context = true,
+            prompt = [[
+                Please rewrite the text to make it more readable, clear,
+                concise, and fix any grammatical, punctuation, or spelling
+                errors
+            ]],
+            modes = { "v" },
+            strip_function = nil,
+        },
+        {
+            name = "gitcommit",
+            key = "<leader>ag",
+            desc = "generate git commit message",
+            use_context = false,
+            prompt = function ()
+                return [[
+                    Using the following git diff generate a consise and
+                    clear git commit message, with a short title summary
+                    that is 75 characters or less:
+                ]] .. vim.fn.system("git diff --cached")
+            end,
+            modes = { "n" },
+            strip_function = nil,
+        },
+    },
 }
 EOF
