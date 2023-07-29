@@ -28,13 +28,14 @@ Plug 'jparise/vim-graphql'
 
 Plug 'rust-lang/rust.vim'
 Plug 'neovim/nvim-lspconfig'
+Plug 'hrsh7th/cmp-cmdline'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp' " LSP source for nvim-cmp
-" Plug 'hrsh7th/cmp-vsnip'
-" Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/cmp-vsnip'
+Plug 'hrsh7th/vim-vsnip'
 " Plug 'hrsh7th/vim-vsnip-integ'
-Plug 'saadparwaiz1/cmp_luasnip' " Snippets source for nvim-cmp
-Plug 'L3MON4D3/LuaSnip' " Snippets plugin
+" Plug 'saadparwaiz1/cmp_luasnip' " Snippets source for nvim-cmp
+" Plug 'L3MON4D3/LuaSnip' " Snippets plugin
 
 Plug 'nvim-telescope/telescope.nvim'
 
@@ -51,13 +52,12 @@ Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'szw/vim-maximizer'
 
 Plug 'github/copilot.vim'
-Plug 'MunifTanjim/nui.nvim'
-Plug 'Bryley/neoai.nvim'
 
 call plug#end()
 
 " copilot config
 let g:copilot_no_tab_map = v:true
+let g:copilot_filetypes = { '*': v:true }
 imap <expr> <Plug>(vimrc:copilot-dummy-map) copilot#Accept("\<Tab>")
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -425,7 +425,7 @@ noremap \ ,
 noremap <leader>l  : Tab/
 " nnoremap <C-Tab>   : <C-6><CR>
 nnoremap <leader>gs :Git<CR>
-nnoremap <leader>gc :Git commit<CR>
+nnoremap <leader>gc :Git commit -v<CR>
 nnoremap <leader>gp :Git push origin HEAD<CR>
 nnoremap <leader>gr :Git rebase<CR>
 nnoremap <leader>gl :Git pull<CR>
@@ -453,6 +453,7 @@ nnoremap <leader>u :UndotreeToggle<cr>
 
 com Wdt windo diffthis
 com Wdo diffoff!
+com CloseNoNameBuf :bufdo if bufname('%') == '' | silent execute 'bwipeout! %' | endif
 
 nnoremap <silent> <Leader>scb :windo set scrollbind!<CR>
 
@@ -551,20 +552,24 @@ nvim_lsp["rome"].setup {
 }
 
 -- luasnip setup
-local luasnip = require 'luasnip'
+-- local luasnip = require 'luasnip'
 
 -- nvim-cmp setup
 local cmp = require 'cmp'
 cmp.setup {
   snippet = {
+    -- REQUIRED - you must specify a snippet engine
     expand = function(args)
-      luasnip.lsp_expand(args.body)
+      vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+      -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+      -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
+      -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
     end,
   },
   mapping = {
     ['<C-p>'] = cmp.mapping.select_prev_item(),
     ['<C-n>'] = cmp.mapping.select_next_item(),
-    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.close(),
@@ -575,8 +580,8 @@ cmp.setup {
     ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
-      elseif luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
+      -- elseif vsnip.expand_or_jump() then
+      --   vsnip.expand_or_jump()
       else
         fallback()
       end
@@ -584,8 +589,8 @@ cmp.setup {
     ['<S-Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
-      elseif luasnip.jumpable(-1) then
-        luasnip.jump(-1)
+      -- elseif vsnip.jumpable(-1) then
+      --   vsnip.jump(-1)
       else
         fallback()
       end
@@ -594,11 +599,26 @@ cmp.setup {
       vim.api.nvim_feedkeys(vim.fn['copilot#Accept'](vim.api.nvim_replace_termcodes('<Tab>', true, true, true)), 'n', true)
     end)
   },
-  sources = {
+  sources = cmp.config.sources({
     { name = 'nvim_lsp' },
-    { name = 'luasnip' },
-  },
+    { name = 'vsnip' }, -- For vsnip users.
+    -- { name = 'luasnip' }, -- For luasnip users.
+    -- { name = 'ultisnips' }, -- For ultisnips users.
+    -- { name = 'snippy' }, -- For snippy users.
+    }, {
+      { name = 'buffer' },
+    })
 }
+
+-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources({
+    { name = 'path' }
+  }, {
+    { name = 'cmdline' }
+  })
+})
 
 require 'nvim-tree'.setup {}
 require('gitsigns').setup()
@@ -611,74 +631,5 @@ require("indent_blankline").setup {
     -- for example, context is off by default, use this to turn it on
     show_current_context = true,
     show_current_context_start = true,
-}
-require('neoai').setup{
-    -- Below are the default options, feel free to override what you would like changed
-    ui = {
-        output_popup_text = "NeoAI",
-        input_popup_text = "Prompt",
-        width = 30,      -- As percentage eg. 30%
-        output_popup_height = 80, -- As percentage eg. 80%
-        submit = "<Enter>", -- Key binding to submit the prompt
-    },
-    models = {
-        {
-            name = "openai",
-            model = "gpt-3.5-turbo",
-            params = nil,
-        },
-    },
-    register_output = {
-        ["g"] = function(output)
-            return output
-        end,
-        ["c"] = require("neoai.utils").extract_code_snippets,
-    },
-    inject = {
-        cutoff_width = 75,
-    },
-    prompts = {
-        context_prompt = function(context)
-            return "Hey, I'd like to provide some context for future "
-                .. "messages. Here is the code/text that I want to refer "
-                .. "to in our upcoming conversations:\n\n"
-                .. context
-        end,
-    },
-    mappings = {
-        ["select_up"] = "<C-k>",
-        ["select_down"] = "<C-j>",
-    },
-    open_api_key_env = "OPENAI_API_KEY",
-    shortcuts = {
-        {
-            name = "textify",
-            key = "<leader>as",
-            desc = "fix text with AI",
-            use_context = true,
-            prompt = [[
-                Please rewrite the text to make it more readable, clear,
-                concise, and fix any grammatical, punctuation, or spelling
-                errors
-            ]],
-            modes = { "v" },
-            strip_function = nil,
-        },
-        {
-            name = "gitcommit",
-            key = "<leader>ag",
-            desc = "generate git commit message",
-            use_context = false,
-            prompt = function ()
-                return [[
-                    Using the following git diff generate a consise and
-                    clear git commit message, with a short title summary
-                    that is 75 characters or less:
-                ]] .. vim.fn.system("git diff --cached")
-            end,
-            modes = { "n" },
-            strip_function = nil,
-        },
-    },
 }
 EOF

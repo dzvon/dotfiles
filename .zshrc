@@ -76,10 +76,10 @@ plugins=(
   zsh-autosuggestions vi-mode rust docker git kubectl
 )
 
-ZSH_CACHE_DIR=$HOME/.cache/oh-my-zsh
-if [[ ! -d $ZSH_CACHE_DIR ]]; then
-  mkdir $ZSH_CACHE_DIR
-fi
+# ZSH_CACHE_DIR=$HOME/.cache/oh-my-zsh
+# if [[ ! -d $ZSH_CACHE_DIR ]]; then
+#   mkdir $ZSH_CACHE_DIR
+# fi
 
 source $ZSH/oh-my-zsh.sh
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -101,7 +101,7 @@ if hash nvim 2>/dev/null; then
 fi
 
 # Compilation flags
-export ARCHFLAGS="-arch x86_64"
+# export ARCHFLAGS="-arch x86_64"
 
 # ssh
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
@@ -129,9 +129,9 @@ for config ($DOTFILES/zsh/*.zsh) source $config
 # export TERM=xterm-256color
 
 # install rbenv
-if hash rbenv 2>/dev/null; then
-    eval "$(rbenv init -)"
-fi
+# if hash rbenv 2>/dev/null; then
+#     eval "$(rbenv init -)"
+# fi
 
 if [[ -d ~/.rvm ]]; then
     PATH=$HOME/.rvm/bin:$PATH # Add RVM to PATH for scripting
