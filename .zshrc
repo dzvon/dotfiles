@@ -1,8 +1,12 @@
 export DOTFILES=$HOME/.dotfiles
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/.cargo/bin:$DOTFILES/bin:$HOME/bin:$HOME/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/.composer/vendor/bin/:$HOME/go/bin:$PATH
-# Path to your oh-my-zsh installation.
-ZSH=/usr/share/oh-my-zsh/
+
+# Get the path to oh-my-zsh installation.
+# For FreeBSD, the installation directory is /usr/local/share/ohmyzsh/
+[[ -d /usr/local/share/ohmyzsh/ ]] && ZSH=/usr/local/share/ohmyzsh/
+# For Linux, the installation directory is /usr/share/oh-my-zsh/
+[[ -d /usr/share/oh-my-zsh/ ]] && ZSH=/usr/share/oh-my-zsh/
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -82,14 +86,14 @@ plugins=(
 # fi
 
 source $ZSH/oh-my-zsh.sh
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
-# export LANG=zh_CN.UTF-8
+export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
 if hash nvim 2>/dev/null; then
@@ -126,7 +130,7 @@ for config ($DOTFILES/zsh/*.zsh) source $config
     # [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
         # eval "$("$BASE16_SHELL/profile_helper.sh")"
 
-# export TERM=xterm-256color
+# export TERM=screen-256color
 
 # install rbenv
 # if hash rbenv 2>/dev/null; then
@@ -146,7 +150,7 @@ function proxy_on() {
     export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com"
 
     if (( $# > 0 )); then
-        valid=$(echo $@ | sed -n 's/\([0-9]\{1,3\}.\?\)\{4\}:\([0-9]\+\)/&/p')
+        valid=$(echo $@ | sed 's/\([0-9]\{1,3\}.\?\)\{4\}:\([0-9]\+\)/&/p')
         if [[ $valid != $@ ]]; then
             >&2 echo "Invalid address"
             return 1
@@ -209,10 +213,14 @@ _fzf_compgen_dir() {
 
 export FZF_DEFAULT_COMMAND='fd --type f'
 
-export RUSTC_WRAPPER=$(which sccache)
+# export RUSTC_WRAPPER=$(which sccache)
 
-export DENO_INSTALL="/home/pvon/.deno"
-export PATH="$(yarn global bin):$DENO_INSTALL/bin:$PATH"
+export DENO_INSTALL="$HOME/.deno"
+export PATH="$DENO_INSTALL/bin:$PATH"
+
+if hash yarn 2>/dev/null; then
+    export PATH="$(yarn global bin):$PATH"
+fi
 
 if hash starship 2>/dev/null; then
     eval "$(starship init zsh)"
@@ -226,5 +234,5 @@ export WASMTIME_HOME="$HOME/.wasmtime"
 
 export PATH="$WASMTIME_HOME/bin:$PATH"
 
-export FLYCTL_INSTALL="/home/pvon/.fly"
+export FLYCTL_INSTALL="$HOME/.fly"
 export PATH="$FLYCTL_INSTALL/bin:$PATH"
