@@ -77,7 +77,7 @@ ZSH_CUSTOM=$DOTFILES/oh-my-zsh-plugins
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  zsh-autosuggestions vi-mode rust docker git kubectl
+  zsh-autosuggestions vi-mode rust docker git kubectl zsh-syntax-highlighting
 )
 
 # ZSH_CACHE_DIR=$HOME/.cache/oh-my-zsh
