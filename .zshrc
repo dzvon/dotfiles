@@ -2,11 +2,8 @@ export DOTFILES=$HOME/.dotfiles
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/.cargo/bin:$DOTFILES/bin:$HOME/bin:$HOME/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/.composer/vendor/bin/:$HOME/go/bin:$PATH
 
-# Get the path to oh-my-zsh installation.
-# For FreeBSD, the installation directory is /usr/local/share/ohmyzsh/
-[[ -d /usr/local/share/ohmyzsh/ ]] && ZSH=/usr/local/share/ohmyzsh/
-# For Linux, the installation directory is /usr/share/oh-my-zsh/
-[[ -d /usr/share/oh-my-zsh/ ]] && ZSH=/usr/share/oh-my-zsh/
+# Set the path to oh-my-zsh installation.
+ZSH=$DOTFILES/.ohmyzsh
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
