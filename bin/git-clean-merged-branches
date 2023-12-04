@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+# Check if no arguments are supplied
+if [ $# -eq 0 ]; then
+  # Echo a message to the user
+  echo "Please provide a branch name as an argument"
+  # Exit the script
+  exit 1
+fi
+
+# Get the current branch name
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+# Loop through all the local branches
+for branch in $(git for-each-ref --format='%(refname:short)' refs/heads/); do
+  # Skip the current branch and the argument branch
+  if [[ $branch != $current_branch && $branch != "$1" ]]; then
+    # Check if the branch is merged into the argument branch
+    if git merge-base --is-ancestor $branch "$1"; then
+      # Delete the branch
+      git branch -D $branch
+    fi
+  fi
+done

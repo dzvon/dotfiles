@@ -53,6 +53,8 @@ Plug 'szw/vim-maximizer'
 
 Plug 'github/copilot.vim'
 
+Plug 'terrastruct/d2-vim'
+
 call plug#end()
 
 " copilot config
@@ -346,6 +348,7 @@ if has("autocmd")
     autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
     " Treat .md files as Markdown
     autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
+    autocmd BufRead,BufNewFile *.hurl setlocal filetype=hurl
     " Use LSP omni-completion in Rust files
     " autocmd Filetype rust,php,go setlocal omnifunc=v:lua.vim.lsp.omnifunc
     " Auto-format *.rs files prior to saving them
@@ -524,7 +527,7 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { "gopls", "clangd", "pyright", "rome" }
+local servers = { "gopls", "clangd", "pyright", "denols" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     on_attach = on_attach,
@@ -547,8 +550,12 @@ nvim_lsp["rust_analyzer"].setup {
   },
 }
 
-nvim_lsp["rome"].setup {
-  cmd = { "rome", "lsp_proxy" },
+-- nvim_lsp["rome"].setup {
+--   cmd = { "rome", "lsp_proxy" },
+-- }
+
+nvim_lsp["denols"].setup {
+  single_file_support = true,
 }
 
 -- luasnip setup
@@ -627,9 +634,9 @@ require("bufferline").setup{}
 require('telescope').setup{
   -- ...
 }
-require("indent_blankline").setup {
+require("ibl").setup {
     -- for example, context is off by default, use this to turn it on
-    show_current_context = true,
-    show_current_context_start = true,
+    -- show_current_context = true,
+    -- show_current_context_start = true,
 }
 EOF

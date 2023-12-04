@@ -10,8 +10,8 @@ if hash lsd 2>/dev/null; then
     alias ls='lsd'
 fi
 
-if hash exa 2>/dev/null; then
-    alias ls='exa'
+if hash eza 2>/dev/null; then
+    alias ls='eza'
 fi
 
 # Filesystem aliases
