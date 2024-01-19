@@ -538,6 +538,10 @@ for _, lsp in ipairs(servers) do
   }
 end
 
+nvim_lsp["clangd"].setup {
+  cmd = { "clangd15", "--background-index", "--header-insertion=never" }
+}
+
 nvim_lsp["rust_analyzer"].setup {
   on_attach = on_attach,
   capabilities = capabilities,
@@ -545,6 +549,9 @@ nvim_lsp["rust_analyzer"].setup {
     ["rust-analyzer"] = {
       diagnostics = {
         enable = false,
+      },
+      cargo = {
+        features = "all"
       }
     }
   },

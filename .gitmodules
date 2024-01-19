@@ -13,15 +13,6 @@
 [submodule "tmux-plugins/tmux-continuum"]
 	path = tmux-plugins/tmux-continuum
 	url = https://github.com/tmux-plugins/tmux-continuum
-[submodule "oh-my-zsh-plugins/plugins/zsh-autosuggestions"]
-	path = oh-my-zsh-plugins/plugins/zsh-autosuggestions
-	url = https://github.com/zsh-users/zsh-autosuggestions
-[submodule "oh-my-zsh-plugins/plugins/zsh-syntax-highlighting"]
-	path = oh-my-zsh-plugins/plugins/zsh-syntax-highlighting
-	url = https://github.com/zsh-users/zsh-syntax-highlighting
-[submodule ".ohmyzsh"]
-	path = .ohmyzsh
-	url = https://github.com/ohmyzsh/ohmyzsh.git
 [submodule "tmux-plugins/tmux-cpu"]
 	path = tmux-plugins/tmux-cpu
 	url = https://github.com/tmux-plugins/tmux-cpu

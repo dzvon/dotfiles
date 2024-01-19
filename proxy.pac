@@ -8727,13 +8727,14 @@ function cidrToIpMask(cidr) {
 }
 
 function FindProxyForURL(url, host) {
-    var proxy = "SOCKS5 127.0.0.1:1080";
+    var proxy = "PROXY 127.0.0.1:8123; SOCKS5 127.0.0.1:1080";
 
     // Force proxy
     if (
         dnsDomainIs(host, "bing.com") ||
         dnsDomainIs(host, "googleapis.com") ||
-        dnsDomainIs(host, "gstatic.com")
+        dnsDomainIs(host, "gstatic.com") ||
+        dnsDomainIs(host, "google.com")
         ) {
         return proxy;
     }
@@ -8887,7 +8888,6 @@ function FindProxyForURL(url, host) {
         dnsDomainIs(host, "ewqcxz.com") ||
         dnsDomainIs(host, "feng.com") ||
         dnsDomainIs(host, "fir.im") ||
-        dnsDomainIs(host, "firefox.com") ||
         dnsDomainIs(host, "frdic.com") ||
         dnsDomainIs(host, "fresh-ideas.cc") ||
         dnsDomainIs(host, "gameloft.com") ||

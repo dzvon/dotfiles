@@ -153,3 +153,12 @@
 	helper = cache --timeout=2592000
 [pull]
 	rebase = false
+[safe]
+	directory = /usr/ports
+	directory = /usr/src
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/local/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/usr/local/bin/gh auth git-credential
