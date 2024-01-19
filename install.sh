@@ -1,13 +1,15 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 set -x
 
-function doIt() {
+doIt() {
     ln -s ~/.dotfiles/.config/nvim ~/.config/nvim
-    ln -s ~/.dotfiles/.tmux.conf ~/.tmux.conf
-    ln -s ~/.dotfiles/.zshrc ~/.zshrc
     ln -s ~/.dotfiles/.config/alacritty ~/.config/alacritty
+    ln -s ~/.dotfiles/.config/sway ~/.config/sway
+    ln -s ~/.dotfiles/.config/waybar ~/.config/waybar
+
     ln -s ~/.dotfiles/.gitconfig ~/.gitconfig
+    ln -s ~/.dotfiles/.tmux.conf ~/.tmux.conf
 }
 
 doIt

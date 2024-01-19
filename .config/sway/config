@@ -34,7 +34,8 @@ output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
 # Example configuration:
 #
 #   output HDMI-A-1 resolution 1920x1080 position 1920,0
-output DP-1 scale 1.5
+# output DP-1 scale 1.5
+output DP-1 scale 2
 # output eDP-1 scale 2 resolution 2736x1824 position 0,960
 # focus output eDP-1
 #
