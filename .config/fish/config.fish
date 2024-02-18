@@ -16,6 +16,8 @@ set -x PATH \
 set -x GOPATH $HOME/GoWork
 set -x PATH $PATH $GOPATH/bin
 
+set -x PATH $PATH /opt/local/bin
+
 set -x FLYCTL_INSTALL $HOME/.fly
 set -x PATH $PATH $FLYCTL_INSTALL/bin
 

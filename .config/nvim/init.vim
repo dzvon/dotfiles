@@ -5,8 +5,8 @@ call plug#begin()
 
 Plug 'nvim-lua/plenary.nvim'
 
-Plug 'kyazdani42/nvim-web-devicons' " for file icons
-Plug 'kyazdani42/nvim-tree.lua'
+Plug 'nvim-tree/nvim-web-devicons' " for file icons
+Plug 'nvim-tree/nvim-tree.lua'
 
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
@@ -54,6 +54,8 @@ Plug 'szw/vim-maximizer'
 Plug 'github/copilot.vim'
 
 Plug 'terrastruct/d2-vim'
+
+Plug 'google/vim-jsonnet'
 
 call plug#end()
 
@@ -527,7 +529,7 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { "gopls", "clangd", "pyright", "denols" }
+local servers = { "gopls", "clangd", "pyright", "denols", "jsonnet_ls" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     on_attach = on_attach,
@@ -539,7 +541,7 @@ for _, lsp in ipairs(servers) do
 end
 
 nvim_lsp["clangd"].setup {
-  cmd = { "clangd15", "--background-index", "--header-insertion=never" }
+  cmd = { "clangd", "--background-index", "--header-insertion=never" }
 }
 
 nvim_lsp["rust_analyzer"].setup {
@@ -645,5 +647,13 @@ require("ibl").setup {
     -- for example, context is off by default, use this to turn it on
     -- show_current_context = true,
     -- show_current_context_start = true,
+}
+require('nvim-treesitter.configs').setup {
+  highlight = {
+    enable = true,
+  },
+  indent = {
+    enable = true
+  }
 }
 EOF

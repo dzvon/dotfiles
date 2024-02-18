@@ -13,3 +13,9 @@ style = "Italic"
 [font.normal]
 family = "CaskaydiaCove Nerd Font"
 style = "Regular"
+
+[font]
+size = 16
+
+[window]
+option_as_alt = "OnlyLeft"
