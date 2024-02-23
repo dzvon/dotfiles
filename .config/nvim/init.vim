@@ -354,7 +354,7 @@ if has("autocmd")
     " Use LSP omni-completion in Rust files
     " autocmd Filetype rust,php,go setlocal omnifunc=v:lua.vim.lsp.omnifunc
     " Auto-format *.rs files prior to saving them
-    autocmd BufWritePre *.rs,*.go :lua vim.lsp.buf.format(nil, 1000)
+    autocmd BufWritePre *.rs,*.go,*.tf :lua vim.lsp.buf.format(nil, 1000)
     " Get the 2-space YAML as the default when hit carriage return after the colon
     autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
     " Trim trailing white space on save
@@ -529,7 +529,7 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { "gopls", "clangd", "pyright", "denols", "jsonnet_ls" }
+local servers = { "gopls", "clangd", "pyright", "denols", "jsonnet_ls", "terraformls", "lua_ls" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     on_attach = on_attach,
@@ -636,7 +636,21 @@ cmp.setup.cmdline(':', {
   })
 })
 
-require 'nvim-tree'.setup {}
+
+local function nvim_tree_on_attach(bufnr)
+  local api = require('nvim-tree.api')
+
+  -- Use all default mappings
+  api.config.mappings.default_on_attach(bufnr)
+
+  -- Remove some STUPID default key mappings
+  vim.keymap.del('n', 'M', { buffer = bufnr })
+  vim.keymap.del('n', 'H', { buffer = bufnr })
+  vim.keymap.del('n', 'L', { buffer = bufnr })
+end
+require 'nvim-tree'.setup {
+  on_attach = nvim_tree_on_attach
+}
 require('gitsigns').setup()
 require('feline').setup()
 require("bufferline").setup{}
