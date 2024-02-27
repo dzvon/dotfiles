@@ -67,7 +67,7 @@ if status is-interactive
             return 1
         end
 
-        openssl rand -base64 $length | tr -d '\n'
+        openssl rand -base64 $length | cut -c1-$length | tr -d '\n'
     end
 
     # Aliases.

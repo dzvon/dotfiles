@@ -649,7 +649,8 @@ local function nvim_tree_on_attach(bufnr)
   vim.keymap.del('n', 'L', { buffer = bufnr })
 end
 require 'nvim-tree'.setup {
-  on_attach = nvim_tree_on_attach
+  on_attach = nvim_tree_on_attach,
+  sync_root_with_cwd = false,
 }
 require('gitsigns').setup()
 require('feline').setup()
