@@ -466,6 +466,12 @@ nnoremap <C-6> <C-^>
 " Select the last changed text(or the text that was just pasted)
 nnoremap gp `[v`]
 
+" Use CTRL+{h,j,k,l} to navigate windows in terminal-mode
+tnoremap <C-h> <C-\><C-N><C-w>h
+tnoremap <C-j> <C-\><C-N><C-w>j
+tnoremap <C-k> <C-\><C-N><C-w>k
+tnoremap <C-l> <C-\><C-N><C-w>l
+
 " Diff current buffer and the original file
 function! s:DiffWithSaved()
     let filetype=&ft
