@@ -14,7 +14,7 @@ Plug 'lewis6991/gitsigns.nvim'
 Plug 'akinsho/bufferline.nvim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
-Plug 'feline-nvim/feline.nvim'
+Plug 'nvim-lualine/lualine.nvim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'easymotion/vim-easymotion'
 
@@ -535,7 +535,7 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { "gopls", "clangd", "pyright", "denols", "jsonnet_ls", "terraformls", "lua_ls" }
+local servers = { "gopls", "clangd", "pyright", "denols", "jsonnet_ls", "terraformls", "lua_ls", "vale_ls" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     on_attach = on_attach,
@@ -653,13 +653,14 @@ local function nvim_tree_on_attach(bufnr)
   vim.keymap.del('n', 'M', { buffer = bufnr })
   vim.keymap.del('n', 'H', { buffer = bufnr })
   vim.keymap.del('n', 'L', { buffer = bufnr })
+  vim.keymap.del('n', 'e', { buffer = bufnr })
 end
 require 'nvim-tree'.setup {
   on_attach = nvim_tree_on_attach,
   sync_root_with_cwd = false,
 }
 require('gitsigns').setup()
-require('feline').setup()
+require('lualine').setup()
 require("bufferline").setup{}
 require('telescope').setup{
   -- ...
