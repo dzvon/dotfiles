@@ -1,21 +1,22 @@
-[font.bold]
-family = "CaskaydiaCove Nerd Font"
-style = "Bold"
+# [font.bold]
+# family = "MonaspiceNe Nerd Font Mono"
+# style = "Bold"
 
-[font.bold_italic]
-family = "CaskaydiaCove Nerd Font"
-style = "Bold Italic"
+# [font.bold_italic]
+# family = "MonaspiceNe Nerd Font Mono"
+# style = "Bold Italic"
 
-[font.italic]
-family = "CaskaydiaCove Nerd Font"
-style = "Italic"
+# [font.italic]
+# family = "MonaspiceNe Nerd Font Mono"
+# style = "Italic"
 
 [font.normal]
-family = "CaskaydiaCove Nerd Font"
-style = "Regular"
+family = "MonaspiceNe Nerd Font"
+# style = "Regular"
 
 [font]
 size = 16
 
 [window]
+decorations = "None"
 option_as_alt = "OnlyLeft"

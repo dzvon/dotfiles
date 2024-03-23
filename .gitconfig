@@ -148,7 +148,7 @@
 
 [user]
 	name = Dezhi Wu
-	email = oo0bf659r@mozmail.com
+	email = davidwu@theplant.jp
 [credential]
 	helper = cache --timeout=2592000
 [pull]

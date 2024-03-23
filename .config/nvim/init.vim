@@ -57,6 +57,8 @@ Plug 'terrastruct/d2-vim'
 
 Plug 'google/vim-jsonnet'
 
+Plug 'will133/vim-dirdiff'
+
 call plug#end()
 
 " copilot config

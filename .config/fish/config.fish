@@ -87,6 +87,7 @@ if status is-interactive
     alias dt 'cd ~/Desktop'
     alias ssh 'env TERM=xterm-256color ssh'
     alias sudo 'sudo -E'
+    alias tailscale '/Applications/Tailscale.app/Contents/MacOS/Tailscale'
 end
 
 if status is-login
@@ -103,3 +104,5 @@ if status is-login
         set -xg XMODIFIERS @im=fcitx
     end
 end
+
+alias assume="source /usr/local/bin/assume.fish"
