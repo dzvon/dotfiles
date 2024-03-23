@@ -15,8 +15,8 @@ Plug 'akinsho/bufferline.nvim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'nvim-lualine/lualine.nvim'
-Plug 'scrooloose/nerdcommenter'
-Plug 'easymotion/vim-easymotion'
+" Plug 'scrooloose/nerdcommenter'
+" Plug 'easymotion/vim-easymotion'
 
 " Plug 'SirVer/ultisnips'
 Plug 'godlygeek/tabular'
@@ -176,7 +176,8 @@ if $COLORTERM == 'gnome-terminal'
     set t_Co=256
 endif
 
-colorscheme catppuccin-mocha
+" colorscheme catppuccin-mocha
+set background=light
 
 " Set extra options when running in GUI mode
 if has("gui_running")
@@ -346,15 +347,10 @@ let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 if has("autocmd")
     " Enable file type detection
     filetype on
-    " Treat .json files as .js
-    autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
-    " Treat .md files as Markdown
-    autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
     autocmd BufRead,BufNewFile *.hurl setlocal filetype=hurl
-    " Use LSP omni-completion in Rust files
-    " autocmd Filetype rust,php,go setlocal omnifunc=v:lua.vim.lsp.omnifunc
-    " Auto-format *.rs files prior to saving them
-    autocmd BufWritePre *.rs,*.go,*.tf :lua vim.lsp.buf.format(nil, 1000)
+    " Auto-format *.rs (rust) files prior to saving them
+    " (async = false is the default for format)
+    autocmd BufWritePre *.rs,*.go,*.tf lua vim.lsp.buf.format({ async = false })
     " Get the 2-space YAML as the default when hit carriage return after the colon
     autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
     " Trim trailing white space on save
@@ -429,12 +425,12 @@ noremap <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
 noremap \ ,
 noremap <leader>l  : Tab/
 " nnoremap <C-Tab>   : <C-6><CR>
-nnoremap <leader>gs :Git<CR>
-nnoremap <leader>gc :Git commit -v<CR>
-nnoremap <leader>gp :Git push origin HEAD<CR>
-nnoremap <leader>gr :Git rebase<CR>
-nnoremap <leader>gl :Git pull<CR>
-nnoremap <leader>gb :Git blame<CR>
+" nnoremap <leader>gs :Git<CR>
+" nnoremap <leader>gc :Git commit -v<CR>
+" nnoremap <leader>gp :Git push origin HEAD<CR>
+" nnoremap <leader>gr :Git rebase<CR>
+" nnoremap <leader>gl :Git pull<CR>
+" nnoremap <leader>gb :Git blame<CR>
 " Switch quickfix
 nnoremap [q :cprevious<CR>
 nnoremap ]q :cnext<CR>
@@ -496,6 +492,9 @@ function! QuickfixFilenames()
     return join(map(values(buffer_numbers), 'fnameescape(v:val)'))
 endfunction
 
+packadd termdebug
+let g:termdebugger = "rust-gdb"
+
 lua << EOF
 local nvim_lsp = require('lspconfig')
 
@@ -511,13 +510,13 @@ vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<C
 -- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)
   -- Enable completion triggered by <c-x><c-o>
-  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+  -- vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   -- Mappings.
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>k', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
@@ -535,7 +534,7 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { "gopls", "clangd", "pyright", "denols", "jsonnet_ls", "terraformls", "lua_ls", "vale_ls" }
+local servers = { "gopls", "clangd", "pyright", "denols", "jsonnet_ls", "terraformls", "lua_ls" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     on_attach = on_attach,

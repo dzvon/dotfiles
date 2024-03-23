@@ -70,6 +70,13 @@ if status is-interactive
         openssl rand -base64 $length | cut -c1-$length | tr -d '\n'
     end
 
+    function fish_greeting
+        # If has fortune installed, display a random fortune.
+        if command -sq fortune
+            fortune freebsd-tips
+        end
+    end
+
     # Aliases.
     alias ls 'ls -G'
     alias l 'ls -al'
