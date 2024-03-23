@@ -35,7 +35,7 @@ if status is-interactive
 
 
     function proxy_on --argument proxy
-        if not string match -r '^(http|https)://[^/]+:[0-9]+$' $proxy > /dev/null
+        if not string match -r '^(http|https|socks5)://[^/]+:[0-9]+$' $proxy > /dev/null
             echo "Invalid proxy address. Please provide a valid http or https proxy address."
             return 1
         end

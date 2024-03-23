@@ -657,7 +657,6 @@ local function nvim_tree_on_attach(bufnr)
 end
 require 'nvim-tree'.setup {
   on_attach = nvim_tree_on_attach,
-  sync_root_with_cwd = false,
 }
 require('gitsigns').setup()
 require('lualine').setup()
