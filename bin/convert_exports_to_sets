@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+
+# Description:
+# This script converts bash export commands to fish shell's `set -x` syntax.
+# It processes a provided bash script file and outputs the equivalent set of
+# commands for fish shell.
+#
+# Requirements:
+# - Bash environment
+# - Sed utility
+#
+# Usage:
+# ./convert_exports_to_sets /path/to/bash_script.sh
+# The script outputs the converted commands to the standard output.
+#
+# How It Works:
+# 1. Verifies if an argument (file path) has been provided, exits with a usage
+#    message if not.
+# 2. Checks if the provided file path exists, exits with an error if it does not.
+# 3. Reads through each line of the file. For lines starting with `export`, converts
+#    them to fish's `set -x` syntax.
+# 4. Outputs each converted line to the standard output.
+#
+# Example:
+# Given a bash_script.sh with:
+# export PATH="$HOME/bin:$PATH"
+#
+# Running:
+# ./convert_exports_to_sets bash_script.sh
+#
+# Outputs:
+# set -x PATH "$HOME/bin:$PATH"
+#
+# Notes:
+# - The script does not handle complex export statements or special characters
+#   not compatible with fish's `set -x` command.
+# - Review and test the output before using it in a production environment.
+
+# Check if an argument (file path) is provided
+if [ "$#" -lt 1 ]; then
+    echo "Usage: $0 <path_to_bash_script>"
+    exit 1
+fi
+
+# Assign the first argument as the bash script path
+bash_script_path="$1"
+
+# Verify the file exists before proceeding
+if [ ! -f "$bash_script_path" ]; then
+    echo "File does not exist: $bash_script_path"
+    exit 1
+fi
+
+# Process the file
+while IFS= read -r line || [[ -n "$line" ]]; do
+    if [[ $line =~ ^export ]]; then
+        # Convert the export command to fish 'set -x' command
+        converted=$(echo "$line" | sed -E 's/export ([^=]+)=?(.*)/set -x \1 \2/')
+        echo "$converted"
+    fi
+done < "$bash_script_path"
