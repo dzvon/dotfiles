@@ -47,7 +47,7 @@ Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'mbbill/undotree'
 Plug 'lambdalisue/suda.vim'
 
-Plug 'lukas-reineke/indent-blankline.nvim'
+"Plug 'lukas-reineke/indent-blankline.nvim'
 
 Plug 'szw/vim-maximizer'
 
@@ -179,7 +179,7 @@ if $COLORTERM == 'gnome-terminal'
 endif
 
 " colorscheme catppuccin-mocha
-set background=light
+"set background=light
 
 " Set extra options when running in GUI mode
 if has("gui_running")
@@ -663,3 +663,92 @@ require('nvim-treesitter.configs').setup {
   }
 }
 EOF
+
+function! ApplyTextEdits()
+  lua << EOF
+  local function get_buf_content_by_name(buffer_name)
+      -- Iterate through all buffers
+      for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+          -- Check if the buffer is loaded to avoid errors with unloaded buffers
+          if vim.api.nvim_buf_is_loaded(bufnr) then
+              -- Get the name of the buffer
+              local name = vim.api.nvim_buf_get_name(bufnr)
+
+              -- Check if the name matches the one we're looking for
+              if name:match(buffer_name) then
+                  -- Buffer content is obtained as a list of lines
+                  local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+                  -- Return the buffer number and its content (or just the content if preferred)
+                  return bufnr, lines
+              end
+          end
+      end
+
+      -- Return nil if no buffer with the given name is found
+      return nil, nil
+  end
+
+  -- First, require the Treesitter utilities module which provides helper functions
+  local ts_utils = require 'nvim-treesitter.ts_utils'
+
+  -- Obtain the Treesitter parser for the current buffer
+  -- This parser is responsible for generating the syntax tree of the text
+  local ok, parser = pcall(vim.treesitter.get_parser, 0)
+  if not ok then
+      vim.api.nvim_err_writeln('No parser available for the given buffer')
+      return
+  end
+  local lang = parser:lang()
+
+  -- Parse the current buffer's content to generate the syntax tree
+  local tree = parser:parse()
+
+  -- Define a Treesitter query string
+  -- This query aims to find specific syntax nodes in the document following the Treesitter query language
+  -- Note: This specific query is focused on YAML syntax, adjust your query according to your needs
+  local edit_query_buf_name = string.format('%s/query_editor.scm', lang)
+  local _, content = get_buf_content_by_name(edit_query_buf_name)
+
+  if content == nil then
+      vim.api.nvim_err_writeln('No content found in the query editor buffer')
+      return
+  end
+
+  local query_string = table.concat(content, '\n')
+
+  -- Ensure that the query is valid for the given language
+  -- `pcall` is used here to catch any errors thrown if parsing fails, making the script more robust
+  local ok, query = pcall(vim.treesitter.query.parse, lang, query_string)
+  if not ok then
+      -- If the query fails to parse, output an error message and exit the function
+      vim.api.nvim_err_writeln("Failed to parse query. Please ensure it's valid for " .. lang)
+      return
+  end
+
+  -- Initialize a table to store the text edits
+  local edits = {}
+
+  -- Iterate over all matches found by the query in the syntax tree of the current buffer
+  for id, node, metadata, match in query:iter_captures(tree[1]:root(), 0, 0, -1) do
+      -- Checks if there's metadata associated with the capture, which includes any changes or annotations specified in the query
+      if metadata and metadata[id] then
+          if metadata[id].text then
+              -- Convert the node's position in the syntax tree to an LSP range
+              -- LSP (Language Server Protocol) ranges are used to specify text positions and are understood by Neovim's LSP functions
+              local lsp_range = ts_utils.node_to_lsp_range(node)
+
+              -- Create a text edit object containing the LSP range and the replacement text
+              local text_edit = { range = lsp_range, newText = metadata[id].text }
+
+              -- Add the text edit to the list of edits to apply
+              table.insert(edits, text_edit)
+          end
+      end
+  end
+
+  -- Apply the calculated text edits to the current buffer
+  -- This utilizes Neovim's LSP utility functions to perform the replacements specified by the edits
+  vim.lsp.util.apply_text_edits(edits, vim.api.nvim_get_current_buf(), "utf-8")
+EOF
+endfunction
+command! ApplyTextEdits call ApplyTextEdits()

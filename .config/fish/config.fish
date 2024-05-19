@@ -105,4 +105,6 @@ if status is-login
     end
 end
 
+fish_config prompt choose minimalist
+
 alias assume="source /usr/local/bin/assume.fish"
