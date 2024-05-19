@@ -87,11 +87,6 @@ if status is-interactive
     alias dt 'cd ~/Desktop'
     alias ssh 'env TERM=xterm-256color ssh'
     alias sudo 'sudo -E'
-
-    switch (uname)
-    case Darwin
-        alias tailscale '/Applications/Tailscale.app/Contents/MacOS/Tailscale'
-    end
 end
 
 if status is-login
@@ -109,6 +104,6 @@ if status is-login
     end
 end
 
-fish_config prompt choose minimalist
+fish_config prompt choose informative_vcs
 
 alias assume="source /usr/local/bin/assume.fish"

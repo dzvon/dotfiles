@@ -18,5 +18,5 @@ family = "MonaspiceNe Nerd Font"
 size = 16
 
 [window]
-decorations = "None"
+# decorations = "None"
 option_as_alt = "OnlyLeft"
