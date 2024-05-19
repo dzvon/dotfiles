@@ -20,3 +20,8 @@ size = 16
 [window]
 # decorations = "None"
 option_as_alt = "OnlyLeft"
+
+[keyboard]
+bindings = [
+  { key = "Key6", mods = "Control", chars = "\u001e" }
+]
