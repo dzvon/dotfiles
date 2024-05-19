@@ -32,6 +32,7 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/cmp-cmdline'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp' " LSP source for nvim-cmp
+Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
 " Plug 'hrsh7th/vim-vsnip-integ'
@@ -60,6 +61,9 @@ Plug 'google/vim-jsonnet'
 
 Plug 'will133/vim-dirdiff'
 
+Plug 'sourcegraph/sg.nvim', { 'do': 'nvim -l build/init.lua' }
+
+Plug 'vlime/vlime', {'rtp': 'vim/'}
 call plug#end()
 
 " copilot config
@@ -511,8 +515,7 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>f', '<cmd>lua vim.lsp.buf.format()<CR>', opts)
 end
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
@@ -569,39 +572,36 @@ cmp.setup {
       -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
     end,
   },
-  mapping = {
-    ['<C-p>'] = cmp.mapping.select_prev_item(),
-    ['<C-n>'] = cmp.mapping.select_next_item(),
-    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-e>'] = cmp.mapping.close(),
-    ['<CR>'] = cmp.mapping.confirm {
-      behavior = cmp.ConfirmBehavior.Replace,
-      select = true,
-    },
-    ['<Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      -- elseif vsnip.expand_or_jump() then
-      --   vsnip.expand_or_jump()
-      else
-        fallback()
-      end
+  mapping = cmp.mapping.preset.insert ({
+  ['<C-p>'] = cmp.mapping.select_prev_item(),
+  ['<C-n>'] = cmp.mapping.select_next_item(),
+  ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+  ['<C-f>'] = cmp.mapping.scroll_docs(4),
+  ['<C-Space>'] = cmp.mapping.complete(),
+  ['<C-e>'] = cmp.mapping.abort(),
+  ['<CR>'] = cmp.mapping.confirm { select = true },
+  ['<Tab>'] = cmp.mapping(function(fallback)
+  if cmp.visible() then
+    cmp.select_next_item()
+    -- elseif vsnip.expand_or_jump() then
+    --   vsnip.expand_or_jump()
+  else
+    fallback()
+    end
     end, { 'i', 's' }),
     ['<S-Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
+    if cmp.visible() then
+      cmp.select_prev_item()
       -- elseif vsnip.jumpable(-1) then
       --   vsnip.jump(-1)
       else
         fallback()
       end
-    end, { 'i', 's' }),
-    ['<C-e>'] = cmp.mapping(function(fallback)
+      end, { 'i', 's' }),
+      ['<C-e>'] = cmp.mapping(function(fallback)
       vim.api.nvim_feedkeys(vim.fn['copilot#Accept'](vim.api.nvim_replace_termcodes('<Tab>', true, true, true)), 'n', true)
-    end)
-  },
+      end)
+  }),
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
     { name = 'vsnip' }, -- For vsnip users.
@@ -609,7 +609,7 @@ cmp.setup {
     -- { name = 'ultisnips' }, -- For ultisnips users.
     -- { name = 'snippy' }, -- For snippy users.
     }, {
-      { name = 'buffer' },
+      { name = 'cody' }
     })
 }
 
@@ -657,6 +657,9 @@ require('nvim-treesitter.configs').setup {
   indent = {
     enable = true
   }
+}
+require('sg').setup {
+  on_attach = on_attach,
 }
 EOF
 
