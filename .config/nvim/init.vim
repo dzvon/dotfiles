@@ -226,20 +226,6 @@ set ai "Auto indent
 set si "Smart indent
 set wrap "Wrap lines
 
-""""""""""""""""""""""""""""""
-" => Visual mode related
-""""""""""""""""""""""""""""""
-" Visual star search
-xnoremap *         : <C-u>call <SID>VSetSearch() <CR>/<C-R>=@/<CR><CR>
-xnoremap #         : <C-u>call <SID>VSetSearch() <CR>?<C-R>=@/<CR><CR>
-
-function! s:VSetSearch()
-    let temp = @s
-    norm! gv"sy
-    let @/ = '\V' . substitute(escape(@s, '/\'), '\n', '\\n', 'g')
-    let @s = temp
-endfunction
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Moving around, tabs, windows and buffers
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -302,7 +288,7 @@ nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
 au TabLeave * let g:lasttab = tabpagenr()
 
 " cd to the directory containing the file in the buffer
-noremap <leader>cd :tcd %:h<CR>:pwd<cr>
+noremap <leader>cd :lcd %:h<CR>:pwd<cr>
 
 " Specify the behavior when switching between buffers
 try
@@ -440,8 +426,6 @@ nnoremap ]q :cnext<CR>
 nnoremap [l :lprevious<CR>
 nnoremap ]l :lnext<CR>
 
-nnoremap ]c <cmd>Gitsigns next_hunk<CR>
-nnoremap [c <cmd>Gitsigns prev_hunk<CR>
 " Down is really the next line
 noremap j gj
 noremap k gk
@@ -458,7 +442,7 @@ com Wdt windo diffthis
 com Wdo diffoff!
 com CloseNoNameBuf :bufdo if bufname('%') == '' | silent execute 'bwipeout! %' | endif
 
-nnoremap <silent> <Leader>scb :windo set scrollbind!<CR>
+com Scb windo set scrollbind!
 
 nnoremap <C-6> <C-^>
 " Select the last changed text(or the text that was just pasted)
