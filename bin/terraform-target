@@ -1,0 +1,137 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+: "${TERRAFORM_BINARY=terraform}"
+: "${TF_PARALLELISM=20}"  # Default parallelism to 20, adjust as needed
+
+export TF_CLI_ARGS="-parallelism=${TF_PARALLELISM}"
+
+_awk() {
+    if command -v gawk >/dev/null 2>&1; then
+        gawk "$@" 2>/dev/null
+    else
+        awk "$@"
+    fi
+}
+
+check_requirements() {
+    for c in awk cat fzf mktemp; do
+        if ! command -v "${c}" >/dev/null 2>&1; then
+            echo "command not found: ${c}" >&2
+            exit 1
+        fi
+    done
+    echo "All requirements are met"
+}
+
+preview() {
+    terraform_plan_text_output_filename="$1"
+    terraform_change_name="$2"
+
+    _awk -v change_name="$terraform_change_name" '
+        BEGIN {
+            gsub(/\[/, "\\\[", change_name)
+            re = ".{0,4}# " change_name ".{0,5}(must|will) be .+"
+        }
+        f;
+        $0 ~ re { print $0; f = 1 }
+        /^    \}$/ { f = 0 }
+    ' <"$terraform_plan_text_output_filename"
+}
+
+_action_on_state_targets() {
+    local terraform_command="$1"
+    shift
+    # shellcheck disable=SC2206
+    local target_keywords=(${1//,/ })
+    shift
+
+    $TERRAFORM_BINARY state list || exit 1
+
+    local selected_terraform_resources
+    # shellcheck disable=SC2207,SC2002
+    selected_terraform_resources=($(
+        $TERRAFORM_BINARY state list |
+            fzf --multi --preview "$TERRAFORM_BINARY state show {}"
+    ))
+
+    echo "Selected resources:"
+    local terraform_params=()
+    for t in "${selected_terraform_resources[@]}"; do
+        echo " - $t"
+        for k in "${target_keywords[@]}"; do
+            terraform_params+=("-$k=$t")
+        done
+    done
+
+    $TERRAFORM_BINARY "$terraform_command" "${terraform_params[@]}"
+}
+
+apply() {
+    local terraform_plan_output
+    terraform_plan_output="$(mktemp -t terraform-plan-output.XXXXXX)"
+    $TERRAFORM_BINARY plan "$@" | tee "$terraform_plan_output"
+
+    local terraform_change_selector='^ \[1m  # .+ (must|will) be .+$'
+    local selected_changes
+
+    # shellcheck disable=SC2207,SC2002
+    selected_changes=($(
+        cat "$terraform_plan_output" |
+            sed 's/\x1b/ /g' |
+            sed 's/\t/ /g' |
+            grep -oE "$terraform_change_selector" |
+            awk '{ print $3 }' |
+            fzf --multi \
+                --preview "$0 preview '$terraform_plan_output' {}"
+    ))
+    selected=$?
+    rm "$terraform_plan_output"
+    [ $selected -eq 0 ] || exit $selected
+
+    echo "Selected changes:"
+    local terraform_params=()
+    for t in "${selected_changes[@]}"; do
+        echo " - $t"
+        terraform_params+=("-target=$t")
+    done
+
+    if [ -z "${TERRAFORM_PARTIAL_APPLY_TARGET_FILE+x}" ]; then
+        TERRAFORM_PARTIAL_APPLY_TARGET_FILE=$(mktemp -t tf-partial-apply-target.XXXXXX) || return 1
+        export TERRAFORM_PARTIAL_APPLY_TARGET_FILE
+    fi
+    echo "${terraform_params[@]}" >"$TERRAFORM_PARTIAL_APPLY_TARGET_FILE"
+
+    $TERRAFORM_BINARY apply "${terraform_params[@]}" "$@"
+}
+
+apply_repeat() {
+    if [ -z "${TERRAFORM_PARTIAL_APPLY_TARGET_FILE+x}" ]; then
+        echo "Terraform targets are not set, run '$0 apply' fist"
+        exit 1
+    elif [ ! -f "$TERRAFORM_PARTIAL_APPLY_TARGET_FILE" ]; then
+        echo "File '$TERRAFORM_PARTIAL_APPLY_TARGET_FILE' doesn't exist, run '$0 apply' again"
+        exit 1
+    else
+        # shellcheck disable=SC2046
+        "$TERRAFORM_BINARY" apply $(cat "$TERRAFORM_PARTIAL_APPLY_TARGET_FILE") "$@"
+    fi
+}
+
+replace() {
+    _action_on_state_targets apply target,replace
+}
+
+destroy() {
+    _action_on_state_targets destroy target
+}
+
+if [ $# -lt 1 ]; then
+    echo "Usage: $0 command options"
+    exit 1
+fi
+
+cmd="$(printf '%s' "$1" | tr '-' '_')"
+shift
+"$cmd" "$@"
