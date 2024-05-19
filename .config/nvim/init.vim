@@ -529,7 +529,7 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { "gopls", "clangd", "pyright", "jsonnet_ls", "terraformls", "denols", "lua_ls", "tsserver" }
+local servers = { "gopls", "clangd", "pyright", "jsonnet_ls", "terraformls", "denols", "lua_ls", "ts_ls" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     flags = {
@@ -557,7 +557,7 @@ nvim_lsp["rust_analyzer"].setup {
   },
 }
 
-nvim_lsp["tsserver"].setup {
+nvim_lsp["ts_ls"].setup {
   root_dir = nvim_lsp.util.root_pattern("package.json"),
   single_file_support = false
 }
@@ -672,15 +672,23 @@ require('sg').setup()
 
 require('dressing').setup()
 require('codecompanion').setup({
-  adapters = {
-    openai = function ()
-      return require('codecompanion.adapters').extend('openai', {
-        env = {
-          api_key = "cmd:pass show API_Keys/openai"
-        }
-      })
-    end,
+  strategies = {
+    chat = {
+      adapter = 'copilot',
+    },
+    inline = {
+      adapter = 'copilot',
+    }
   }
+  -- adapters = {
+  --   openai = function ()
+  --     return require('codecompanion.adapters').extend('openai', {
+  --       env = {
+  --         api_key = "cmd:pass show API_Keys/openai2"
+  --       }
+  --     })
+  --   end,
+  -- }
 })
 EOF
 
