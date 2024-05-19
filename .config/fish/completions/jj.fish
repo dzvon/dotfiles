@@ -1522,3 +1522,14 @@ complete -c jj -n "__fish_seen_subcommand_from help; and __fish_seen_subcommand_
 complete -c jj -n "__fish_seen_subcommand_from help; and __fish_seen_subcommand_from workspace; and not __fish_seen_subcommand_from add; and not __fish_seen_subcommand_from forget; and not __fish_seen_subcommand_from list; and not __fish_seen_subcommand_from root; and not __fish_seen_subcommand_from update-stale" -f -a "list" -d 'List workspaces'
 complete -c jj -n "__fish_seen_subcommand_from help; and __fish_seen_subcommand_from workspace; and not __fish_seen_subcommand_from add; and not __fish_seen_subcommand_from forget; and not __fish_seen_subcommand_from list; and not __fish_seen_subcommand_from root; and not __fish_seen_subcommand_from update-stale" -f -a "root" -d 'Show the current workspace root directory'
 complete -c jj -n "__fish_seen_subcommand_from help; and __fish_seen_subcommand_from workspace; and not __fish_seen_subcommand_from add; and not __fish_seen_subcommand_from forget; and not __fish_seen_subcommand_from list; and not __fish_seen_subcommand_from root; and not __fish_seen_subcommand_from update-stale" -f -a "update-stale" -d 'Update a workspace that has become stale'
+
+function __complete_jj_all_branches
+    jj branch list --all-remotes --no-pager | sed 's/:.*//' | awk '{print $1}'
+end
+
+
+complete -c jj -n "__fish_seen_subcommand_from branch; and __fish_seen_subcommand_from delete" -f -a "(__complete_jj_all_branches)" -d 'Branch to delete'
+complete -c jj -n "__fish_seen_subcommand_from branch; and __fish_seen_subcommand_from rename" -f -a "(__complete_jj_all_branches)" -d 'Branch to rename'
+complete -c jj -n "__fish_seen_subcommand_from branch; and __fish_seen_subcommand_from set" -f -a "(__complete_jj_all_branches)" -d 'Branch to update'
+complete -c jj -n "__fish_seen_subcommand_from branch; and __fish_seen_subcommand_from track" -f -a "(__complete_jj_all_branches)" -d 'Branch to track'
+complete -c jj -n "__fish_seen_subcommand_from branch; and __fish_seen_subcommand_from untrack" -f -a "(__complete_jj_all_branches)" -d 'Branch to untrack'
