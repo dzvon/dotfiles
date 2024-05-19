@@ -670,13 +670,7 @@ require('nvim-treesitter.configs').setup {
 
 require('sg').setup()
 
-require('dressing').setup({
-    input = {
-        win_options = {
-            winhighlight = 'NormalFloat:DiagnosticError'
-        }
-    }
-})
+require('dressing').setup()
 require('codecompanion').setup({
   adapters = {
     openai = function ()
