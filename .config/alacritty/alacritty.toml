@@ -23,5 +23,6 @@ option_as_alt = "OnlyLeft"
 
 [keyboard]
 bindings = [
-  { key = "Key6", mods = "Control", chars = "\u001e" }
+  { key = "Key6" , mods = "Control"       , chars = "\u001e" } ,
+  { key = "P"    , mods = "Control|Shift" , mode = "~Vi|~Search" , action = "ToggleViMode" } ,
 ]
