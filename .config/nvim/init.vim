@@ -64,6 +64,9 @@ Plug 'will133/vim-dirdiff'
 Plug 'sourcegraph/sg.nvim', { 'do': 'nvim -l build/init.lua' }
 
 Plug 'vlime/vlime', {'rtp': 'vim/'}
+
+Plug 'olimorris/codecompanion.nvim'
+Plug 'stevearc/dressing.nvim'
 call plug#end()
 
 " copilot config
@@ -340,6 +343,7 @@ if has("autocmd")
     autocmd BufWritePre *.rs,*.go,*.tf,*.ts lua vim.lsp.buf.format({ async = false })
     " Get the 2-space YAML as the default when hit carriage return after the colon
     autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+    autocmd FileType typescript setlocal sw=2
     " Trim trailing white space on save
     autocmd BufWritePre * :call StripWhitespace()
 endif
@@ -443,7 +447,7 @@ com CloseNoNameBuf :bufdo if bufname('%') == '' | silent execute 'bwipeout! %' |
 
 com Scb windo set scrollbind!
 
-nnoremap <C-6> <C-^>
+"nnoremap <C-6> <C-^>
 " Select the last changed text(or the text that was just pasted)
 nnoremap gp `[v`]
 
@@ -480,7 +484,7 @@ local nvim_lsp = require('lspconfig')
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = { noremap=true, silent=true }
-vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
+vim.api.nvim_set_keymap('n', 'gq', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
 
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(args)
@@ -488,7 +492,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     local client = vim.lsp.get_client_by_id(args.data.client_id)
     if client.supports_method('textDocument/rename') then
       -- Create a keymap for vim.lsp.buf.rename()
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+      vim.api.nvim_buf_set_keymap(bufnr, 'n', 'grn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
     end
     if client.supports_method('textDocument/implementation') then
       -- Create a keymap for vim.lsp.buf.implementation
@@ -504,7 +508,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end
     if client.supports_method('textDocument/codeAction') then
       -- Create a keymap for vim.lsp.buf.code_action
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+      vim.api.nvim_buf_set_keymap(bufnr, 'n', 'g.', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
     end
     if client.supports_method('textDocument/references') then
       -- Create a keymap for vim.lsp.buf.references
@@ -516,7 +520,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end
     if client.supports_method('textDocument/signatureHelp') then
       -- Create a keymap for vim.lsp.buf.signature_help()
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>k', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+      vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gk', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
     end
   end,
 })
@@ -629,7 +633,6 @@ cmp.setup.cmdline(':', {
   })
 })
 
-
 local function nvim_tree_on_attach(bufnr)
   local api = require('nvim-tree.api')
 
@@ -664,6 +667,27 @@ require('nvim-treesitter.configs').setup {
     enable = true
   }
 }
+
+require('sg').setup()
+
+require('dressing').setup({
+    input = {
+        win_options = {
+            winhighlight = 'NormalFloat:DiagnosticError'
+        }
+    }
+})
+require('codecompanion').setup({
+  adapters = {
+    openai = function ()
+      return require('codecompanion.adapters').extend('openai', {
+        env = {
+          api_key = "cmd:pass show API_Keys/openai"
+        }
+      })
+    end,
+  }
+})
 EOF
 
 function! ApplyTextEdits()
