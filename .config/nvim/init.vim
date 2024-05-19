@@ -9,6 +9,7 @@ Plug 'nvim-tree/nvim-web-devicons' " for file icons
 Plug 'nvim-tree/nvim-tree.lua'
 
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/nvim-treesitter-context'
 
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'akinsho/bufferline.nvim'
@@ -179,7 +180,8 @@ if $COLORTERM == 'gnome-terminal'
 endif
 
 " colorscheme catppuccin-mocha
-"set background=light
+set background=light
+colorscheme catppuccin-mocha
 
 " Set extra options when running in GUI mode
 if has("gui_running")
@@ -455,14 +457,8 @@ tnoremap <C-k> <C-\><C-N><C-w>k
 tnoremap <C-l> <C-\><C-N><C-w>l
 
 " Diff current buffer and the original file
-function! s:DiffWithSaved()
-    let filetype=&ft
-    diffthis
-    vnew | r # | normal! 1Gdd
-    diffthis
-    exe "setlocal bt=nofile bh=wipe nobl noswf ro ft=" . filetype
-endfunction
-com! DiffSaved call s:DiffWithSaved()
+command DiffOrig vert new | set buftype=nofile | read ++edit # | 0d_
+      \ | diffthis | wincmd p | diffthis
 
 command! -nargs=0 -bar Qargs execute 'args' QuickfixFilenames()
 function! QuickfixFilenames()
