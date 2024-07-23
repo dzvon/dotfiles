@@ -26,6 +26,11 @@ if command -sq nvim
     set -x VISUAL nvim
 end
 
+if command -sq bat
+    # Fascinating man pages with syntax highlighting.
+    set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
+end
+
 if status is-interactive
     # Key bindings.
     bind --mode insert \cP up-or-search
