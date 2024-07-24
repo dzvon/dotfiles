@@ -83,9 +83,6 @@ if status is-interactive
     end
 
     # Aliases.
-    alias ls 'ls -G'
-    alias l 'ls -al'
-    alias grep 'grep --color=auto --ignore-case'
     alias df 'df -h'
     alias dl 'cd ~/Downloads'
     alias doc 'cd ~/Documents'
