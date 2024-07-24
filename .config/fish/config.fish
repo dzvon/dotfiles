@@ -21,12 +21,12 @@ set -x PATH $PATH /opt/local/bin
 set -x FLYCTL_INSTALL $HOME/.fly
 set -x PATH $PATH $FLYCTL_INSTALL/bin
 
-if command -sq nvim
+if type -q -f nvim
     set -x EDITOR nvim
     set -x VISUAL nvim
 end
 
-if command -sq bat
+if type -q -f bat
     # Fascinating man pages with syntax highlighting.
     set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
 end
@@ -77,7 +77,7 @@ if status is-interactive
 
     function fish_greeting
         # If has fortune installed, display a random fortune.
-        if command -sq fortune
+        if type -q -f fortune
             fortune freebsd-tips
         end
     end
