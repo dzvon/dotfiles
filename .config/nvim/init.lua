@@ -26,7 +26,7 @@ vim.o.textwidth = 80
 
 -- Show "invisible" characters
 vim.o.list = true
-vim.o.listchars = "tab:▸ ,trail:·,eol:¬"
+vim.o.listchars = "tab:▸ ,trail:·,nbsp:_"
 
 vim.o.completeopt = "menuone,noinsert,noselect,fuzzy"
 

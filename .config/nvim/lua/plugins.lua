@@ -6,7 +6,6 @@ return {
   "tpope/vim-surround",
   "tpope/vim-sleuth",
   { 'nvim-lualine/lualine.nvim', dependencies = { 'nvim-tree/nvim-web-devicons' }, config = true },
-  "godlygeek/tabular",
   "rust-lang/rust.vim",
 
   "joshdick/onedark.vim",
