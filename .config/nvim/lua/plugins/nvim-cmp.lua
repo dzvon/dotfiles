@@ -2,7 +2,7 @@ return {
   'hrsh7th/cmp-cmdline',
   {
     'hrsh7th/nvim-cmp',
-    config = function () 
+    config = function ()
       local cmp = require('cmp')
       cmp.setup {
         snippet = {
@@ -50,9 +50,7 @@ return {
           -- { name = 'luasnip' }, -- For luasnip users.
           -- { name = 'ultisnips' }, -- For ultisnips users.
           -- { name = 'snippy' }, -- For snippy users.
-        }, {
-            { name = 'cody' }
-          })
+        })
       }
 
       -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
