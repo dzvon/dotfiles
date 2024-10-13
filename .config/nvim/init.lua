@@ -28,7 +28,7 @@ vim.o.textwidth = 80
 vim.o.list = true
 vim.o.listchars = "tab:▸ ,trail:·,eol:¬"
 
-vim.o.completeopt = "menuone,noinsert,noselect"
+vim.o.completeopt = "menuone,noinsert,noselect,fuzzy"
 
 -- Save file
 vim.keymap.set('n', '<leader>w', '<cmd>write<cr>', { noremap = true, silent = true })
@@ -38,12 +38,6 @@ vim.keymap.set('n', '<C-h>', '<C-w>h', { noremap = true, silent = true })
 vim.keymap.set('n', '<C-j>', '<C-w>j', { noremap = true, silent = true })
 vim.keymap.set('n', '<C-k>', '<C-w>k', { noremap = true, silent = true })
 vim.keymap.set('n', '<C-l>', '<C-w>l', { noremap = true, silent = true })
-
--- Use CTRL+{h,j,k,l} to navigate windows in terminal mode
-vim.keymap.set('t', '<C-h>', '<C-\\><C-N><C-w>h', { noremap = true, silent = true })
-vim.keymap.set('t', '<C-j>', '<C-\\><C-N><C-w>j', { noremap = true, silent = true })
-vim.keymap.set('t', '<C-k>', '<C-\\><C-N><C-w>k', { noremap = true, silent = true })
-vim.keymap.set('t', '<C-l>', '<C-\\><C-N><C-w>l', { noremap = true, silent = true })
 
 -- Text wrapping and unwrapping
 vim.keymap.set('n', '<leader>tw', '<cmd>set wrap!<cr>', { noremap = true, silent = true })
@@ -73,6 +67,10 @@ vim.keymap.set('n', ']B', '<cmd>blast<cr>', { noremap = true, silent = true })
 
 -- cd to the directory of the current buffer
 vim.keymap.set('n', '<leader>cd', '<cmd>lcd %:p:h<cr><cmd>pwd<cr>', { noremap = true, silent = true })
+
+-- Open a buffer for scribble notes
+vim.keymap.set('n', '<leader>z', '<cmd>e ~/buffer<cr>', { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>x', '<cmd>e ~/buffer.md<cr>', { noremap = true, silent = true })
 
 -- Lazy plugin manager
 require("config.lazy")

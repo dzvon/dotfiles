@@ -1,3 +1,5 @@
+vim.cmd [[ autocmd BufRead,BufNewFile *.bxl,BUCK,TARGETS set filetype=bzl ]]
+
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = { noremap=true, silent=true }
@@ -50,7 +52,7 @@ return {
 
     -- Use a loop to conveniently call 'setup' on multiple servers and
     -- map buffer local keybindings when the language server attaches
-    local servers = { "gopls", "clangd", "pyright", "jsonnet_ls", "terraformls", "denols", "lua_ls", "ts_ls" }
+    local servers = { "gopls", "clangd", "ruff", "jsonnet_ls", "terraformls", "denols", "lua_ls", "ts_ls", "buck2" }
     for _, lsp in ipairs(servers) do
       nvim_lsp[lsp].setup {
         flags = {
