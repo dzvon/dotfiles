@@ -11,6 +11,9 @@ vim.o.backupdir = vim.fn.stdpath('config') .. '/backups'
 vim.o.directory = vim.fn.stdpath('config') .. '/swaps'
 vim.o.undodir = vim.fn.stdpath('config') .. '/undo'
 
+-- Enable undo files
+vim.o.undofile = true
+
 -- Enable spell checking
 vim.o.spell = true
 
@@ -28,7 +31,7 @@ vim.o.textwidth = 80
 vim.o.list = true
 vim.o.listchars = "tab:▸ ,trail:·,nbsp:_"
 
-vim.o.completeopt = "menuone,noinsert,noselect,fuzzy"
+vim.o.completeopt = "menuone,noinsert,noselect"
 
 -- Save file
 vim.keymap.set('n', '<leader>w', '<cmd>write<cr>', { noremap = true, silent = true })
@@ -76,7 +79,8 @@ vim.keymap.set('n', '<leader>x', '<cmd>e ~/buffer.md<cr>', { noremap = true, sil
 require("config.lazy")
 
 -- Colorscheme
-vim.cmd("colorscheme catppuccin")
+vim.cmd.colorscheme "catppuccin"
+-- vim.o.background = "dark"
 
 -- Autocommands
 
