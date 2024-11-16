@@ -1,5 +1,3 @@
-vim.cmd [[ autocmd BufRead,BufNewFile *.bxl,BUCK,TARGETS set filetype=bzl ]]
-
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = { noremap=true, silent=true }
@@ -46,13 +44,14 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 return {
   "neovim/nvim-lspconfig",
+  dependencies = { 'saghen/blink.cmp' },
   config = function ()
     local nvim_lsp = require('lspconfig')
-    local capabilities = require('cmp_nvim_lsp').default_capabilities()
+    local capabilities = require('blink.cmp').get_lsp_capabilities()
 
     -- Use a loop to conveniently call 'setup' on multiple servers and
     -- map buffer local keybindings when the language server attaches
-    local servers = { "gopls", "clangd", "ruff", "jsonnet_ls", "terraformls", "denols", "lua_ls", "ts_ls", "buck2" }
+    local servers = { "gopls", "clangd", "ruff", "jsonnet_ls", "terraformls", "denols", "lua_ls", "gh_actions_ls" }
     for _, lsp in ipairs(servers) do
       nvim_lsp[lsp].setup {
         flags = {
@@ -80,11 +79,6 @@ return {
       },
     }
 
-    nvim_lsp["ts_ls"].setup {
-      root_dir = nvim_lsp.util.root_pattern("package.json"),
-      single_file_support = false
-    }
-
     nvim_lsp["denols"].setup {
       single_file_support = true,
       root_dir = nvim_lsp.util.root_pattern("deno.json", "deno.jsonc"),
@@ -100,6 +94,10 @@ return {
           }
         }
       }
+    }
+
+    nvim_lsp["terraformls"].setup {
+      cmd = { "terraform-ls", "serve", "-log-file", "/dev/null" },
     }
   end
 }

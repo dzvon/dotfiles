@@ -19,5 +19,6 @@ return {
   'google/vim-jsonnet',
   'will133/vim-dirdiff',
   'rebelot/kanagawa.nvim',
+  'stevearc/dressing.nvim'
 }
 

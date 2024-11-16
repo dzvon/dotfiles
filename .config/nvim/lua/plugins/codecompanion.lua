@@ -1,6 +1,16 @@
 return {
   'olimorris/codecompanion.nvim',
+  dev = true,
+  dir = "~/Documents/codecompanion.nvim/",
   opts = {
+    -- opts = {
+    --   log_level = "DEBUG"
+    -- },
+    display = {
+      chat = {
+        show_settings = true,
+      }
+    },
     strategies = {
       chat = {
         adapter = 'copilot',
@@ -8,6 +18,17 @@ return {
       inline = {
         adapter = 'copilot',
       },
+    },
+    adapters = {
+      copilot = function ()
+        return require('codecompanion.adapters').extend("copilot", {
+          schema = {
+            model = {
+              default = "claude-3.5-sonnet"
+            }
+          }
+        })
+      end,
     },
     prompt_library = {
       ["Generate a JJ Commit Message"] = {
@@ -34,6 +55,30 @@ return {
             end,
             opts = {
               contains_code = true,
+            },
+          },
+        },
+      },
+      ["Translate Text"] = {
+        strategy = "chat",
+        description = "Translate text from one language to another",
+        opts = {
+          is_slash_cmd = true,
+          short_name = "translate",
+          auto_submit = false,
+          -- stop_context_insertion = true,
+          user_prompt = true,
+        },
+        prompts = {
+          {
+            role = "user",
+            content = function()
+              return [[Please translate the following text from Chinese to English and make it sound more native:
+
+]]
+            end,
+            opts = {
+              contains_code = false,
             },
           },
         },
