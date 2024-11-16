@@ -102,3 +102,23 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 vim.api.nvim_create_autocmd('TextYankPost', {
   callback = function() vim.highlight.on_yank() end
 })
+
+-- User commands
+vim.api.nvim_create_user_command('Qargs', function ()
+  local function QuickfixFilenames()
+    local buffer_numbers = {}
+    for _, quickfix_item in ipairs(vim.fn.getqflist()) do
+      local bufnr = quickfix_item.bufnr
+      if bufnr > 0 then
+        buffer_numbers[bufnr] = vim.fn.bufname(bufnr)
+      end
+    end
+    local filenames = {}
+    for _, filename in pairs(buffer_numbers) do
+      table.insert(filenames, vim.fn.fnameescape(filename))
+    end
+    return table.concat(filenames, ' ')
+  end
+
+  vim.cmd('args ' .. QuickfixFilenames())
+end, { nargs = 0, bar = true })
