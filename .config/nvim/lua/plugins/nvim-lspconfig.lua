@@ -51,7 +51,7 @@ return {
 
     -- Use a loop to conveniently call 'setup' on multiple servers and
     -- map buffer local keybindings when the language server attaches
-    local servers = { "gopls", "clangd", "ruff", "jsonnet_ls", "terraformls", "denols", "lua_ls", "gh_actions_ls", "harper_ls" }
+    local servers = { "gopls", "clangd", "ruff", "jsonnet_ls", "terraformls", "denols", "lua_ls", "gh_actions_ls" }
     for _, lsp in ipairs(servers) do
       nvim_lsp[lsp].setup {
         flags = {
