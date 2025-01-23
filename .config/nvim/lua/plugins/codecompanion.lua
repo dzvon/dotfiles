@@ -1,7 +1,5 @@
 return {
   'olimorris/codecompanion.nvim',
-  dev = true,
-  dir = "~/Documents/codecompanion.nvim/",
   opts = {
     -- opts = {
     --   log_level = "DEBUG"
