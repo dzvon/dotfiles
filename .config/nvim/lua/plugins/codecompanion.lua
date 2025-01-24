@@ -1,5 +1,8 @@
 return {
   'olimorris/codecompanion.nvim',
+  init = function ()
+    vim.keymap.set('n', 'g.', '<cmd>CodeCompanionActions<cr>')
+  end,
   opts = {
     -- opts = {
     --   log_level = "DEBUG"
