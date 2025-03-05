@@ -1,7 +1,6 @@
 return {
   "nvim-lua/plenary.nvim",
   { "lewis6991/gitsigns.nvim", config = true },
-  { 'akinsho/bufferline.nvim', version = "*", dependencies = 'nvim-tree/nvim-web-devicons', config = true },
   "tpope/vim-fugitive",
   "tpope/vim-surround",
   "tpope/vim-sleuth",
@@ -14,11 +13,8 @@ return {
 
   'mg979/vim-visual-multi',
   "lambdalisue/suda.vim",
-  'szw/vim-maximizer',
   'terrastruct/d2-vim',
   'google/vim-jsonnet',
   'will133/vim-dirdiff',
   'rebelot/kanagawa.nvim',
-  'stevearc/dressing.nvim'
 }
-

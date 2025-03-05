@@ -11,26 +11,26 @@ vim.api.nvim_create_autocmd('LspAttach', {
       -- Create a keymap for vim.lsp.buf.rename()
       vim.api.nvim_buf_set_keymap(bufnr, 'n', 'grn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
     end
-    if client.supports_method('textDocument/implementation') then
-      -- Create a keymap for vim.lsp.buf.implementation
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-    end
-    if client.supports_method('textDocument/typeDefinition') then
-      -- Create a keymap for vim.lsp.buf.type_definition
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-    end
-    if client.supports_method('textDocument/definition') then
-      -- Create a keymap for vim.lsp.buf.definition
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-    end
+    -- if client.supports_method('textDocument/implementation') then
+    --   -- Create a keymap for vim.lsp.buf.implementation
+    --   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+    -- end
+    -- if client.supports_method('textDocument/typeDefinition') then
+    --   -- Create a keymap for vim.lsp.buf.type_definition
+    --   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+    -- end
+    -- if client.supports_method('textDocument/definition') then
+    --   -- Create a keymap for vim.lsp.buf.definition
+    --   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+    -- end
     if client.supports_method('textDocument/codeAction') then
       -- Create a keymap for vim.lsp.buf.code_action
       vim.api.nvim_buf_set_keymap(bufnr, 'n', 'g.', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
     end
-    if client.supports_method('textDocument/references') then
-      -- Create a keymap for vim.lsp.buf.references
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-    end
+    -- if client.supports_method('textDocument/references') then
+    --   -- Create a keymap for vim.lsp.buf.references
+    --   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+    -- end
     if client.supports_method('textDocument/documentFormatting') then
       -- Create a keymap for vim.lsp.buf.format()
       vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>f', '<cmd>lua vim.lsp.buf.format()<CR>', opts)
@@ -51,7 +51,7 @@ return {
 
     -- Use a loop to conveniently call 'setup' on multiple servers and
     -- map buffer local keybindings when the language server attaches
-    local servers = { "gopls", "clangd", "ruff", "jsonnet_ls", "terraformls", "denols", "lua_ls", "gh_actions_ls" }
+    local servers = { "gopls", "clangd", "ruff", "jsonnet_ls", "terraformls", "denols", "lua_ls", "gh_actions_ls", "harper_ls" }
     for _, lsp in ipairs(servers) do
       nvim_lsp[lsp].setup {
         flags = {
@@ -73,8 +73,9 @@ return {
             enable = false,
           },
           cargo = {
-            features = "all"
-          }
+            features = "all",
+            -- target = "x86_64-pc-windows-msvc",
+          },
         }
       },
     }

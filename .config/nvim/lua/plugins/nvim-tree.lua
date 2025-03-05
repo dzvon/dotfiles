@@ -20,6 +20,7 @@ return {
       vim.keymap.del('n', 'H', { buffer = bufnr })
       vim.keymap.del('n', 'L', { buffer = bufnr })
       vim.keymap.del('n', 'e', { buffer = bufnr })
-    end
+    end,
+    sync_root_with_cwd = true,
   }
 }
