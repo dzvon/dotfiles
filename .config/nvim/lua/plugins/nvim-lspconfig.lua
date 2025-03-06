@@ -53,19 +53,14 @@ return {
     -- map buffer local keybindings when the language server attaches
     local servers = { "gopls", "clangd", "ruff", "jsonnet_ls", "terraformls", "denols", "gh_actions_ls", "taplo" }
     for _, lsp in ipairs(servers) do
-      nvim_lsp[lsp].setup {
-        flags = {
-          debounce_text_changes = 150,
-        },
-        capabilities = capabilities,
-      }
+      vim.lsp.enable(lsp)
     end
 
-    nvim_lsp["clangd"].setup {
+    vim.lsp.config('clangd', {
       cmd = { "clangd", "--background-index", "--header-insertion=never" }
-    }
+    })
 
-    nvim_lsp["rust_analyzer"].setup {
+    vim.lsp.config('rust_analyzer', {
       capabilities = capabilities,
       settings = {
         ["rust-analyzer"] = {
@@ -78,16 +73,16 @@ return {
           },
         }
       },
-    }
+    })
 
-    nvim_lsp["jsonnet_ls"].setup {
+    vim.lsp.config('jsonnet_ls', {
       cmd = { "jsonnet-language-server", "--tanka", "--lint" },
-    }
+    })
 
-    nvim_lsp["denols"].setup {
+    vim.lsp.config('denols', {
       single_file_support = true,
       root_dir = nvim_lsp.util.root_pattern("deno.json", "deno.jsonc"),
-    }
+    })
 
     -- nvim_lsp["lua_ls"].setup {
     --   settings = {
@@ -101,8 +96,8 @@ return {
     --   }
     -- }
 
-    nvim_lsp["terraformls"].setup {
+    vim.lsp.config('terraformls', {
       cmd = { "terraform-ls", "serve", "-log-file", "/dev/null" },
-    }
+    })
   end
 }

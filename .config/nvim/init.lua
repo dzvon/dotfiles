@@ -92,7 +92,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 
 -- Auto-format files prior to saving them
 vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = { "*.rs", "*.go", "*.tf", "*.ts" },
+  pattern = { "*.rs", "*.go", "*.tf", "*.ts", "*.jsonnet" },
   callback = function()
     vim.lsp.buf.format({ async = false })
   end

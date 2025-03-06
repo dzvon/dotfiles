@@ -25,19 +25,19 @@ return {
         return require('codecompanion.adapters').extend("copilot", {
           schema = {
             model = {
-              default = "gpt-4.1",
-              choices = {
-                "gpt-4.1",
-                "o3-mini",
-                "o1",
-                "o4-mini",
-                "claude-3.7-sonnet",
-                "claude-3.7-sonnet-thought",
-                "claude-sonnet-4",
-                "gpt-4o-2024-08-06",
-                "gemini-2.0-flash-001",
-                "gemini-2.5-pro"
-              }
+              default = "claude-sonnet-4",
+              -- choices = {
+              --   "gpt-4.1",
+              --   "o3-mini",
+              --   "o1",
+              --   "o4-mini",
+              --   "claude-3.7-sonnet",
+              --   "claude-3.7-sonnet-thought",
+              --   "claude-sonnet-4",
+              --   "gpt-4o-2024-08-06",
+              --   "gemini-2.0-flash-001",
+              --   "gemini-2.5-pro"
+              -- }
             }
           }
         })
@@ -128,6 +128,23 @@ Your *only* task is to translate the provided text from native Chinese to native
           },
         },
       },
+    },
+    extensions = {
+      mcphub = {
+        callback = "mcphub.extensions.codecompanion",
+        opts = {
+          -- MCP Tools
+          make_tools = true,              -- Make individual tools (@server__tool) and server groups (@server) from MCP servers
+          show_server_tools_in_chat = true, -- Show individual tools in chat completion (when make_tools=true)
+          add_mcp_prefix_to_tool_names = false, -- Add mcp__ prefix (e.g `@mcp__github`, `@mcp__neovim__list_issues`)
+          show_result_in_chat = true,      -- Show tool results directly in chat buffer
+          format_tool = nil,               -- function(tool_name:string, tool: CodeCompanion.Agent.Tool) : string Function to format tool names to show in the chat buffer
+          -- MCP Resources
+          make_vars = true,                -- Convert MCP resources to #variables for prompts
+          -- MCP Prompts
+          make_slash_commands = true,      -- Add MCP prompts as /slash commands
+        }
+      }
     }
   }
 }

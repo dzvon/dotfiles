@@ -3,6 +3,8 @@ set -x DOTFILES $HOME/.dotfiles
 set -x PATH \
     $PATH \
     $HOME/.cargo/bin \
+    $HOME/.yarn/bin \
+    $HOME/.npm-global/bin \
     $HOME/bin \
     $HOME/.local/bin \
     $DOTFILES/bin \
@@ -82,6 +84,12 @@ if status is-interactive
     alias dt 'cd ~/Desktop'
     alias ssh 'env TERM=xterm-256color ssh'
     alias sudo 'sudo -E'
+
+    # Aliases for jj
+    alias jci 'jj ci'
+    alias jd 'jj diff'
+    alias jp 'jj git push -r @-'
+    alias jf 'jj git fetch'
 end
 
 if status is-login
@@ -101,4 +109,4 @@ end
 
 fish_config prompt choose informative_vcs
 
-alias assume="source /usr/local/bin/assume.fish"
+set -gx TF_PLUGIN_CACHE_DIR $HOME/.terraform.d/plugin-cache
