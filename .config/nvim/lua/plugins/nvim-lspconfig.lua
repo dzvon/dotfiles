@@ -51,7 +51,7 @@ return {
 
     -- Use a loop to conveniently call 'setup' on multiple servers and
     -- map buffer local keybindings when the language server attaches
-    local servers = { "gopls", "clangd", "ruff", "jsonnet_ls", "terraformls", "denols", "lua_ls", "gh_actions_ls", "taplo" }
+    local servers = { "gopls", "clangd", "ruff", "jsonnet_ls", "terraformls", "denols", "gh_actions_ls", "taplo" }
     for _, lsp in ipairs(servers) do
       nvim_lsp[lsp].setup {
         flags = {
@@ -89,17 +89,17 @@ return {
       root_dir = nvim_lsp.util.root_pattern("deno.json", "deno.jsonc"),
     }
 
-    nvim_lsp["lua_ls"].setup {
-      settings = {
-        Lua = {
-          workspace = {
-            library = {
-              vim.env.VIMRUNTIME
-            }
-          }
-        }
-      }
-    }
+    -- nvim_lsp["lua_ls"].setup {
+    --   settings = {
+    --     Lua = {
+    --       workspace = {
+    --         library = {
+    --           vim.env.VIMRUNTIME
+    --         }
+    --       }
+    --     }
+    --   }
+    -- }
 
     nvim_lsp["terraformls"].setup {
       cmd = { "terraform-ls", "serve", "-log-file", "/dev/null" },
