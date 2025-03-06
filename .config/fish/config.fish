@@ -96,6 +96,7 @@ if status is-interactive
     alias jci 'jj ci'
     alias jd 'jj diff'
     alias jp 'jj git push -r @-'
+    alias jpc 'jj git push -c @-'
     alias jst 'jj status'
     alias jf 'jj git fetch'
     alias jt 'jj bookmark advance -t @-'
