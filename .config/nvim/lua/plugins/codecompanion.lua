@@ -8,20 +8,19 @@ return {
     -- opts = {
     --   log_level = "DEBUG"
     -- },
-    -- display = {
-    --   chat = {
-    --     show_settings = true,
-    --   }
-    -- },
-    strategies = {
+    display = {
       chat = {
-        adapter = 'copilot',
-      },
-      inline = {
-        adapter = 'copilot',
+        window = {
+          layout = 'horizontal'
+        }
       },
     },
-    memory = {
+    rules = {
+      default = {
+        files = {
+          "AGENTS.md"
+        }
+      },
       opts = {
         chat = {
           enabled = true,
@@ -29,27 +28,31 @@ return {
       }
     },
     adapters = {
-      copilot = function ()
-        return require('codecompanion.adapters').extend("copilot", {
-          schema = {
-            model = {
-              default = "claude-sonnet-4",
-              -- choices = {
-              --   "gpt-4.1",
-              --   "o3-mini",
-              --   "o1",
-              --   "o4-mini",
-              --   "claude-3.7-sonnet",
-              --   "claude-3.7-sonnet-thought",
-              --   "claude-sonnet-4",
-              --   "gpt-4o-2024-08-06",
-              --   "gemini-2.0-flash-001",
-              --   "gemini-2.5-pro"
-              -- }
+      http = {
+        copilot = function()
+          return require('codecompanion.adapters').extend("copilot", {
+            schema = {
+              model = {
+                default = "gemini-3-flash-preview",
+                -- choices = {
+                --   "gpt-4.1",
+                --   "o3-mini",
+                --   "o1",
+                --   "o4-mini",
+                --   "claude-3.7-sonnet",
+                --   "claude-3.7-sonnet-thought",
+                --   "claude-sonnet-4",
+                --   "claude-haiku-4.5",
+                --   "gpt-4o-2024-08-06",
+                --   "gemini-2.0-flash-001",
+                --   "gemini-2.5-pro"
+                --   "grok-code-fast-1"
+                --   "gpt-5-mini"
+                -- }
+              }
             }
-          }
-        })
-      end,
+          })
+        end,
     },
     prompt_library = {
       ["Generate a JJ Commit Message"] = {
@@ -57,7 +60,7 @@ return {
         description = "Generate a commit message for Jujutsu",
         opts = {
           is_slash_cmd = true,
-          short_name = "jjcommit",
+          alias = "jjcommit",
           auto_submit = false,
           adapter = {
             name = "copilot",
@@ -109,14 +112,14 @@ Input Code Changes/Description:
         description = "Translate text from one language to another",
         opts = {
           is_slash_cmd = true,
-          short_name = "translate",
+          alias = "translate",
           auto_submit = false,
           -- stop_context_insertion = true,
           user_prompt = true,
           adapter = {
             name = "copilot",
             -- model = "claude-3.7-sonnet-thought"
-            model = "gpt-5-mini"
+            model = "gpt-5-mini",
           }
         },
         prompts = {
@@ -125,9 +128,6 @@ Input Code Changes/Description:
             content = function()
               return [[
 You are an expert translator specializing in converting text from native Chinese to native English. Your goal is to provide accurate, natural-sounding, and culturally appropriate translations. When given Chinese text, translate it into fluent, idiomatic English. Focus on conveying the original meaning while ensuring the English output reads as if it were originally written by a native English speaker.
-
-
-Your *only* task is to translate the provided text from native Chinese to native English. When you receive Chinese text, your response *must be* the English translation. Do not engage in conversation, ask questions, or provide additional commentary. Focus on providing accurate, natural-sounding, and culturally appropriate translations that read as if they were originally written by a native English speaker.
 ]]
             end,
             opts = {
@@ -137,21 +137,14 @@ Your *only* task is to translate the provided text from native Chinese to native
         },
       },
     },
-    extensions = {
-      mcphub = {
-        callback = "mcphub.extensions.codecompanion",
-        opts = {
-          -- MCP Tools
-          make_tools = true,                    -- Make individual tools (@server__tool) and server groups (@server) from MCP servers
-          show_server_tools_in_chat = true,     -- Show individual tools in chat completion (when make_tools=true)
-          add_mcp_prefix_to_tool_names = false, -- Add mcp__ prefix (e.g `@mcp__github`, `@mcp__neovim__list_issues`)
-          show_result_in_chat = true,           -- Show tool results directly in chat buffer
-          format_tool = nil,                    -- function(tool_name:string, tool: CodeCompanion.Agent.Tool) : string Function to format tool names to show in the chat buffer
-          -- MCP Resources
-          make_vars = true,                     -- Convert MCP resources to #variables for prompts
-          -- MCP Prompts
-          make_slash_commands = true,           -- Add MCP prompts as /slash commands
-        }
+    mcp = {
+      servers = {
+        ["sequential-thinking"] = {
+          cmd = { "mcp-server-sequential-thinking" },
+        },
+      },
+      opts = {
+        default_servers = { "sequential-thinking" },
       }
     }
   }

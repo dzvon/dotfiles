@@ -17,6 +17,11 @@ vim.o.undofile = true
 -- Enable spell checking
 vim.o.spell = true
 
+-- Enable line numbers (and relative line numbers)
+vim.o.relativenumber = true
+vim.o.number = true
+vim.o.cursorline = true
+
 -- Try to be smart about search case sensitivity
 vim.o.ignorecase = true
 vim.o.smartcase = true
@@ -102,18 +107,22 @@ vim.lsp.config('clangd', {
 vim.lsp.config('rust_analyzer', {
   settings = {
     ["rust-analyzer"] = {
+      rustfmt = {
+        -- Use nightly rustfmt to support unstable features
+        extraArgs = { "+nightly", "--config", "format_macro_bodies=true" },
+      },
       diagnostics = {
         enable = false,
       },
       cargo = {
-        features = "all",
+        -- features = "all",
         -- target = "x86_64-pc-windows-msvc",
       },
     }
   },
 })
 vim.lsp.config('jsonnet_ls', {
-  cmd = { "jsonnet-language-server", "--tanka", "--lint" },
+  cmd = { "jsonnet-language-server", "--lint", "-J", "vendor/jsonnetlib/", "-J", "lib/", "-J", "vendor/" },
 })
 vim.lsp.config('denols', { single_file_support = true })
 vim.lsp.config('lua_ls', {

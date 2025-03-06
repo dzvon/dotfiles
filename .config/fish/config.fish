@@ -3,6 +3,7 @@ set -x DOTFILES $HOME/.dotfiles
 fish_add_path $HOME/.cargo/bin \
     $HOME/.yarn/bin \
     $HOME/.npm-global/bin \
+    $HOME/.deno/bin \
     $HOME/bin \
     $HOME/.local/bin \
     $DOTFILES/bin
@@ -62,11 +63,25 @@ if status is-interactive
         openssl rand -base64 $length | cut -c1-$length | tr -d '\n'
     end
 
-    function fish_greeting
-        # If has fortune installed, display a random fortune.
-        if type -q -f fortune
-            fortune
-        end
+    set -g fish_greeting
+    # function fish_greeting
+    #     # If has fortune installed, display a random fortune.
+    #     if type -q -f fortune
+    #         fortune freebsd-tips
+    #     end
+    # end
+
+    function fish_vcs_prompt
+        # If a prompt succeeded, we assume that it's printed the correct info.
+        # This is so we don't try svn if git already worked.
+        fish_jj_prompt $argv
+        or fish_git_prompt $argv
+        or fish_hg_prompt $argv
+        or fish_fossil_prompt $argv
+        # The svn prompt is disabled by default because it's quite slow on common svn repositories.
+        # To enable it uncomment it.
+        # You can also only use it in specific directories by checking $PWD.
+        # or fish_svn_prompt
     end
 
     # Aliases.
