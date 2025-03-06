@@ -98,6 +98,7 @@ if status is-interactive
     alias jp 'jj git push -r @-'
     alias jst 'jj status'
     alias jf 'jj git fetch'
+    alias jt 'jj bookmark advance -t @-'
 end
 
 if status is-login

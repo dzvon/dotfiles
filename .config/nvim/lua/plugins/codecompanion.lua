@@ -1,10 +1,21 @@
 return {
   'olimorris/codecompanion.nvim',
+  build = false,
+  dependencies = {
+    "nvim-lua/plenary.nvim",
+    "nvim-treesitter/nvim-treesitter",
+    { "stevearc/dressing.nvim", opts = {} }, -- Optional: Improves the UI
+  },
   init = function()
     vim.keymap.set('n', '<leader>ca', '<cmd>CodeCompanionActions<cr>')
     vim.keymap.set({ 'n', 'v' }, '<leader>cc', '<cmd>CodeCompanionChat<cr>')
   end,
   opts = {
+    interactions = {
+      chat = {
+        adapter = "copilot",
+      }
+    },
     -- opts = {
     --   log_level = "DEBUG"
     -- },
@@ -34,21 +45,6 @@ return {
             schema = {
               model = {
                 default = "gemini-3-flash-preview",
-                -- choices = {
-                --   "gpt-4.1",
-                --   "o3-mini",
-                --   "o1",
-                --   "o4-mini",
-                --   "claude-3.7-sonnet",
-                --   "claude-3.7-sonnet-thought",
-                --   "claude-sonnet-4",
-                --   "claude-haiku-4.5",
-                --   "gpt-4o-2024-08-06",
-                --   "gemini-2.0-flash-001",
-                --   "gemini-2.5-pro"
-                --   "grok-code-fast-1"
-                --   "gpt-5-mini"
-                -- }
               }
             }
           })
@@ -128,6 +124,8 @@ Input Code Changes/Description:
             content = function()
               return [[
 You are an expert translator specializing in converting text from native Chinese to native English. Your goal is to provide accurate, natural-sounding, and culturally appropriate translations. When given Chinese text, translate it into fluent, idiomatic English. Focus on conveying the original meaning while ensuring the English output reads as if it were originally written by a native English speaker.
+
+You can also provide alternative phrasings.
 ]]
             end,
             opts = {
@@ -142,9 +140,6 @@ You are an expert translator specializing in converting text from native Chinese
         ["sequential-thinking"] = {
           cmd = { "mcp-server-sequential-thinking" },
         },
-      },
-      opts = {
-        default_servers = { "sequential-thinking" },
       }
     }
   }
