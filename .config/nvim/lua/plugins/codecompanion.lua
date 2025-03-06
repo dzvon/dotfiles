@@ -21,6 +21,13 @@ return {
         adapter = 'copilot',
       },
     },
+    memory = {
+      opts = {
+        chat = {
+          enabled = true,
+        }
+      }
+    },
     adapters = {
       copilot = function ()
         return require('codecompanion.adapters').extend("copilot", {
