@@ -1,25 +1,17 @@
 set -x DOTFILES $HOME/.dotfiles
 
-set -x PATH \
-    $PATH \
-    $HOME/.cargo/bin \
+fish_add_path $HOME/.cargo/bin \
     $HOME/.yarn/bin \
     $HOME/.npm-global/bin \
     $HOME/bin \
     $HOME/.local/bin \
-    $DOTFILES/bin \
-    /usr/local/bin \
-    /usr/local/sbin \
-    /usr/bin \
-    /bin \
-    /usr/sbin \
-    /sbin
+    $DOTFILES/bin
 
 set -x GOPATH $HOME/GoWork
-set -x PATH $PATH $GOPATH/bin
+fish_add_path $GOPATH/bin
 
 set -x FLYCTL_INSTALL $HOME/.fly
-set -x PATH $PATH $FLYCTL_INSTALL/bin
+fish_add_path $FLYCTL_INSTALL/bin
 
 if type -q -f nvim
     set -x EDITOR nvim
