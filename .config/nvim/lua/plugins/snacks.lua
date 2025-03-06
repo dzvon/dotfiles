@@ -138,7 +138,6 @@ return {
     { "<c-_>",      function() Snacks.terminal() end, desc = "which_key_ignore" },
     { "]]",         function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference", mode = { "n", "t" } },
     { "[[",         function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference", mode = { "n", "t" } },
-    { "<leader>cc", function () vim.cmd("CodeCompanionChat") end, desc = "Code Companion Actions", mode = { "n", "v" } },
   },
   init = function()
     vim.api.nvim_create_autocmd("User", {

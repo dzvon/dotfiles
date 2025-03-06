@@ -1,7 +1,8 @@
 return {
   'olimorris/codecompanion.nvim',
   init = function ()
-    vim.keymap.set('n', 'g.', '<cmd>CodeCompanionActions<cr>')
+    vim.keymap.set('n', '<leader>ca', '<cmd>CodeCompanionActions<cr>')
+    vim.keymap.set({'n', 'v'}, '<leader>cc', '<cmd>CodeCompanionChat<cr>')
   end,
   opts = {
     -- opts = {
@@ -54,7 +55,7 @@ return {
           adapter = {
             name = "copilot",
             -- model = "claude-3.7-sonnet-thought"
-            model = "gpt-4.1"
+            model = "gpt-5-mini"
           }
         },
         prompts = {
@@ -108,7 +109,7 @@ Input Code Changes/Description:
           adapter = {
             name = "copilot",
             -- model = "claude-3.7-sonnet-thought"
-            model = "gemini-2.0-flash-001"
+            model = "gpt-5-mini"
           }
         },
         prompts = {
