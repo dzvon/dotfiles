@@ -90,12 +90,58 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   command = [[%s/\s\+$//e]]
 })
 
--- Auto-format files prior to saving them
-vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = { "*.rs", "*.go", "*.tf", "*.ts", "*.jsonnet" },
-  callback = function()
-    vim.lsp.buf.format({ async = false })
-  end
+-- LSP settings
+vim.lsp.enable({
+  "rust_analyzer", "gopls", "clangd", "ruff", "jsonnet_ls", "terraformls", "denols", "gh_actions_ls",
+  "taplo", "zls", "lua_ls"
+})
+
+vim.lsp.config('clangd', {
+  cmd = { "clangd", "--background-index", "--header-insertion=never" }
+})
+vim.lsp.config('rust_analyzer', {
+  settings = {
+    ["rust-analyzer"] = {
+      diagnostics = {
+        enable = false,
+      },
+      cargo = {
+        features = "all",
+        -- target = "x86_64-pc-windows-msvc",
+      },
+    }
+  },
+})
+vim.lsp.config('jsonnet_ls', {
+  cmd = { "jsonnet-language-server", "--tanka", "--lint" },
+})
+vim.lsp.config('denols', { single_file_support = true })
+vim.lsp.config('lua_ls', {
+  settings = {
+    Lua = { workspace = { library = { vim.env.VIMRUNTIME } } }
+  }
+})
+vim.lsp.config('terraformls', {
+  cmd = { "terraform-ls", "serve", "-log-file", "/dev/null" },
+})
+
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('my.lsp', {}),
+  callback = function(args)
+    local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+    -- Auto-format ("lint") on save.
+    -- Usually not needed if server supports "textDocument/willSaveWaitUntil".
+    if not client:supports_method('textDocument/willSaveWaitUntil')
+        and client:supports_method('textDocument/formatting') then
+      vim.api.nvim_create_autocmd('BufWritePre', {
+        group = vim.api.nvim_create_augroup('my.lsp', { clear = false }),
+        buffer = args.buf,
+        callback = function()
+          vim.lsp.buf.format({ bufnr = args.buf, id = client.id, timeout_ms = 1000 })
+        end,
+      })
+    end
+  end,
 })
 
 -- Briefly highlight yanked text
@@ -104,7 +150,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 -- User commands
-vim.api.nvim_create_user_command('Qargs', function ()
+vim.api.nvim_create_user_command('Qargs', function()
   local function QuickfixFilenames()
     local buffer_numbers = {}
     for _, quickfix_item in ipairs(vim.fn.getqflist()) do
