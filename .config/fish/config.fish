@@ -89,20 +89,15 @@ if status is-interactive
     alias jci 'jj ci'
     alias jd 'jj diff'
     alias jp 'jj git push -r @-'
+    alias jst 'jj status'
     alias jf 'jj git fetch'
 end
 
 if status is-login
     # If running in Wayland, set environment variables.
     if test -n "$WAYLAND_DISPLAY"
-        set -xg XDG_RUNTIME_DIR /var/run/user/$(id -u)
-        set -xg WLR_NO_HARDWARE_CURSORS 1
-        set -xg QT_QPA_PLATFORM wayland
-        set -xg QT_WAYLAND_DISABLE_WINDOWDECORATION 1
-        set -xg GDK_DPI_SCALE 0.5
-
         set -xg QT_IM_MODULE fcitx
-        set -xg GTK_IM_MODULE fcitx/xim
+        # set -xg GTK_IM_MODULE fcitx/xim
         set -xg XMODIFIERS @im=fcitx
     end
 end
