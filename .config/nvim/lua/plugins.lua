@@ -1,6 +1,37 @@
 return {
   "nvim-lua/plenary.nvim",
-  { "lewis6991/gitsigns.nvim", config = true },
+  {
+    "lewis6991/gitsigns.nvim",
+    config = true,
+    opts = {
+      on_attach = function(bufnr)
+        local gitsigns = require('gitsigns')
+
+        local function map(mode, l, r, opts)
+          opts = opts or {}
+          opts.buffer = bufnr
+          vim.keymap.set(mode, l, r, opts)
+        end
+
+        -- Navigation
+        map('n', ']c', function()
+          if vim.wo.diff then
+            vim.cmd.normal({ ']c', bang = true })
+          else
+            gitsigns.nav_hunk('next')
+          end
+        end)
+
+        map('n', '[c', function()
+          if vim.wo.diff then
+            vim.cmd.normal({ '[c', bang = true })
+          else
+            gitsigns.nav_hunk('prev')
+          end
+        end)
+      end,
+    }
+  },
   "tpope/vim-fugitive",
   "tpope/vim-surround",
   "tpope/vim-sleuth",
@@ -34,7 +65,7 @@ return {
 
   "joshdick/onedark.vim",
   'morhetz/gruvbox',
-  { "catppuccin/nvim",         name = "catppuccin", priority = 1000 },
+  { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
 
   'mg979/vim-visual-multi',
   "lambdalisue/suda.vim",
