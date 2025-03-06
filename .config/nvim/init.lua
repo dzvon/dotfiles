@@ -33,6 +33,15 @@ vim.o.listchars = "tab:▸ ,trail:·,nbsp:_"
 
 vim.o.completeopt = "menuone,noinsert,noselect"
 
+-- Netrw file explorer configuration
+vim.g.netrw_banner = 0          -- Disable banner
+vim.g.netrw_liststyle = 3       -- Tree view
+vim.g.netrw_browse_split = 4    -- Open in previous window
+vim.g.netrw_altv = 1            -- Open splits to the right
+vim.g.netrw_winsize = 25        -- Set width to 25% of screen
+vim.g.netrw_keepdir = 0         -- Keep current directory synced
+vim.g.netrw_localcopydircmd = 'cp -r'  -- Enable recursive copy
+
 -- Save file
 vim.keymap.set('n', '<leader>w', '<cmd>write<cr>', { noremap = true, silent = true })
 
@@ -67,6 +76,9 @@ vim.keymap.set('n', '[b', '<cmd>bp<cr>', { noremap = true, silent = true })
 vim.keymap.set('n', ']b', '<cmd>bn<cr>', { noremap = true, silent = true })
 vim.keymap.set('n', '[B', '<cmd>bfirst<cr>', { noremap = true, silent = true })
 vim.keymap.set('n', ']B', '<cmd>blast<cr>', { noremap = true, silent = true })
+
+-- Toggle file explorer
+vim.keymap.set('n', '<leader>e', '<cmd>Lexplore<cr>', { noremap = true, silent = true })
 
 -- cd to the directory of the current buffer
 vim.keymap.set('n', '<leader>cd', '<cmd>lcd %:p:h<cr><cmd>pwd<cr>', { noremap = true, silent = true })
