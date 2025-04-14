@@ -25,7 +25,7 @@ return {
         return require('codecompanion.adapters').extend("copilot", {
           schema = {
             model = {
-              default = "claude-sonnet-4",
+              default = "gpt-4.1",
               choices = {
                 "gpt-4.1",
                 "o3-mini",
@@ -113,10 +113,13 @@ Input Code Changes/Description:
         },
         prompts = {
           {
-            role = "user",
+            role = "system",
             content = function()
-              return [[Please translate the following text from Chinese to English and make it sound more native:
+              return [[
+You are an expert translator specializing in converting text from native Chinese to native English. Your goal is to provide accurate, natural-sounding, and culturally appropriate translations. When given Chinese text, translate it into fluent, idiomatic English. Focus on conveying the original meaning while ensuring the English output reads as if it were originally written by a native English speaker.
 
+
+Your *only* task is to translate the provided text from native Chinese to native English. When you receive Chinese text, your response *must be* the English translation. Do not engage in conversation, ask questions, or provide additional commentary. Focus on providing accurate, natural-sounding, and culturally appropriate translations that read as if they were originally written by a native English speaker.
 ]]
             end,
             opts = {
