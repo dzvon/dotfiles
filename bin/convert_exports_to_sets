@@ -54,8 +54,9 @@ fi
 # Process the file
 while IFS= read -r line || [[ -n "$line" ]]; do
     if [[ $line =~ ^export ]]; then
-        # Convert the export command to fish 'set -x' command
-        converted=$(echo "$line" | sed -E 's/export ([^=]+)=?(.*)/set -x \1 \2/')
+        # Convert the export command to fish 'set -x' command, and replacing ${WORD}
+        # with {$WORD}
+        converted=$(echo "$line" | sed -E 's/export ([^=]+)=?(.*)/set -x \1 \2/' | sed -E 's/\$\{([^}]+)\}/\{\$\1\}/g')
         echo "$converted"
     fi
 done < "$bash_script_path"
