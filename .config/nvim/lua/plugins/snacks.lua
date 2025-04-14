@@ -4,27 +4,73 @@ return {
   lazy = false,
   ---@type snacks.Config
   opts = {
+    -- Core modules
     bigfile = { enabled = true },
-    dashboard = { enabled = true },
-    explorer = { enabled = true },
-    indent = { enabled = true },
-    input = { enabled = true },
+    quickfile = { enabled = true },
+
+    -- UI enhancements
+    dashboard = {
+      enabled = true,
+      sections = {
+        { section = "header" },
+        { section = "keys", gap = 1, padding = 1 },
+        { section = "startup" },
+      },
+    },
+
+    explorer = {
+      enabled = true,
+      width = 30,
+    },
+
+    input = {
+      enabled = true,
+      win = {
+        border = "rounded",
+        title_pos = "center",
+      },
+    },
+
     notifier = {
       enabled = true,
       timeout = 3000,
+      width = { min = 40, max = 0.4 },
+      height = { min = 1, max = 0.6 },
+      margin = { top = 0, right = 1, bottom = 0 },
+      padding = true,
+      sort = { "level", "added" },
+      level = vim.log.levels.TRACE,
     },
-    picker = { enabled = true },
-    quickfile = { enabled = true },
+
+    picker = {
+      enabled = true,
+      win = {
+        input = {
+          keys = {
+            ["<C-j>"] = { "select_next", mode = { "i", "n" } },
+            ["<C-k>"] = { "select_prev", mode = { "i", "n" } },
+          },
+        },
+      },
+    },
+
     scope = { enabled = true },
     -- scroll = { enabled = true },
     statuscolumn = { enabled = true },
     words = { enabled = true },
+
     styles = {
       notification = {
-        -- wo = { wrap = true } -- Wrap notifications
-      }
+        border = "rounded",
+        backdrop = false,
+        wo = {
+          wrap = true,
+          conceallevel = 2,
+        },
+      },
     }
   },
+
   keys = {
     -- Top Pickers & Explorer
     { "<leader><space>", function() Snacks.picker.smart() end, desc = "Smart Find Files" },
@@ -32,7 +78,7 @@ return {
     { "<leader>/", function() Snacks.picker.grep() end, desc = "Grep" },
     { "<leader>:", function() Snacks.picker.command_history() end, desc = "Command History" },
     { "<leader>n", function() Snacks.picker.notifications() end, desc = "Notification History" },
-    { "<leader>e", function() Snacks.explorer() end, desc = "File Explorer" },
+    { "<leader>d", function() Snacks.explorer() end, desc = "File Explorer" },
     -- find
     { "<leader>fb", function() Snacks.picker.buffers() end, desc = "Buffers" },
     { "<leader>fc", function() Snacks.picker.files({ cwd = vim.fn.stdpath("config") }) end, desc = "Find Config File" },

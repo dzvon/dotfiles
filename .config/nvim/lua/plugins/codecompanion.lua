@@ -7,11 +7,11 @@ return {
     -- opts = {
     --   log_level = "DEBUG"
     -- },
-    display = {
-      chat = {
-        show_settings = true,
-      }
-    },
+    -- display = {
+    --   chat = {
+    --     show_settings = true,
+    --   }
+    -- },
     strategies = {
       chat = {
         adapter = 'copilot',
@@ -25,17 +25,19 @@ return {
         return require('codecompanion.adapters').extend("copilot", {
           schema = {
             model = {
-              default = "claude-3.7-sonnet",
-              -- choices = {
-              --   ["o3-mini-2025-01-31"] = { opts = { can_reason = true } },
-              --   ["o1-2024-12-17"] = { opts = { can_reason = true } },
-              --   ["o1-mini-2024-09-12"] = { opts = { can_reason = true } },
-              --   "claude-3.5-sonnet",
-              --   "claude-3.7-sonnet",
-              --   "claude-3.7-sonnet-thought",
-              --   "gpt-4o-2024-08-06",
-              --   "gemini-2.0-flash-001",
-              -- }
+              default = "claude-sonnet-4",
+              choices = {
+                "gpt-4.1",
+                "o3-mini",
+                "o1",
+                "o4-mini",
+                "claude-3.7-sonnet",
+                "claude-3.7-sonnet-thought",
+                "claude-sonnet-4",
+                "gpt-4o-2024-08-06",
+                "gemini-2.0-flash-001",
+                "gemini-2.5-pro"
+              }
             }
           }
         })
@@ -49,6 +51,11 @@ return {
           is_slash_cmd = true,
           short_name = "jjcommit",
           auto_submit = false,
+          adapter = {
+            name = "copilot",
+            -- model = "claude-3.7-sonnet-thought"
+            model = "gpt-4.1"
+          }
         },
         prompts = {
           {
@@ -98,6 +105,11 @@ Input Code Changes/Description:
           auto_submit = false,
           -- stop_context_insertion = true,
           user_prompt = true,
+          adapter = {
+            name = "copilot",
+            -- model = "claude-3.7-sonnet-thought"
+            model = "gemini-2.0-flash-001"
+          }
         },
         prompts = {
           {

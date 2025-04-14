@@ -16,8 +16,6 @@ set -x PATH \
 set -x GOPATH $HOME/GoWork
 set -x PATH $PATH $GOPATH/bin
 
-set -x PATH $PATH /opt/local/bin
-
 set -x FLYCTL_INSTALL $HOME/.fly
 set -x PATH $PATH $FLYCTL_INSTALL/bin
 
@@ -35,7 +33,7 @@ if status is-interactive
 
 
     function proxy_on --argument proxy
-        if not string match -r '^(http|https|socks5)://[^/]+:[0-9]+$' $proxy > /dev/null
+        if not string match -r '^(http|https|socks5|socks5h)://[^/]+:[0-9]+$' $proxy > /dev/null
             echo "Invalid proxy address. Please provide a valid http or https proxy address."
             return 1
         end
@@ -73,7 +71,7 @@ if status is-interactive
     function fish_greeting
         # If has fortune installed, display a random fortune.
         if type -q -f fortune
-            fortune freebsd-tips
+            fortune
         end
     end
 
