@@ -1,0 +1,57 @@
+#!/usr/bin/env fish
+
+set env_file ~/.ssh/agent.env
+
+#
+# Load the existing SSH agent environment variables if they exist
+#
+function agent_load_env
+    if test -f $env_file
+        source $env_file >/dev/null
+    end
+end
+
+#
+# Start a new ssh-agent and store its environment
+#
+function agent_start
+    # Save the current umask
+    set old_umask (umask)
+
+    # Restrict permissions so only the owner can read/write the file
+    umask 077
+
+    # Start ssh-agent and capture its output to env_file
+    ssh-agent -c > $env_file
+
+    # Restore previous umask
+    umask $old_umask
+
+    # Source the newly created env_file so the SSH_AUTH_SOCK etc. variables get set
+    source $env_file ^/dev/null
+end
+
+# 1) Load any existing environment
+agent_load_env
+
+# 2) Check if we already have a running agent with loaded keys
+# In Fish, `$status` is the equivalent of `$?` in Bash
+ssh-add -l >/dev/null
+set agent_run_state $status
+
+# agent_run_state:
+#   0 => Agent is running and has at least one key
+#   1 => Agent is running but has no keys
+#   2 => No agent running (or other error)
+
+if test -z "$SSH_AUTH_SOCK" -o $agent_run_state -eq 2
+    # If no agent socket or agent_run_state=2, start agent and add keys
+    agent_start
+    ssh-add
+else if test -n "$SSH_AUTH_SOCK" -a $agent_run_state -eq 1
+    # If agent is running but no keys are loaded, just add them
+    ssh-add
+end
+
+# Clean up the env_file variable from the current shell
+set -e env_file
