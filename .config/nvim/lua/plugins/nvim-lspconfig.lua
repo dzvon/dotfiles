@@ -80,6 +80,10 @@ return {
       },
     }
 
+    nvim_lsp["jsonnet_ls"].setup {
+      cmd = { "jsonnet-language-server", "--tanka", "--lint" },
+    }
+
     nvim_lsp["denols"].setup {
       single_file_support = true,
       root_dir = nvim_lsp.util.root_pattern("deno.json", "deno.jsonc"),
